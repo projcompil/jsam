@@ -58,10 +58,10 @@ function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasur
 				writecsv(f, res)
 			end
 		end
-		println(res, "\n\n")
+		println(res)
 		if trials > 1 println("Iteration number : $i") end
 	end
-	if !nowrite println("Filename : $filename") end
+	if !nowrite println("Filename : $filename\n\n") end
 end
 
 

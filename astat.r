@@ -32,7 +32,9 @@ spec = matrix(c(
 'optwinners' , NA, 2, "logical",
 'jitter' , NA, 2, "logical",
 'step', 'S', 2, "double",
+'ordstep', NA, 2, "double",
 'maxefficiency', 'E', 2, "double",
+'maxactivities', 'A', 2, "double",
 'maxabs', NA, 2, "double",
 'maxord', NA, 2, "double",
 'minabs', NA, 2, "double",
@@ -70,6 +72,7 @@ if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
 if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
 if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
+if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
 if(!is.null(opt$maxabs)) { data = subset(data, data[, opt$abs ] <= opt$maxabs) }
 if(!is.null(opt$minabs)) { data = subset(data, data[, opt$abs ] >= opt$minabs) }
 if(!is.null(opt$maxord)) { data = subset(data, data[, opt$ord ] <= opt$maxord) }
@@ -140,7 +143,10 @@ if(!is.null(opt$lines)) {
 	}
 }
 if(!is.null(opt$step)) {
-   qpl <- qpl + scale_x_continuous( breaks = seq(min(data[,opt$abs]), max(data[,opt$abs]), by = opt$step), labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
+   qpl <- qpl + scale_x_continuous( breaks = seq(0, max(data[,opt$abs]), by = opt$step), labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
+}
+if(!is.null(opt$ordstep)) {
+   qpl <- qpl + scale_y_continuous(breaks = seq(0, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 qpl <- qpl + labs(title = titre)
 qpl #+stat_smooth()

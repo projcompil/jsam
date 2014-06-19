@@ -2,8 +2,8 @@
 	"experiments" : [
 		{
 			"function_params" : {
-				"fsum" : [0],
-				"fcorrupt" : [0, 1]
+				"fsum" : [1],
+				"fcorrupt" : [0]
 			},
 			"trials" : 1,
 			"tests" : 1000,
@@ -15,15 +15,15 @@
 					"both" : false
 				},
 				"activities" : { 
-					"values" : [2],
+					"values" : [1],
 					"scan" : false,
 					"range" : [1, 2, 10],
 					"both" : false
 				},
 				"m" : { 
-					"values" : [100, 500],
+					"values" : [10, 100, 500],
 					"scan" : true,
-					"range" : [1000, 1000, 25000],
+					"range" : [1000, 2000, 50000],
 					"both" : true
 				},
 				"l" : { 
