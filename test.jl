@@ -84,8 +84,10 @@ end
 
 if bconfig
 	const config = parsefile(fconfig)
+	const experiments = config["experiments"]
+	const nexperiments = length(experiments)
 
-	for experiment in config["experiments"]
+	@time for (iexp, experiment) in enumerate(experiments)
 		fparams = experiment["function_params"]
 		netparams = experiment["network_params"]
 		trials =  experiment["trials"]
@@ -110,7 +112,7 @@ if bconfig
 		compteur = 1
 		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdiffusion, vdegree, vactivities, vwinners, vfsum, vfcorrupt }))
 		@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, diffusion in vdiffusion, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
-			println("Itération : $(compteur)/$(total)")
+			println("Itération : $(compteur)/$(total) de l'expérience $(iexp)/$(nexperiments).")
 			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
 			compteur += 1
 		end
