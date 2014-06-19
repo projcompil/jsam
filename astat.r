@@ -32,6 +32,7 @@ spec = matrix(c(
 'optwinners' , NA, 2, "logical",
 'jitter' , NA, 2, "logical",
 'step', 'S', 2, "double",
+'maxefficiency', 'E', 2, "double",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
 opt = getopt(spec);
@@ -64,6 +65,7 @@ if(!is.null(opt$tests)) { data = subset(data, tests == opt$tests) }
 if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
 if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
+if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency < opt$maxefficiency) }
 #data <- subset(data, (is.null(opt$neurons) | l == opt$neurons) & (is.null(opt$clusters) | c == opt$clusters) & (is.null(opt$gamma) | gamma == opt$gamma) & (is.null(opt$messages) | m == opt$messages) )
 #data <- subset(x, (is.null(opt$neurons) || l == opt$neurons) & (is.null(opt$clusters) || c == opt$clusters) & (is.null(opt$gamma) || gamma == opt$gamma) & (is.null(opt$messages) || m == opt$messages) )
 #data <- subset(data, (l==opt$neurons & c==opt$clusters & m==opt$messages & gamma==opt$gamma))
@@ -96,7 +98,7 @@ X11()
 #} #else { ligne = "o" }
 if(!is.null(opt$color)) {
 
-qpl <- qplot(factor(data[,opt$abs]), data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "", color = data[,opt$color]) + labs(colour = opt$color)# + guides(fill = guide_colourbar(title=opt$color))#+ scale_colour_continuous(name=opt$color) #, size = data[,opt$size])#opt$color) # col="blue")
+qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "", color = data[,opt$color]) + labs(colour = opt$color)# + guides(fill = guide_colourbar(title=opt$color))#+ scale_colour_continuous(name=opt$color) #, size = data[,opt$size])#opt$color) # col="blue")
 } else {qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "")  }
 
 
@@ -130,10 +132,10 @@ if(!is.null(opt$lines)) {
 	}
 }
 if(!is.null(opt$step)) {
-   qpl <- qpl + scale_x_discrete(labels = abbreviate)#, breaks = seq(min(data[,opt$abs]), max(data[,opt$abs]), by = opt$step))#pretty_breaks(n = length(data[,opt$abs]))) #
+   qpl <- qpl + scale_x_continuous( breaks = seq(min(data[,opt$abs]), max(data[,opt$abs]), by = opt$step), labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
 }
 qpl <- qpl + labs(title = titre)
-qpl
+qpl #+stat_smooth()
 #title(titre)
 temp <- data.frame(y = data[,1], x = data[,8])
 # fit non-linear model

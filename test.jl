@@ -58,7 +58,7 @@ function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasur
 				writecsv(f, res)
 			end
 		end
-		println(res)
+		println(res, "\n\n")
 		if trials > 1 println("Iteration number : $i") end
 	end
 	if !nowrite println("Filename : $filename") end
@@ -84,31 +84,37 @@ end
 
 if bconfig
 	const config = parsefile(fconfig)
-	const fparams = config["function_params"]
-	const netparams = config["network_params"]
-	const trials =  config["trials"]
-	const tests = config["tests"]
 
-	const vfsum = map(fparams["fsum"]) do x  Sam.dict_rules[x] end
-	const vfcorrupt = map(fparams["fcorrupt"]) do x Sam.dict_corrupt[x] end
+	for experiment in config["experiments"]
+		fparams = experiment["function_params"]
+		netparams = experiment["network_params"]
+		trials =  experiment["trials"]
+		tests = experiment["tests"]
 
-	const vl = choisit(netparams, "l")
-	const vc = choisit(netparams, "c")
-	const vm = choisit(netparams, "m")
-	const vugamma = choisit(netparams, "gamma")
-	const verasures = choisit(netparams, "erasures")
-	const viterations = choisit(netparams, "iterations")
-	const vp_cons = choisit(netparams, "proba-cons")
-	const vp_des = choisit(netparams, "proba-des")
-	const vdiffusion = choisit(netparams, "diffusion")
-	const vdegree = choisit(netparams, "degree")
-	const vactivities = choisit(netparams, "activities")
-	const vwinners = choisit(netparams, "winners")
+		vfsum = map(fparams["fsum"]) do x  Sam.dict_rules[x] end
+		vfcorrupt = map(fparams["fcorrupt"]) do x Sam.dict_corrupt[x] end
 
-	@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, diffusion in vdiffusion, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
-		@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
-	end
-		
+		vl = choisit(netparams, "l")
+		vc = choisit(netparams, "c")
+		vm = choisit(netparams, "m")
+		vugamma = choisit(netparams, "gamma")
+		verasures = choisit(netparams, "erasures")
+		viterations = choisit(netparams, "iterations")
+		vp_cons = choisit(netparams, "proba-cons")
+		vp_des = choisit(netparams, "proba-des")
+		vdiffusion = choisit(netparams, "diffusion")
+		vdegree = choisit(netparams, "degree")
+		vactivities = choisit(netparams, "activities")
+		vwinners = choisit(netparams, "winners")
+
+		compteur = 1
+		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdiffusion, vdegree, vactivities, vwinners, vfsum, vfcorrupt }))
+		@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, diffusion in vdiffusion, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
+			println("Itération : $(compteur)/$(total)")
+			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
+			compteur += 1
+		end
+	end			
 
 
 else
