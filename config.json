@@ -1,0 +1,82 @@
+{
+	"function_params" : {
+		"fsum" : [0, 1],
+		"fcorrupt" : [0, 1]
+	},
+	"trials" : 1,
+	"tests" : 1000,
+	"network_params" : {
+		"gamma" : { 
+			"values" : [0, 1, 2],
+			"scan" : false,
+			"range" : [0, 1, 5],
+			"both" : false
+		},
+		"activities" : { 
+			"values" : [2],
+			"scan" : false,
+			"range" : [1, 2, 10],
+			"both" : false
+		},
+		"m" : { 
+			"values" : [5000],
+			"scan" : true,
+			"range" : [1000, 1000, 25000],
+			"both" : false
+		},
+		"l" : { 
+			"values" : [256],
+			"scan" : false,
+			"range" : [128, 128, 256],
+			"both" : false
+		},
+		"c" : { 
+			"values" : [16],
+			"scan" : false,
+			"range" : [8, 4, 16],
+			"both" : false
+		},
+		"erasures" : { 
+			"values" : [11, 12 ,13 , 14],
+			"scan" : false,
+			"range" : [10, 1, 14],
+			"both" : false
+		},
+		"iterations" : { 
+			"values" : [4],
+			"scan" : false,
+			"range" : [1, 1, 5],
+			"both" : false
+		},
+		"winners" : { 
+			"values" : [0, 1],
+			"scan" : false,
+			"range" : [1, 1, 1],
+			"both" : false
+		},
+		"degree" : { 
+			"values" : [0],
+			"scan" : false,
+			"range" : [10, 10, 20],
+			"both" : true
+		},
+		"proba-cons" : { 
+			"values" : [1.0],
+			"scan" : false,
+			"range" : [0.0, 0.0, 0.0],
+			"both" : false
+		},
+		"proba-des" : { 
+			"values" : [0.0],
+			"scan" : false,
+			"range" : [0.0, 1.0, 0.0],
+			"both" : false
+		},
+		"diffusion" : { 
+			"values" : [1],
+			"scan" : false,
+			"range" : [1, 1, 1],
+			"both" : false
+		}
+	}
+}
