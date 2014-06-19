@@ -33,6 +33,10 @@ spec = matrix(c(
 'jitter' , NA, 2, "logical",
 'step', 'S', 2, "double",
 'maxefficiency', 'E', 2, "double",
+'maxabs', NA, 2, "double",
+'maxord', NA, 2, "double",
+'minabs', NA, 2, "double",
+'minord', NA, 2, "double",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
 opt = getopt(spec);
@@ -65,7 +69,11 @@ if(!is.null(opt$tests)) { data = subset(data, tests == opt$tests) }
 if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
 if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
-if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency < opt$maxefficiency) }
+if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
+if(!is.null(opt$maxabs)) { data = subset(data, data[, opt$abs ] <= opt$maxabs) }
+if(!is.null(opt$minabs)) { data = subset(data, data[, opt$abs ] >= opt$minabs) }
+if(!is.null(opt$maxord)) { data = subset(data, data[, opt$ord ] <= opt$maxord) }
+if(!is.null(opt$minord)) { data = subset(data, data[, opt$ord ] >= opt$minord) }
 #data <- subset(data, (is.null(opt$neurons) | l == opt$neurons) & (is.null(opt$clusters) | c == opt$clusters) & (is.null(opt$gamma) | gamma == opt$gamma) & (is.null(opt$messages) | m == opt$messages) )
 #data <- subset(x, (is.null(opt$neurons) || l == opt$neurons) & (is.null(opt$clusters) || c == opt$clusters) & (is.null(opt$gamma) || gamma == opt$gamma) & (is.null(opt$messages) || m == opt$messages) )
 #data <- subset(data, (l==opt$neurons & c==opt$clusters & m==opt$messages & gamma==opt$gamma))
