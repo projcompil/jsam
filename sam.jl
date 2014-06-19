@@ -330,6 +330,7 @@ end
 # tests is the number of simulations
 # fsum is the rule to use in order to recover the message. It modifies "input" in place.
 # returns the error rate of the procedure and the mean of the number of iterations
+# Careful : declare_degree is not the degree per nodes ! The degree will be c-1-declared_degree
 function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 1.0, p_des = 0.0, diffusion = 1, declared_degree = 0, activities = 1, declared_winners = 1)# ; useBitArray = false)
 	const degree = (if declared_degree <= 0 0 else c - 1 - declared_degree end)
 	@time const messages, sparseMessages, network, l_t, alphabet_size = create_both(l_init, c, m, p_cons, degree, activities)#, useBitArray = useBitArray)

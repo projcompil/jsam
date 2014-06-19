@@ -105,7 +105,7 @@ if bconfig
 	const vactivities = choisit(netparams, "activities")
 	const vwinners = choisit(netparams, "winners")
 
-	for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, diffusion in vdiffusion, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
+	@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, diffusion in vdiffusion, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
 		@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
 	end
 		
