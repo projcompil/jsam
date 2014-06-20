@@ -2,11 +2,11 @@
 	"experiments" : [
 		{
 			"function_params" : {
-				"fsum" : [1],
+				"fsum" : [0, 1],
 				"fcorrupt" : [0]
 			},
-			"trials" : 1,
-			"tests" : 1000,
+			"trials" : 10,
+			"tests" : 100,
 			"network_params" : {
 				"gamma" : { 
 					"values" : [1],
@@ -15,15 +15,15 @@
 					"both" : false
 				},
 				"activities" : { 
-					"values" : [1],
+					"values" : [64],
 					"scan" : false,
 					"range" : [1, 2, 10],
 					"both" : false
 				},
 				"m" : { 
-					"values" : [10, 100, 500],
+					"values" : [1, 2, 5],
 					"scan" : true,
-					"range" : [1000, 2000, 50000],
+					"range" : [10, 5, 70],
 					"both" : true
 				},
 				"l" : { 

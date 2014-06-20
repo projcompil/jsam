@@ -72,7 +72,7 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 		#if length(table) < alphabet_size
 		#	table = alphabet_table(l, activities)
 		#end
-		graine = cat(1, ones(Bool, activities), zeros(Bool, l - activities))
+		graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
 		#for j=1:c
 		#	for i=1:m
 		#		#rep = table[messages[i,j]]
@@ -129,7 +129,7 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 				for k in (if a > j # == ind[j] + degree 
 							ind[j+1:a] 
 						  else 
-					  		cat(1, ind[j+1:c], ind[1:a]) 
+					  		vcat(ind[j+1:c], ind[1:a]) 
 					  	end)
 					if j != k
 						#network[(j-1)*l+messages[i,j], (k-1)*l+messages[i,k]] = 1
