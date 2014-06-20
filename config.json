@@ -2,8 +2,8 @@
 	"experiments" : [
 		{
 			"function_params" : {
-				"fsum" : [0],
-				"fcorrupt" : [1]
+				"fsum" : [1],
+				"fcorrupt" : [0]
 			},
 			"trials" : 1,
 			"tests" : 1000,
@@ -84,8 +84,8 @@
 		},
 		{
 			"function_params" : {
-				"fsum" : [0],
-				"fcorrupt" : [1]
+				"fsum" : [1],
+				"fcorrupt" : [0]
 			},
 			"trials" : 1,
 			"tests" : 1000,

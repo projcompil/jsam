@@ -61,3 +61,5 @@ une courbe eff
 une courbes intérêt déc via erreurs
 
 une courbe résumé avec nouvelle notion efficacité
+
+Modifier script R pour tracer courbes théoriques !!!!
