@@ -15,15 +15,15 @@
 					"both" : false
 				},
 				"activities" : { 
-					"values" : [64],
+					"values" : [4],
 					"scan" : false,
 					"range" : [1, 2, 10],
 					"both" : false
 				},
 				"m" : { 
-					"values" : [1, 2, 5],
+					"values" : [100, 250, 500],
 					"scan" : true,
-					"range" : [10, 5, 70],
+					"range" : [1000, 500, 9000],
 					"both" : true
 				},
 				"l" : { 

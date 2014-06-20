@@ -273,7 +273,7 @@ function estimate_efficiency(l, c, m, alphabet_size, activities = 1)
 		info_alphabet = sum(log2((l-activities+1) : l)) - sum(log2(1:activities))				
 	end
 
-	2m * (c* info_alphabet - log2(m) + 1/log2(2))/(c*(c-1)*l^2)
+	2m * (c* info_alphabet - log2(m) + 1/log2(2))/(c*(c-1)*l^2) ## Of course log2(2) == 1, this is just a reminder from where this term comes.
 end
 
 
