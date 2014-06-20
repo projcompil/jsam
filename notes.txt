@@ -1,0 +1,33 @@
+ Marche pas :Diffusion supplémentaire inefficace dans le cadre d'Erdo-R.
+ /// bof : Ceci dit, cela ne semble pas heurter utiliser avec mix-of_rules.
+
+Mauvaise idée ? Difficile à synchroniser, on ne sait pas quand un neurone va recevoir le bon message.
+
+
+
+
+Activités variables
+tracer densité
+
+Essayer autres erreurs
+
+
+sum_of_max! pour corriger des erreurs ?
+
+1 iteration max
+
+ ./astat.r -f results/newclique.csv --color fcorrupt --abs efficiency -W 0  --shape activities -s sum_of_sum!  --lines -S 0.03 -I 1  -E 0.1 -e 12
+
+ ./astat.r -f results/newclique.csv --color fsum --abs efficiency -W 0  --shape activities -z erase_clusters!  --lines  -S 0.01 -I 1  -e 14 --maxord 0.05
+
+
+ f <- function(a, l, c, e) log2(1-2^(-log2(choose(l, a))/(a*(c - (e+1)/2))))/log2(1 - (a/l)^2)
+
+ effi <- function (m, l, a, c) 2 * m * ( c *log2(choose(l, a)) - log2(m) + 1)/(c*(c-1) * l * l)
+
+ x = 1:20
+
+plot(x, effi(f(x, 256, 16, 8), 256, x, 16))
+
+
+err <- function (a, l, m, c, e) 1 - (1 - (1 - (1-(a/l)^2)^m )^(a * (c-e)))^(choose(l, a) - 1)

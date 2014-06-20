@@ -5,8 +5,8 @@
 				"fsum" : [0, 1],
 				"fcorrupt" : [0]
 			},
-			"trials" : 10,
-			"tests" : 100,
+			"trials" : 1,
+			"tests" : 1000,
 			"network_params" : {
 				"gamma" : { 
 					"values" : [1],
