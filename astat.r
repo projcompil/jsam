@@ -143,7 +143,7 @@ if(!is.null(opt$lines)) {
 	}
 }
 if(!is.null(opt$step)) {
-   qpl <- qpl + scale_x_continuous( breaks = seq(0, max(data[,opt$abs]), by = opt$step), labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
+   qpl <- qpl + scale_x_continuous( breaks = seq(0, max(data[,opt$abs]), by = opt$step))#, labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
 }
 if(!is.null(opt$ordstep)) {
    qpl <- qpl + scale_y_continuous(breaks = seq(0, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])

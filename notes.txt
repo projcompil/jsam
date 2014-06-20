@@ -31,3 +31,33 @@ plot(x, effi(f(x, 256, 16, 8), 256, x, 16))
 
 
 err <- function (a, l, m, c, e) 1 - (1 - (1 - (1-(a/l)^2)^m )^(a * (c-e)))^(choose(l, a) - 1)
+
+x = seq(500, 15000, by = 500)
+> plot(x, err(2, 256, x, 16, 8), type="l")
+
+
+
+
+
+4 x 512 ->>>> théorique +
+winner takes all ? formule trouvée
+winners take all -->>
+
+
+sparse -> Ala pour les règles
+
+Commencer écriture
+
+Austin --> lire
+
+
+Mail vers mercredi
+
+Multiplier efficacité par proba retrieve / proba succès maxi ::: tracer les 2 
+maximum sur tous le nbres de messzages possibles 
+3d
+
+une courbe eff
+une courbes intérêt déc via erreurs
+
+une courbe résumé avec nouvelle notion efficacité
