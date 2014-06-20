@@ -63,3 +63,7 @@ une courbes intérêt déc via erreurs
 une courbe résumé avec nouvelle notion efficacité
 
 Modifier script R pour tracer courbes théoriques !!!!
+
+Tracer densité théorique et réelle pour les ocmparer 
+
+Faire write csv avec R pour obtenir la bonne efficacité, puis la rajouter dans Julia
