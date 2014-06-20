@@ -40,7 +40,7 @@ x = seq(500, 15000, by = 500)
 
 
 4 x 512 ->>>> théorique +
-winner takes all ? formule trouvée
+winner takes all ? formule trouvée ?
 winners take all -->>
 
 
@@ -53,11 +53,11 @@ Austin --> lire
 
 Mail vers mercredi
 
-Multiplier efficacité par proba retrieve / proba succès maxi ::: tracer les 2 
-maximum sur tous le nbres de messzages possibles 
+Multiplier efficacité par proba retrieve / proba succès maxi (sur tous les messages) ::: tracer les 2 
+maximum sur tous le nbres de messages possibles 
 3d
 
-une courbe eff
+une courbe effacements 1,2
 une courbes intérêt déc via erreurs
 
 une courbe résumé avec nouvelle notion efficacité
