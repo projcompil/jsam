@@ -201,8 +201,7 @@ end
 # gamma is the memory parameter
 # indexes is not used in this function (Trouver une façon de s'en débarasser ?)
 # applies of one pass of the sum of sum rule
-function sum_of_sum!(l, c, network, input, gamma, indexes, diffusion = 1, degree = 0, activities= 1, winners = 1)
-#	if diffusion == 1  # Isolation of origin code
+function sum_of_sum!(l, c, network, input, gamma, indexes, degree = 0, activities= 1, winners = 1)
 	prod = gamma * input + network * input
 	for i=1:c
 		if winners <= 1
@@ -213,9 +212,10 @@ function sum_of_sum!(l, c, network, input, gamma, indexes, diffusion = 1, degree
 			maxi = sort(prod[(i-1)*l+1:i*l], rev = true)[winners]
 		end
 		for j=1:l
-			input[(i-1)*l+j] = prod[(i-1)*l+j] >= maxi	 # using a loop instead of slicing imporoves performance (a little).
+			input[(i-1)*l+j] = prod[(i-1)*l+j] >= maxi	 # using a loop instead of slicing improves performance (a little).
 		end
 	end
+end
 
 
 #	else
@@ -235,11 +235,11 @@ function sum_of_sum!(l, c, network, input, gamma, indexes, diffusion = 1, degree
 #			end
 #		end
 #	end
-end
+
 
 # indexes allows the function to compute activations only for erased clusters : it is the array of erased clusters
 # sum_of_max! applies one pass of the sum of max rule (it modifies input)
-function sum_of_max!(l, c, network, input, gamma, indexes, diffusion = 1, degree = 0, activities = 1, winners = 1)
+function sum_of_max!(l, c, network, input, gamma, indexes, degree = 0, activities = 1, winners = 1)
 	const entrants = gamma + activities * (if degree == 0 c-1 else degree end)
 	prod = gamma * input
 	for i in indexes
@@ -261,7 +261,7 @@ function sum_of_max!(l, c, network, input, gamma, indexes, diffusion = 1, degree
 	end
 end
 
-function mix_of_rules!(l, c, network, input, gamma, indexes, diffusion = 1, degree = 0, activities = 1, winners = 1)
+function mix_of_rules!(l, c, network, input, gamma, indexes, degree = 0, activities = 1, winners = 1)
 	sum_of_sum!(l, c, network, input, gamma, indexes, degree, activities, winners)
 	sum_of_max!(l, c, network, input, gamma, indexes, degree, activities, winners)
 end
@@ -312,12 +312,12 @@ end
 
 
 
-function iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, diffusion = 1, degree = 0, activities = 1, winners = 1)
+function iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree = 0, activities = 1, winners = 1)
 	corrected = 0 # Not a boolean for type stability.
 	iter = 0
 	while corrected == 0 && iter < iterations
 		# In place modifcation of input !
-		fsum(l, c, network, input, gamma, indexes, diffusion, degree, activities, winners)
+		fsum(l, c, network, input, gamma, indexes, degree, activities, winners)
 		corrected = int(isequal(init, input))
 		iter += 1
 	end
@@ -331,7 +331,7 @@ end
 # fsum is the rule to use in order to recover the message. It modifies "input" in place.
 # returns the error rate of the procedure and the mean of the number of iterations
 # Careful : declare_degree is not the degree per nodes ! The degree will be c-1-declared_degree
-function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 1.0, p_des = 0.0, diffusion = 1, declared_degree = 0, activities = 1, declared_winners = 1)# ; useBitArray = false)
+function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 1.0, p_des = 0.0, declared_degree = 0, activities = 1, declared_winners = 1)# ; useBitArray = false)
 	const degree = (if declared_degree <= 0 0 else c - 1 - declared_degree end)
 	@time const messages, sparseMessages, network, l_t, alphabet_size = create_both(l_init, c, m, p_cons, degree, activities)#, useBitArray = useBitArray)
 	const l = l_t
@@ -351,26 +351,26 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 		indexes = randperm(c)[1:erasures]
 		fcorrupt(l, c, erasures, input, indexes, erasedNeuron, p_des)
 		# Trying to recover them.
-		iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, diffusion, degree, activities, winners)
+		iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree, activities, winners)
 	end
 	errorRate = 1 - score[1]/tests
 	meanIter = score[2]/tests
 	println("\nError rate is : $errorRate\nMean number of iterations : $meanIter\n")
-	return errorRate, meanIter, dens, eff
+	return [ errorRate, meanIter, dens, eff ]
 end
 
 const dict_rules = [ 0 => sum_of_sum!, 1 => sum_of_max!, 2 => mix_of_rules! ]
 const dict_corrupt = [ 0 => erase_clusters!, 1 => corrupt_clusters!, 2 => add_one_in_clusters!, 3 => add_some_in_clusters! ]
 
 
-function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 1.0, p_des = 0.0, diffusion = 1, degree = 0, activities = 1, winners = 1)
-	res = test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, diffusion, degree, activities, winners)
+function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 1.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1)
+	res = mean(pmap( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size]))
 	binomial_annoncee = 1
 	try
 		binomial_annoncee =  binomial(l, activities)
 	catch
 	end
-	[ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des diffusion degree activities binomial_annoncee winners]
+	[ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size ] 
 end
 
 #function set_proba(pr)

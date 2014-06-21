@@ -64,6 +64,8 @@ une courbe résumé avec nouvelle notion efficacité
 
 Modifier script R pour tracer courbes théoriques !!!!
 
-Tracer densité théorique et réelle pour les ocmparer 
+Tracer densité théorique et réelle pour les comparer 
 
 Faire write csv avec R pour obtenir la bonne efficacité, puis la rajouter dans Julia
+
+Essayer winner takes all/ comparer au théorique

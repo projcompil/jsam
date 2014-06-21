@@ -2,11 +2,12 @@
 	"experiments" : [
 		{
 			"function_params" : {
-				"fsum" : [1],
+				"fsum" : [0],
 				"fcorrupt" : [0]
 			},
 			"trials" : 1,
 			"tests" : 1000,
+			"pool_size" : 10,
 			"network_params" : {
 				"gamma" : { 
 					"values" : [1],
@@ -28,15 +29,9 @@
 				},
 				"l" : { 
 					"values" : [512],
-					"scan" : false,
-					"range" : [128, 128, 256],
-					"both" : false
 				},
 				"c" : { 
 					"values" : [4],
-					"scan" : false,
-					"range" : [8, 4, 16],
-					"both" : false
 				},
 				"erasures" : { 
 					"values" : [12 ,13 , 14],
@@ -52,9 +47,6 @@
 				},
 				"winners" : { 
 					"values" : [0, 1],
-					"scan" : false,
-					"range" : [1, 1, 1],
-					"both" : false
 				},
 				"degree" : { 
 					"values" : [0],
@@ -73,22 +65,17 @@
 					"scan" : false,
 					"range" : [0.0, 1.0, 0.0],
 					"both" : false
-				},
-				"diffusion" : { 
-					"values" : [1],
-					"scan" : false,
-					"range" : [1, 1, 1],
-					"both" : false
 				}
 			}
 		},
 		{
 			"function_params" : {
-				"fsum" : [1],
+				"fsum" : [0],
 				"fcorrupt" : [0]
 			},
 			"trials" : 1,
 			"tests" : 1000,
+			"pool_size" : 10,
 			"network_params" : {
 				"gamma" : { 
 					"values" : [1],
@@ -110,15 +97,9 @@
 				},
 				"l" : { 
 					"values" : [512],
-					"scan" : false,
-					"range" : [128, 128, 256],
-					"both" : false
 				},
 				"c" : { 
 					"values" : [4],
-					"scan" : false,
-					"range" : [8, 4, 16],
-					"both" : false
 				},
 				"erasures" : { 
 					"values" : [12 ,13 , 14],
@@ -154,12 +135,6 @@
 					"values" : [0.0],
 					"scan" : false,
 					"range" : [0.0, 1.0, 0.0],
-					"both" : false
-				},
-				"diffusion" : { 
-					"values" : [1],
-					"scan" : false,
-					"range" : [1, 1, 1],
 					"both" : false
 				}
 			}

@@ -43,16 +43,16 @@ function init_file(fileprefix, dir = "results")
 	#	"#Clique network parameters : fsum=$(fsum), fcorrupt=$(fcorrupt)\n"
 	const suffix = ".csv" #"$(fsum)__$(fcorrupt)"
 	const filename = "$(dir)/$(fileprefix)$suffix"
-	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,diffusion,degree,activities,alphabetsize,winners\n"
+	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize\n"
 	open(filename, "a") do file
 		write(file, firstline)
 	end
 	return filename
 end
 
-function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 1.0, p_des = 0.0, diffusion = 1, degree = degree, activities = 1, winners = 1)
+function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 1.0, p_des = 0.0, degree = degree, activities = 1, winners = 1, pool_size = 1)
 	for i=1:trials
-		res = Sam.output_test(l, c, m, ugamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, diffusion, degree, activities, winners)
+		res = Sam.output_test(l, c, m, ugamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, pool_size)
 		if !nowrite
 			open(filename, "a") do f
 				writecsv(f, res)
@@ -92,6 +92,7 @@ if bconfig
 		netparams = experiment["network_params"]
 		trials =  experiment["trials"]
 		tests = experiment["tests"]
+		pool_size = experiment["pool_size"]
 
 		vfsum = map(fparams["fsum"]) do x  Sam.dict_rules[x] end
 		vfcorrupt = map(fparams["fcorrupt"]) do x Sam.dict_corrupt[x] end
@@ -104,16 +105,15 @@ if bconfig
 		viterations = choisit(netparams, "iterations")
 		vp_cons = choisit(netparams, "proba-cons")
 		vp_des = choisit(netparams, "proba-des")
-		vdiffusion = choisit(netparams, "diffusion")
 		vdegree = choisit(netparams, "degree")
 		vactivities = choisit(netparams, "activities")
 		vwinners = choisit(netparams, "winners")
 
 		compteur = 1
-		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdiffusion, vdegree, vactivities, vwinners, vfsum, vfcorrupt }))
-		@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, diffusion in vdiffusion, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
+		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdegree, vactivities, vwinners, vfsum, vfcorrupt }))
+		@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
 			println("Itération : $(compteur)/$(total) de l'expérience $(iexp)/$(nexperiments).")
-			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
+			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, degree = degree, activities = activities, winners = winners, pool_size = pool_size)
 			compteur += 1
 		end
 	end			
@@ -134,10 +134,10 @@ else
 	const fcorrupt = Sam.dict_corrupt[table["fcorrupt"]]
 	const p_cons = table["proba-cons"]
 	const p_des = table["proba-des"]
-	const diffusion = table["diffusion"]
 	const degree = table["degree"]
 	const activities = table["activities"]
 	const winners = table["winners"]
+	const pool_size = table["pool_size"]
 
 	#if activities < 0 #### provisoire !!!! #activities > 1
 	#	const alphabet_table = Sam.alphabet_table(l, activities)
@@ -146,22 +146,22 @@ else
 	#end
 
 
-	if !table["mscan"] && !table["lscan"]
+#	if !table["mscan"] && !table["lscan"]
 		@time for i in (if table["scan"] 0:table["c"] else erasures:erasures end)
 			println("Erasures = $i")
-			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = i, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
+			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = i, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, degree = degree, activities = activities, winners = winners, pool_size = pool_size)
 		end
-	elseif !table["mscan"]
-		@time for i in 272:16:512
-			println("Size of cluters = $i")
-			@time enregistre(filename, trials = trials, l = i, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
-		end
-	else
-		@time for i in [8000:2000:36000] #[500:500:15000]  [5000:2000:50000] [1000:1000:25000]
-			println("Messages : $i")
-			@time enregistre(filename, trials = trials, l = l, c = c, m = i, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, diffusion = diffusion, degree = degree, activities = activities, winners = winners)
-			end
-		end
+#	elseif !table["mscan"]
+#		@time for i in 272:16:512
+#			println("Size of cluters = $i")
+#			@time enregistre(filename, trials = trials, l = i, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, degree = degree, activities = activities, winners = winners)
+#		end
+#	else
+#		@time for i in [8000:2000:36000] #[500:500:15000]  [5000:2000:50000] [1000:1000:25000]
+#			println("Messages : $i")
+#			@time enregistre(filename, trials = trials, l = l, c = c, m = i, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, degree = degree, activities = activities, winners = winners)
+#			end
+#		end
 
 
 end
