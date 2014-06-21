@@ -60,15 +60,15 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 	#if !useBitArray
 		#sparseMessages = spzeros(Uint8, m,n)
 
-		sparseMessages = zeros(Bool,m,n)
+		sparseMessages = zeros(Bool,n, m)
 	#else	
 	#	sparseMessages = falses(m,n)
 	#end
 	if activities <= 1  # bad "if" but the goal is to keep different test files functioning
 		messages = rand(1:l,m,c)
-		for j=1:c
-			for i=1:m
-				sparseMessages[i,(j-1)*l+messages[i,j]] = 1
+		for i=1:m
+			for j=1:c
+				sparseMessages[(j-1)*l+messages[i,j], i] = 1
 			end
 		end
 		return (messages, sparseMessages, l, l)
@@ -97,9 +97,9 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 		#	end
 		#end
 		#graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
-		for j=1:c
-			for i = 1:m
-				sparseMessages[i, (j-1)*l+1:j*l] = rand_combination(l, activities)#shuffle(graine)
+		for i = 1:m
+			for j=1:c
+				sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
 			end
 		end
 		###############" Attention les messages n'ont plus aucun rapport avec les sparseMessages !!!!!!!
@@ -121,7 +121,7 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 	if degree <= 0
 		const ind_n = [1:n]
 		for i=1:m
-			activations = ind_n[reshape(sparseMessages[i, :], n) .> 0]
+			activations = ind_n[reshape(sparseMessages[:, i], n) .> 0]
 			#activated = [1:n][ activations ]
 			#for j=1:c
 			#	for k=1:c
@@ -135,7 +135,7 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 	else
 		const ind_l = [1:l]
 		for i=1:m
-			activated = reshape(sparseMessages[i, :], n) .> 0
+			activated = reshape(sparseMessages[:, i], n) .> 0
 			for j=1:c
 				ind = randperm(c)
 				indj = findfirst(ind, j)
@@ -360,7 +360,7 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 	const erasedNeuron = (if fsum == sum_of_max! 1 else 0 end)
 	# Computing the number of successful corrections in tests simulations and the total number of iterations (in parallel)
 	score = @parallel (+) for t=1:tests
-		init = reshape(copy(sparseMessages[rand(1:m),:]), n)
+		init = reshape(copy(sparseMessages[:, rand(1:m)]), n)
 		input = copy(init)
 		# Erasing some clusters. sum_of_max is easier to write by saturating erased clusters.
 		indexes = randperm(c)[1:erasures]
