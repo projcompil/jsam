@@ -119,18 +119,22 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 	#end
 #	if p_cons == 1.0  # repetition for cache efficiency in the case one activate all the connections.
 	if degree <= 0
-		const ind_n = [1:n]
-		for i=1:m
-			activations = ind_n[reshape(sparseMessages[:, i], n) .> 0]
-			#activated = [1:n][ activations ]
-			#for j=1:c
-			#	for k=1:c
-			#		if j != k
-			#			network[(j-1)*l+messages[i,j],(k-1)*l+messages[i,k]] = 1
-						network[activations, activations] = 1
-			#		end
-			#	end
-			#end
+		if activities <= 1
+			for i=1:m
+				for j=1:c
+					for k=1:c
+						if j != k
+							network[(j-1)*l+messages[i,j],(k-1)*l+messages[i,k]] = 1
+						end
+					end
+				end
+			end
+		else
+			const ind_n = [1:n]
+			for i=1:m
+				activations = ind_n[reshape(sparseMessages[:, i], n) .> 0]
+				network[activations, activations] = 1
+			end
 		end
 	else
 		const ind_l = [1:l]
@@ -147,7 +151,6 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 					  		vcat(ind[j+1:c], ind[1:a]) 
 					  	end)
 					if j != k
-						#network[(j-1)*l+messages[i,j], (k-1)*l+messages[i,k]] = 1
 						network[ (j-1)*l .+ ind_l[activated[(j-1)*l+1:j*l]], (k-1)*l .+ ind_l[activated[(k-1)*l+1:k*l]]] = 1
 					end
 				end
@@ -158,6 +161,9 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 	for j=1:c
 		network[(j-1)*l+1:j*l, (j-1)*l+1:j*l] = 0
 	end
+
+	return network
+end
 #	else
 	#	for i=1:n
 	#		for j=1:n
@@ -177,13 +183,11 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 	#		end
 	#	end
 	#end
-	return network
-end
 
 # This function is a commodity for interactive purpose.
 function create_both(l, c, m, p_cons = 1.0, degree = 0, activities = 1) # ; useBitArray = false)
 	@time messages, sparseMessages, l2, alphabet_size = create_messages(l, c, m, activities) #, useBitArray = useBitArray)
-	@time network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree) #, useBitArray = useBitArray)
+	@time network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree, activities) #, useBitArray = useBitArray)
 	return (messages, sparseMessages, network, l2, alphabet_size)
 end
 
