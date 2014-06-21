@@ -28,10 +28,10 @@
 					"both" : false
 				},
 				"l" : { 
-					"values" : [512],
+					"values" : [512]
 				},
 				"c" : { 
-					"values" : [4],
+					"values" : [4]
 				},
 				"erasures" : { 
 					"values" : [12 ,13 , 14],
@@ -46,7 +46,7 @@
 					"both" : false
 				},
 				"winners" : { 
-					"values" : [0, 1],
+					"values" : [0, 1]
 				},
 				"degree" : { 
 					"values" : [0],
@@ -96,10 +96,10 @@
 					"both" : true
 				},
 				"l" : { 
-					"values" : [512],
+					"values" : [512]
 				},
 				"c" : { 
-					"values" : [4],
+					"values" : [4]
 				},
 				"erasures" : { 
 					"values" : [12 ,13 , 14],
@@ -114,10 +114,7 @@
 					"both" : false
 				},
 				"winners" : { 
-					"values" : [0],
-					"scan" : false,
-					"range" : [1, 1, 1],
-					"both" : false
+					"values" : [0]
 				},
 				"degree" : { 
 					"values" : [0],
