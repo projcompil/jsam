@@ -7,7 +7,7 @@ module Sam
 function rand_combination(n, m)
 	s = Set()
 	for j=n-m+1:n
-		t = rand(1:j-1)
+		t = rand(1:j)
 		if !(t in s)
 			push!(s, t)
 		else
