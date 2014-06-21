@@ -23,6 +23,8 @@ spec = matrix(c(
 'messages' , 'm', 2, "integer",
 'erasures' , 'e', 2, "integer",
 'winners' , 'W', 2, "integer",
+'poolsize' , 'P', 2, "integer",
+'minpoolsize' , NA, 2, "integer",
 'gamma' , 'g', 2, "integer",
 'iterations' , 'i', 2, "integer",
 'maxiterations' , 'I', 2, "integer",
@@ -71,7 +73,10 @@ if(!is.null(opt$tests)) { data = subset(data, tests == opt$tests) }
 if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
 if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
+if(!is.null(opt$poolsize)) { data = subset(data, poolsize == opt$poolsize) }
+if(!is.null(opt$minpoolsize)) { data = subset(data, poolsize >= opt$minpoolsize) }
 if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
+if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
 if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
 if(!is.null(opt$maxabs)) { data = subset(data, data[, opt$abs ] <= opt$maxabs) }
 if(!is.null(opt$minabs)) { data = subset(data, data[, opt$abs ] >= opt$minabs) }

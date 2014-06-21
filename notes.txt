@@ -69,3 +69,6 @@ Tracer densité théorique et réelle pour les comparer
 Faire write csv avec R pour obtenir la bonne efficacité, puis la rajouter dans Julia
 
 Essayer winner takes all/ comparer au théorique
+
+Explication phénomène effi > 1 ???!!!
+Plus d'iter n'aident pas trop

@@ -3,7 +3,22 @@
 module Sam
 
 
-#Ignore proba = 0.1
+function rand_combination(n, m)
+	s = Set()
+	for j=n-m+1:n
+		t = rand(1:j-1)
+		if !(t in s)
+			push!(s, t)
+		else
+			push!(s, j)
+		end
+	end
+	res = zeros(Bool, n)
+	for i in s
+		res[i] = 1
+	end
+	res
+end
 
 function alphabet_table(l, activities)
 	table = cell(binomial(l, activities))
@@ -72,7 +87,6 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 		#if length(table) < alphabet_size
 		#	table = alphabet_table(l, activities)
 		#end
-		graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
 		#for j=1:c
 		#	for i=1:m
 		#		#rep = table[messages[i,j]]
@@ -82,9 +96,10 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 
 		#	end
 		#end
-		for i = 1:m
-			for j=1:c
-				sparseMessages[i, (j-1)*l+1:j*l] = shuffle(graine)
+		#graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
+		for j=1:c
+			for i = 1:m
+				sparseMessages[i, (j-1)*l+1:j*l] = rand_combination(l, activities)#shuffle(graine)
 			end
 		end
 		###############" Attention les messages n'ont plus aucun rapport avec les sparseMessages !!!!!!!
@@ -167,8 +182,8 @@ end
 
 # This function is a commodity for interactive purpose.
 function create_both(l, c, m, p_cons = 1.0, degree = 0, activities = 1) # ; useBitArray = false)
-	messages, sparseMessages, l2, alphabet_size = create_messages(l, c, m, activities) #, useBitArray = useBitArray)
-	network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree) #, useBitArray = useBitArray)
+	@time messages, sparseMessages, l2, alphabet_size = create_messages(l, c, m, activities) #, useBitArray = useBitArray)
+	@time network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree) #, useBitArray = useBitArray)
 	return (messages, sparseMessages, network, l2, alphabet_size)
 end
 
@@ -209,7 +224,7 @@ function sum_of_sum!(l, c, network, input, gamma, indexes, degree = 0, activitie
 		else
 			#occ = occurences(prod[(i-1)*l+1:i*l], gamma + (if degree <= 0 c-1 else degree end))
 			#maxi = minvalue_winners(occ, winners)
-			maxi = sort(prod[(i-1)*l+1:i*l], rev = true)[winners]
+			maxi = select(prod[(i-1)*l+1:i*l], winners, rev = true) #[winners]
 		end
 		for j=1:l
 			input[(i-1)*l+j] = prod[(i-1)*l+j] >= maxi	 # using a loop instead of slicing improves performance (a little).
@@ -273,7 +288,7 @@ function estimate_efficiency(l, c, m, alphabet_size, activities = 1)
 		info_alphabet = sum(log2((l-activities+1) : l)) - sum(log2(1:activities))				
 	end
 
-	2m * (c* info_alphabet - log2(m) + 1)/(c*(c-1)*l^2) ##1 == log2(2) == 1, this is where the term comes from (2nd order)
+	2m * (c * info_alphabet - log2(m) + 1)/(c*(c-1)*l^2) ##1 == log2(2) == 1, this is where the term comes from (2nd order)
 end
 
 

@@ -7,7 +7,7 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 10,
+			"pool_size" : 1,
 			"network_params" : {
 				"ugamma" : { 
 					"values" : [1],
@@ -24,7 +24,7 @@
 				"m" : { 
 					"values" : [100, 250, 500],
 					"scan" : true,
-					"range" : [21000, 1000, 30000],
+					"range" : [1000, 1000, 50000],
 					"both" : false
 				},
 				"l" : { 
@@ -40,13 +40,13 @@
 					"both" : false
 				},
 				"iterations" : { 
-					"values" : [1],
+					"values" : [4],
 					"scan" : false,
 					"range" : [1, 1, 5],
 					"both" : false
 				},
 				"winners" : { 
-					"values" : [1]
+					"values" : [0]
 				},
 				"degree" : { 
 					"values" : [0],
