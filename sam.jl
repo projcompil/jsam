@@ -64,7 +64,7 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 		catch
 			println("Overflow, mais on peut continuer.")
 		end
-		messages = rand(1:alphabet_size,m,c)
+		messages = [] #rand(1:alphabet_size,m,c)
 		#const lf = smallest_binomial_arg(l, activities)
 		#table = zeros(Array{Int64}, binomial(lf, activities))
 		println("Taille alphabet choisie (1 veut dire qu'il y a eu overflow): ", alphabet_size)
@@ -273,7 +273,7 @@ function estimate_efficiency(l, c, m, alphabet_size, activities = 1)
 		info_alphabet = sum(log2((l-activities+1) : l)) - sum(log2(1:activities))				
 	end
 
-	2m * (c* info_alphabet - log2(m) + 1/log2(2))/(c*(c-1)*l^2) ## Of course log2(2) == 1, this is just a reminder from where this term comes.
+	2m * (c* info_alphabet - log2(m) + 1)/(c*(c-1)*l^2) ##1 == log2(2) == 1, this is where the term comes from (2nd order)
 end
 
 

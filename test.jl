@@ -3,26 +3,6 @@ require("sam.jl")
 require("parse.jl")
 import JSON: parsefile
 
-#import JSON
-#
-#d = JSON.parsefile(table["name"])
-#
-#
-
-#const table = [ "trials" => 10, "l" => 128, "c"=>8, "m"=>5000, "ugamma"=>1, "erasures"=>4, "iterations"=>4, "tests"=>500, "fsum"=>0]
-#println("0 is for sum_of_sum!, 1 for sum_of_max!")
-#for (key, value) in table
-#	try
-#		table[key] = max(int(input("Enter $key value (default : $value) : ")),0)
-#	catch
-#		#println("Invalid : default value ($value) will be used.")
-#	end
-#end
-#const nargs = length(ARGS)
-#const table = [ 0 => Sam.sum_of_sum!, 1 => Sam.sum_of_max! ]
-#@time enregistre(fileprefix, trials = (nargs > 0) ? int(ARGS[1]) : 10, fsum = (nargs > 1) ? (try table[int(ARGS[2])] catch table[1] end) : table[1], l = 256, m=16500, ugamma = 1, tests= 500)
-
-
 function choisit(d, s)
 	field = d[s]
 	if !haskey(field, "scan") || !field["scan"] || !haskey(field, "range")
@@ -102,7 +82,7 @@ if bconfig
 
 		## On pourrait déclarer tout cela avec de la métaprog :  eval( quote $(convert(Symbol, chaine)) = valeur end) : défaut -> le programme dépend du json mais moins de boulot
 		for (k, v) in network_params
-			eval(quote $(convert(Symbol, string("v", k))) = $v end)
+			eval(quote $(convert(Symbol, string("v", k))) = $(choisit(network_params, k)) end)
 		end
 	#	vl = choisit(network_params, "l")
 	#	vc = choisit(network_params, "c")
