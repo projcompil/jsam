@@ -88,26 +88,33 @@ if bconfig
 	const nexperiments = length(experiments)
 
 	@time for (iexp, experiment) in enumerate(experiments)
-		fparams = experiment["function_params"]
-		netparams = experiment["network_params"]
-		trials =  experiment["trials"]
-		tests = experiment["tests"]
-		pool_size = experiment["pool_size"]
+		for (k, v) in experiment
+			eval(quote $(convert(Symbol, k)) = $v end)
+		end
+		#function_params = experiment["function_params"]
+		#network_params = experiment["network_params"]
+		#trials =  experiment["trials"]
+		#tests = experiment["tests"]
+		#pool_size = experiment["pool_size"]
 
-		vfsum = map(fparams["fsum"]) do x  Sam.dict_rules[x] end
-		vfcorrupt = map(fparams["fcorrupt"]) do x Sam.dict_corrupt[x] end
+		vfsum = map(function_params["fsum"]) do x  Sam.dict_rules[x] end
+		vfcorrupt = map(function_params["fcorrupt"]) do x Sam.dict_corrupt[x] end
 
-		vl = choisit(netparams, "l")
-		vc = choisit(netparams, "c")
-		vm = choisit(netparams, "m")
-		vugamma = choisit(netparams, "gamma")
-		verasures = choisit(netparams, "erasures")
-		viterations = choisit(netparams, "iterations")
-		vp_cons = choisit(netparams, "proba-cons")
-		vp_des = choisit(netparams, "proba-des")
-		vdegree = choisit(netparams, "degree")
-		vactivities = choisit(netparams, "activities")
-		vwinners = choisit(netparams, "winners")
+		## On pourrait déclarer tout cela avec de la métaprog :  eval( quote $(convert(Symbol, chaine)) = valeur end) : défaut -> le programme dépend du json mais moins de boulot
+		for (k, v) in network_params
+			eval(quote $(convert(Symbol, string("v", k))) = $v end)
+		end
+	#	vl = choisit(network_params, "l")
+	#	vc = choisit(network_params, "c")
+	#	vm = choisit(network_params, "m")
+	#	vugamma = choisit(network_params, "gamma")
+	#	verasures = choisit(network_params, "erasures")
+	#	viterations = choisit(network_params, "iterations")
+	#	vp_cons = choisit(network_params, "p_cons")
+	#	vp_des = choisit(network_params, "p_des")
+	#	vdegree = choisit(network_params, "degree")
+	#	vactivities = choisit(network_params, "activities")
+	#	vwinners = choisit(network_params, "winners")
 
 		compteur = 1
 		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdegree, vactivities, vwinners, vfsum, vfcorrupt }))

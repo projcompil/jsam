@@ -364,7 +364,7 @@ const dict_corrupt = [ 0 => erase_clusters!, 1 => corrupt_clusters!, 2 => add_on
 
 
 function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 1.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1)
-	res = mean(pmap( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size]))
+	res = mean(map( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size]))
 	binomial_annoncee = 1
 	try
 		binomial_annoncee =  binomial(l, activities)

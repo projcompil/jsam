@@ -88,7 +88,7 @@ function parse_commandline()
 			   arg_type = Int 
 			   default = 1
 
-			   "--poolsize", "-P"
+			   "--pool_size", "-P"
 			   help = "Number of networks pooled for mean evaluation."
 			   arg_type = Int 
 			   default = 1
