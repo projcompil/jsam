@@ -23,7 +23,6 @@ sum_of_max! pour corriger des erreurs ?
 
  f <- function(a, l, c, e) log2(1-2^(-log2(choose(l, a))/(a*(c - (e+1)/2))))/log2(1 - (a/l)^2)
 
- effi <- function (m, l, a, c) 2 * m * ( c *log2(choose(l, a)) - log2(m) + 1)/(c*(c-1) * l * l)
 
  x = 1:20
 
@@ -77,4 +76,7 @@ forumle théorique trouvée ! :  p <- function(d, l, c, ce, a) 1 - (1-d^(a * (c 
 
  po <- function(m, l, c, ce, a) p(density(m, l, a), l, c, ce, a)
 
+ effi <- function (m, l, a, c) 2 * m * ( c *log2(choose(l, a)) - log2(m) + 1)/(c*(c-1) * l * l)
   density <- function (m, l, a) 1 - (1-(a/l)^2)^m
+  z = data.frame(x = x, eff = effi(x, 512, 2, 4), err = po(x, 512, 4, 1, 2))
+> plot(z$eff, z$err)

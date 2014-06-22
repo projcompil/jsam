@@ -1,0 +1,166 @@
+\documentclass[english,12pt]{article}
+\usepackage[utf8]{inputenc}  
+
+\usepackage[english]{babel} 
+\usepackage[T1]{fontenc}
+%\usepackage{fullpage}
+\usepackage[]{bbm}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+%\usepackage{pstricks}
+\usepackage{float}
+\usepackage[autolanguage]{numprint}
+%\usepackage[squaren,Gray]{SIunits}
+%\usepackage{tikz}
+%
+
+\title{Sparse associative memories}
+\author{L}
+\date{
+	}
+%
+
+\renewcommand{\le}{\leqslant}
+\renewcommand{\epsilon}{\varepsilon}
+\renewcommand{\Re}{\textrm{Re}}
+\renewcommand{\ge}{\geqslant}
+%\newcommand{\sgn}{\textrm{le signe de }}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\V}{\vect{\mathcal{V}}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\z}[1]{\Z/#1\Z}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\U}{\mathbb{U}}
+\newcommand{\f}{\widehat{f}}
+\newcommand{\e}[1]{e^{-2 \pi i #1}}
+\newcommand{\ex}[1]{e^{2 \pi i #1}}
+\renewcommand{\L}[1]{L^{#1} (\R )}
+\newcommand{\leg}[2]{\left(\dfrac{#1}{#2}\right)}
+
+\newcommand{\inte}[1]{\int_\mathbb{R} #1 d\lambda}
+\newcommand{\intex}{\int_\mathbb{R}}
+\newcommand{\dl}{d\lambda}
+\newcommand{\conv}[2]{#1 \ast #2}
+
+\newcommand{\vect}[1]{\overrightarrow{#1}}
+\newcommand{\disp}[1]{\displaystyle{#1}}
+
+\setcounter{secnumdepth}{3} %pour la numérotation subsubsection
+\setcounter{tocdepth}{3} %pour la numérotation dans la table de matières
+\renewcommand{\theenumi}{\roman{enumi})}
+\renewcommand{\thepart}{\Alph{part}}
+%\renewcommand{\thechapter}{\arabic{chapter}}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\alph{subsubsection}}
+
+\newcommand{\fonction}[5]{\begin{array}{cllll}
+#1 & : & #2 & \longrightarrow & #3 \\
+&    & #4 & \longmapsto & #5 \end{array}}
+\newcommand{\fonc}[3]{\begin{array}{lllll}
+#1: & #2 & \mapsto & \displaystyle{#3}\end{array}}
+\newcommand{\app}[3]{
+	#1 : #2 \mapsto \displaystyle{#3}}
+\newcommand{\fonct}[3]{\begin{array}{ccccc}
+#1: & #2 & \longrightarrow & \displaystyle{#3}\end{array}}
+\newcommand{\pent}[1]{\lfloor #1 \rfloor}
+\newcommand{\ent}[2]{
+	%\comp{#3}{\N}{#1\leqslant #3 \leqslant #2}
+	[\![#1\,;\,#2]\!]
+	}
+\newcommand{\entnb}[1]{
+	%\comp{#2}{\N}{#1 \leqslant #2}
+	[\![#1\,;\,+\infty[\![
+	}
+\newcommand{\entr}[2]{
+	%\comp{#3}{\Z}{#1\leqslant #3 \leqslant #2}
+	[\![#1\,;\,#2]\!]
+	}
+\newcommand{\entrnb}[1]{
+	%\comp{#2}{\Z}{#2 \leqslant #1}
+	]\!]-\infty\,;\,#1]\!]
+	}
+	
+% Le point-virgule bien espacé
+\newcommand{\pv}{\ensuremath{\, ; }}
+% Les intervalles
+   % fermé - fermé
+   \newcommand{\interff}[2]{\ensuremath{\left[ #1 \pv #2 \right]}}
+   % fermé - ouvert
+   \newcommand{\interfo}[2]{\ensuremath{\left[ #1 \pv #2 \right[}}
+   % ouvert - fermé
+   \newcommand{\interof}[2]{\ensuremath{\left] #1 \pv #2 \right]}}
+   % ouvert - ouvert
+   \newcommand{\interoo}[2]{\ensuremath{\left] #1 \pv #2 \right[}}
+
+
+\theoremstyle{definition}
+\newtheorem{theoreme}{Theorem}
+\renewcommand{\thetheoreme}{\arabic{section}.\arabic{theoreme}}
+
+
+\newcommand{\comp}[3]{\left\{
+	#1\,;\, #1\in #2 \, /\, #3
+	\right\}}
+\newcommand{\param}[2]{\left\{
+	#1\, /\, #2
+	\right\}}
+
+
+\begin{document}
+
+	\maketitle%
+	%\section*{Introduction}
+	
+	number of neurons per cluster $l$
+	
+	number of clusters $c$
+	
+	number of erased clusters $c_e$
+	
+	number of messages : $m$
+	
+	number of activities per cluster : $a$
+	
+	density : $d$
+
+	edge : $(i, j)$
+	
+	probability for $i$ and $j$ to be active in their respective clusters for one message : $\frac{a}{l}$
+	
+	probability of the edge	not being added in the network for one message : $1 - \left(\frac{a}{l}\right)^2$
+	
+			
+	\[ d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m \]
+	
+	probability for a vertex $v$ to achieve the maximum score, that is to mean $a(c-c_e)$ : $d^	{a(c-c_e)}$
+	
+	probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
+	
+	probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum : $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$
+	
+	probabilities for none of the vertices in any erased cluster, excepting the correct ones, to achieve the maximum in their respective cluster : $\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)}$
+	
+	Whence error rate is : \[P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} \]
+	
+	The analytical result agree with the simulations.
+	
+
+	For one iteration, winner takes all is the same as winners take all.
+	
+	
+	Winners take all better with errors instead of erasures.
+		
+	
+	\nocite{*}
+	%\nocite{*}
+	%\bibliographystyle{alpha-fr} % Le style est mis entre crochets.
+         \bibliography{bibli}
+\end{document}
