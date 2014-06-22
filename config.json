@@ -3,26 +3,26 @@
 		{
 			"function_params" : {
 				"fsum" : [0],
-				"fcorrupt" : [0]
+				"fcorrupt" : [1]
 			},
 			"trials" : 1,
 			"tests" : 1000,
 			"pool_size" : 3,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [2] },
+				"activities" : { "values" : [1, 2] },
 				"m" : { 
 					"values" : [100, 250, 500],
-					"range" : [1000, 1000, 15000]
+					"range" : [1000, 1000, 10000]
 				},
-				"l" : { "values" : [256] },
-				"c" : { "values" : [8] },
+				"l" : { "values" : [512] },
+				"c" : { "values" : [4] },
 				"erasures" : { 
 					"values" : [],
-					"range" : [5, 1, 6]
+					"range" : [1,1,2]
 				},
-				"iterations" : { "values" : [1] },
-				"winners" : { "values" : [0, 1] },
+				"iterations" : { "values" : [1, 4] },
+				"winners" : { "values" : [1] },
 				"degree" : { "values" : [0] },
 				"p_cons" : { "values" : [1.0] },
 				"p_des" : { "values" : [0.0] }

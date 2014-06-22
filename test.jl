@@ -15,7 +15,7 @@ function choisit(d, s)
 		if !haskey(field, "values")
 			res
 		else
-			cat(1, res, field["values"])
+			cat(1, field["values"], res)
 		end
 	end
 end

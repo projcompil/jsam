@@ -39,8 +39,8 @@ x = seq(500, 15000, by = 500)
 
 
 4 x 512 ->>>> théorique +
-winner takes all ? formule trouvée ?
-winners take all -->>
+winner takes all ? formule trouvée ? OK
+winners take all -->> pareil pour une itération avec des effacements
 
 
 sparse -> Ala pour les règles
