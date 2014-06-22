@@ -10,7 +10,7 @@
 			"pool_size" : 3,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [2] },
+				"activities" : { "values" : [1] },
 				"m" : { 
 					"values" : [100, 250, 500],
 					"range" : [1000, 1000, 10000]
@@ -21,7 +21,7 @@
 					"values" : [],
 					"range" : [1,1,2]
 				},
-				"iterations" : { "values" : [4] },
+				"iterations" : { "values" : [1, 4] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
 				"p_cons" : { "values" : [1.0] },
