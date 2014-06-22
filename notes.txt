@@ -72,3 +72,9 @@ Essayer winner takes all/ comparer au théorique
 
 Explication phénomène effi > 1 ???!!!
 Plus d'iter n'aident pas trop
+
+forumle théorique trouvée ! :  p <- function(d, l, c, ce, a) 1 - (1-d^(a * (c - ce)))^(ce * (l-a))
+
+ po <- function(m, l, c, ce, a) p(density(m, l, a), l, c, ce, a)
+
+  density <- function (m, l, a) 1 - (1-(a/l)^2)^m
