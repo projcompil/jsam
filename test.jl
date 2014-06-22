@@ -5,12 +5,14 @@ import JSON: parsefile
 
 function choisit(d, s)
 	field = d[s]
-	if !haskey(field, "scan") || !field["scan"] || !haskey(field, "range")
+	#if !haskey(field, "scan") || !field["scan"] || !haskey(field, "range")
+	if !haskey(field, "range")
 		field["values"]
 	else
 		v = field["range"]
 		res = [ v[1]:v[2]:v[3] ]
-		if !haskey(field, "both") || !field["both"]
+	#	if !haskey(field, "both") || !field["both"]
+		if !haskey(field, "values")
 			res
 		else
 			cat(1, res, field["values"])
@@ -23,7 +25,7 @@ function init_file(fileprefix, dir = "results")
 	#	"#Clique network parameters : fsum=$(fsum), fcorrupt=$(fcorrupt)\n"
 	const suffix = ".csv" #"$(fsum)__$(fcorrupt)"
 	const filename = "$(dir)/$(fileprefix)$suffix"
-	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize\n"
+	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy\n"
 	open(filename, "a") do file
 		write(file, firstline)
 	end

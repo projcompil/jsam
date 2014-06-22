@@ -151,7 +151,7 @@ if(!is.null(opt$step)) {
    qpl <- qpl + scale_x_continuous( breaks = seq(0, max(data[,opt$abs]), by = opt$step))#, labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
 }
 if(!is.null(opt$ordstep)) {
-   qpl <- qpl + scale_y_continuous(breaks = seq(0, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
+   qpl <- qpl + scale_y_continuous(aes(breaks = seq(0.0, 1.0, by = 0.1)))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 qpl <- qpl + labs(title = titre)
 qpl #+stat_smooth()

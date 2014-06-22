@@ -396,7 +396,15 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 		binomial_annoncee =  binomial(l, activities)
 	catch    # Rien à faire.
 	end
-	[ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size ] 
+	efficacy = (1 - res[1]) * res[4]
+	p = erasures/c
+	b = (fcorrupt == erase_clusters!)
+	cap = (if b 
+		(1-p) 
+	else 
+		1 - p * log2(1/p) - (1- p) * log2(1/(1-p)) 
+	end)
+	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap)]
 end
 
 #function set_proba(pr)

@@ -7,65 +7,25 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 1,
+			"pool_size" : 3,
 			"network_params" : {
-				"ugamma" : { 
-					"values" : [1],
-					"scan" : false,
-					"range" : [0, 1, 5],
-					"both" : false
-				},
-				"activities" : { 
-					"values" : [2],
-					"scan" : false,
-					"range" : [1, 2, 10],
-					"both" : false
-				},
+				"ugamma" : { "values" : [0] },
+				"activities" : { "values" : [1] },
 				"m" : { 
 					"values" : [100, 250, 500],
-					"scan" : true,
-					"range" : [1000, 1000, 50000],
-					"both" : false
+					"range" : [5000, 500, 5000]
 				},
-				"l" : { 
-					"values" : [512]
-				},
-				"c" : { 
-					"values" : [4]
-				},
+				"l" : { "values" : [512] },
+				"c" : { "values" : [4] },
 				"erasures" : { 
-					"values" : [12 ,13 , 14],
-					"scan" : true,
-					"range" : [1, 1, 1],
-					"both" : false
+					"values" : [],
+					"range" : [1, 1, 2]
 				},
-				"iterations" : { 
-					"values" : [4],
-					"scan" : false,
-					"range" : [1, 1, 5],
-					"both" : false
-				},
-				"winners" : { 
-					"values" : [0]
-				},
-				"degree" : { 
-					"values" : [0],
-					"scan" : false,
-					"range" : [10, 10, 20],
-					"both" : true
-				},
-				"p_cons" : { 
-					"values" : [1.0],
-					"scan" : false,
-					"range" : [0.0, 0.0, 0.0],
-					"both" : false
-				},
-				"p_des" : { 
-					"values" : [0.0],
-					"scan" : false,
-					"range" : [0.0, 1.0, 0.0],
-					"both" : false
-				}
+				"iterations" : { "values" : [1] },
+				"winners" : { "values" : [0] },
+				"degree" : { "values" : [0] },
+				"p_cons" : { "values" : [1.0] },
+				"p_des" : { "values" : [0.0] }
 			}
 		}
 	]
