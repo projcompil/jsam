@@ -39,9 +39,9 @@ function parse_commandline()
 			   default = 4
 
 			   "--proba-cons", "-p"
-			   help = "Probability of adding connection."
+			   help = "Probability of adding connection or dropping connection after learning."
 			   arg_type = Float64
-			   default = 1.0
+			   default = 0.0
 
 			   "--proba-des"
 			   help = "Probability of dropping connection."

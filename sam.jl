@@ -110,7 +110,7 @@ end
 
 # l, c, m and useBitArray have the same meaning as above
 # messages is an array that represents the messages the output network is storing.
-function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree = 0, activities = 1)# ; useBitArray = false )
+function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree = 0, activities = 1)# ; useBitArray = false )
 	const n = l * c
 	#if !useBitArray
 		network = zeros(Bool,n,n)
@@ -159,6 +159,21 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 1.0, degree 
 		end
 	end
 
+	if p_cons > 0.0
+		for j=1:n
+			for i=1:n
+				if rand(Float64) <= p_cons
+					# Bon opérateur pour faire cette opération sur les booléens et les entiers à la fois ? (Au cas où on changerait le type du réseau.)
+					network[i, j] = (if network[i, j] == 1
+										0
+									else
+										1
+									end)
+				end
+			end
+		end
+	end
+
 	for j=1:c
 		network[(j-1)*l+1:j*l, (j-1)*l+1:j*l] = 0
 	end
@@ -186,7 +201,7 @@ end
 	#end
 
 # This function is a commodity for interactive purpose.
-function create_both(l, c, m, p_cons = 1.0, degree = 0, activities = 1) # ; useBitArray = false)
+function create_both(l, c, m, p_cons = 0.0, degree = 0, activities = 1) # ; useBitArray = false)
 	@time messages, sparseMessages, l2, alphabet_size = create_messages(l, c, m, activities) #, useBitArray = useBitArray)
 	@time network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree, activities) #, useBitArray = useBitArray)
 	return (messages, sparseMessages, network, l2, alphabet_size)
@@ -351,7 +366,7 @@ end
 # fsum is the rule to use in order to recover the message. It modifies "input" in place.
 # returns the error rate of the procedure and the mean of the number of iterations
 # Careful : declare_degree is not the degree per nodes ! The degree will be c-1-declared_degree
-function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 1.0, p_des = 0.0, declared_degree = 0, activities = 1, declared_winners = 1)# ; useBitArray = false)
+function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 0.0, p_des = 0.0, declared_degree = 0, activities = 1, declared_winners = 1)# ; useBitArray = false)
 	const degree = (if declared_degree <= 0 0 else c - 1 - declared_degree end)
 	@time const messages, sparseMessages, network, l_t, alphabet_size = create_both(l_init, c, m, p_cons, degree, activities)#, useBitArray = useBitArray)
 	const l = l_t
@@ -383,7 +398,7 @@ const dict_rules = [ 0 => sum_of_sum!, 1 => sum_of_max!, 2 => mix_of_rules! ]
 const dict_corrupt = [ 0 => erase_clusters!, 1 => corrupt_clusters!, 2 => add_one_in_clusters!, 3 => add_some_in_clusters! ]
 
 
-function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 1.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1)
+function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 0.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1)
 	#res = mean(map( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size])) ### Pas efficace, pourquoi ?
 	res = zeros(4)
 	for i=1:pool_size 
@@ -404,7 +419,9 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	else 
 		1 - p * log2(1/p) - (1- p) * log2(1/(1-p)) 
 	end)
-	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap)]
+	proportion = m * res[1]
+	eta = ( 1 - res[4] ) * proportion
+	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta]
 end
 
 #function set_proba(pr)

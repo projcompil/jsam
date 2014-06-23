@@ -1,4 +1,4 @@
-errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy
+errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy,retrievedproportion
 0,1,.015148798624674479,512,4,1000,1,1,1,1000,.03752577059369939,sum_of_sum!,erase_clusters!,1,0,0,2,130816,0,3,.03752577059369939,.05003436079159918
 0,1,.015146043565538196,512,4,1000,1,1,4,1000,.03752577059369939,sum_of_sum!,erase_clusters!,1,0,0,2,130816,0,3,.03752577059369939,.05003436079159918
 .0006666666666666673,1,.015143288506401911,512,4,1000,1,2,1,1000,.03752577059369939,sum_of_sum!,erase_clusters!,1,0,0,2,130816,0,3,.03750075341330359,.07500150682660718

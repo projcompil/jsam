@@ -25,14 +25,14 @@ function init_file(fileprefix, dir = "results")
 	#	"#Clique network parameters : fsum=$(fsum), fcorrupt=$(fcorrupt)\n"
 	const suffix = ".csv" #"$(fsum)__$(fcorrupt)"
 	const filename = "$(dir)/$(fileprefix)$suffix"
-	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy\n"
+	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy,retrievedproportion,eta\n"
 	open(filename, "a") do file
 		write(file, firstline)
 	end
 	return filename
 end
 
-function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 1.0, p_des = 0.0, degree = degree, activities = 1, winners = 1, pool_size = 1)
+function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 0.0, p_des = 0.0, degree = degree, activities = 1, winners = 1, pool_size = 1)
 	for i=1:trials
 		@time res = Sam.output_test(l, c, m, ugamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, pool_size)
 		if !nowrite
