@@ -423,7 +423,9 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	proportion = m * pretrieved
 	eta = res[4] * pretrieved # efficiency times proportion # m already in res[4] == eff
 	aeta = res[5] * pretrieved
-	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta aeta ]
+	peta = eta * c / (c - erasures)
+	paeta = aeta * c / (c - erasures)
+	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta]
 end
 
 #function set_proba(pr)

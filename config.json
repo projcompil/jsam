@@ -10,13 +10,13 @@
 			"pool_size" : 1,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [1] },
+				"activities" : { "values" : [1, 2] },
 				"m" : { 
 					"cvalues" : [11500, 11750, 15000, 17000],
-					"range" : [26000, 1000, 35000]
+					"range" : [5000, 1000, 25000]
 				},
-				"l" : { "values" : [256] },
-				"c" : { "values" : [8] },
+				"l" : { "values" : [512] },
+				"c" : { "values" : [4] },
 				"erasures" : { 
 					"values" : [],
 					"range" : [1,1,3]
