@@ -421,7 +421,7 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 		1 - p * log2(1/p) - (1- p) * log2(1/(1-p)) 
 	end)
 	proportion = m * pretrieved
-	eta = res[4] * proportion # efficiency times proportion
+	eta = res[4] * pretrieved # efficiency times proportion # m already in res[4] == eff
 	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta]
 end
 

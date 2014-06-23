@@ -7,13 +7,13 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 3,
+			"pool_size" : 1,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
 				"activities" : { "values" : [1, 2] },
 				"m" : { 
-					"values" : [100, 250, 500],
-					"range" : [1000, 2000, 20000]
+					"cvalues" : [100, 250, 500],
+					"range" : [5000, 2000, 20000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
@@ -21,7 +21,7 @@
 					"values" : [],
 					"range" : [1,1,2]
 				},
-				"iterations" : { "values" : [1, 4] },
+				"iterations" : { "values" : [1] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
 				"p_cons" : { "values" : [0.0], "range": [0.01, 0.01, 0.03 ]},
