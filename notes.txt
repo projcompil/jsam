@@ -85,3 +85,8 @@ forumle théorique trouvée ! :  p <- function(d, l, c, ce, a) 1 - (1-d^(a * (c 
 
  ./astat.r -f results/clique_results.csv  --color activities  --shape maxiterations  -c 8 -z erase_clusters! --ord ipeta --abs pcons --abs m  --lines -e 4 --shape pcons -a 3 -I 4 
 
+Ajouter possibilité tracé théorique
+
+Faire théorie "unreliable---"
+
+iaeta et ieta ?
