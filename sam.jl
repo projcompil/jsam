@@ -308,7 +308,7 @@ function estimate_efficiency(l, c, m, alphabet_size, activities = 1)
 		info_alphabet = sum(log2((l-activities+1) : l)) - sum(log2(1:activities))				
 	end
 
-	2m * (c * info_alphabet - log2(m) + 1)/(c*(c-1)*l^2) ##1 == log2(2) == 1, this is where the term comes from (2nd order)
+	2m * (c * info_alphabet - log2(m) + 1)/(c*(c-1)*l^2),  2m * c * info_alphabet / (c*(c-1)*l^2) ##1 == log2(2) == 1, this is where the term comes from (2nd order)
 end
 
 
@@ -375,7 +375,7 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 	println("Messages created and translated.")
 	dens = density(l, c, network)
 	println("Learning done.\nThe density of the network is : $(dens).")
-	eff = estimate_efficiency(l, c, m, alphabet_size, activities)
+	eff, aeff = estimate_efficiency(l, c, m, alphabet_size, activities)
 	println("Approximate efficiency : $eff")
 	const erasedNeuron = (if fsum == sum_of_max! 1 else 0 end)
 	# Computing the number of successful corrections in tests simulations and the total number of iterations (in parallel)
@@ -391,7 +391,7 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 	errorRate = 1 - score[1]/tests
 	meanIter = score[2]/tests
 	println("\nError rate is : $errorRate\nMean number of iterations : $meanIter\n")
-	return [ errorRate, meanIter, dens, eff ]
+	return [ errorRate, meanIter, dens, eff, aeff ]
 end
 
 const dict_rules = [ 0 => sum_of_sum!, 1 => sum_of_max!, 2 => mix_of_rules! ]
@@ -422,7 +422,8 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	end)
 	proportion = m * pretrieved
 	eta = res[4] * pretrieved # efficiency times proportion # m already in res[4] == eff
-	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta]
+	aeta = res[5] * pretrieved
+	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta aeta ]
 end
 
 #function set_proba(pr)

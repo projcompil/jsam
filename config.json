@@ -12,19 +12,19 @@
 				"ugamma" : { "values" : [1] },
 				"activities" : { "values" : [1, 2] },
 				"m" : { 
-					"cvalues" : [100, 250, 500],
-					"range" : [5000, 2000, 20000]
+					"values" : [25000],
+					"range" : [10000, 2000, 21000]
 				},
-				"l" : { "values" : [512] },
-				"c" : { "values" : [4] },
+				"l" : { "values" : [256] },
+				"c" : { "values" : [8] },
 				"erasures" : { 
 					"values" : [],
-					"range" : [1,1,2]
+					"range" : [4,1,4]
 				},
-				"iterations" : { "values" : [1] },
+				"iterations" : { "values" : [1, 4] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [0.0], "range": [0.01, 0.01, 0.03 ]},
+				"p_cons" : { "values" : [0.0], "range": [0.01, 0.01, 0.05 ]},
 				"p_des" : { "values" : [0.0] }
 			}
 		}

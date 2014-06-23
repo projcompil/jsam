@@ -37,6 +37,7 @@ spec = matrix(c(
 'ordstep', NA, 2, "double",
 'maxefficiency', 'E', 2, "double",
 'maxactivities', 'A', 2, "double",
+'pcons', 'p', 2, "double",
 'maxabs', NA, 2, "double",
 'maxord', NA, 2, "double",
 'minabs', NA, 2, "double",
@@ -74,6 +75,7 @@ if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
 if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
 if(!is.null(opt$poolsize)) { data = subset(data, poolsize == opt$poolsize) }
+if(!is.null(opt$pcons)) { data = subset(data, pcons == opt$pcons) }
 if(!is.null(opt$minpoolsize)) { data = subset(data, poolsize >= opt$minpoolsize) }
 if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
 if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
