@@ -7,7 +7,7 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 1,
+			"pool_size" : 3,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
 				"activities" : { "values" : [1, 2] },
@@ -24,7 +24,7 @@
 				"iterations" : { "values" : [1, 4] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [0.0], "range": [0.01, 0.01, 0.06 },
+				"p_cons" : { "values" : [0.0], "range": [0.01, 0.01, 0.03 ]},
 				"p_des" : { "values" : [0.0] }
 			}
 		}
