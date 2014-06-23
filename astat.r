@@ -42,6 +42,7 @@ spec = matrix(c(
 'maxord', NA, 2, "double",
 'minabs', NA, 2, "double",
 'minord', NA, 2, "double",
+'onlymax', 'O', 2, "logical",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
 opt = getopt(spec);
@@ -111,6 +112,20 @@ if (is.null(opt$title)) {
 }
 print(titre)
 X11()
+
+
+booleen <- is.null(c(opt$color, opt$size, opt$shape))
+if (!booleen) {
+	data$grp <- paste(data[,opt$color], data[,opt$size], data[,opt$shape])
+}
+
+if(!is.null(opt$onlymax)) {
+	data$sgrp <- paste(data$grp, data[,opt$abs])
+	sel <- ave(data[,opt$ord], data$sgrp, FUN=max) == data[,opt$ord]
+	data <- data[sel,]
+}
+
+
 #if(is.null(opt$lines)) {
 #	opt$lines <- TRUE 
 #} #else { ligne = "o" }
@@ -132,10 +147,6 @@ if(!is.null(opt$shape)) { qpl <- qpl + geom_point(aes(shape = factor(data[,opt$s
 if(!is.null(opt$box)) { qpl <- qpl + geom_boxplot(aes(fill = factor(data[,opt$abs]))) }
 
 
-booleen <- is.null(c(opt$color, opt$size, opt$shape))
-if (!booleen) {
-	data$grp <- paste(data[,opt$color], data[,opt$size], data[,opt$shape])
-}
 if(!is.null(opt$lines)) {
 	if (!booleen) {
 	qpl <- qpl + geom_line(aes(group = factor(data$grp)))
@@ -156,7 +167,7 @@ if(!is.null(opt$ordstep)) {
    qpl <- qpl + scale_y_continuous(aes(breaks = seq(0.0, 1.0, by = 0.1)))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 qpl <- qpl + labs(title = titre)
-qpl #+stat_smooth()
+qpl #+ geom_bar()#+stat_smooth()
 #title(titre)
 temp <- data.frame(y = data[,1], x = data[,8])
 # fit non-linear model

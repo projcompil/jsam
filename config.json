@@ -10,10 +10,10 @@
 			"pool_size" : 1,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [1, 2] },
+				"activities" : { "values" : [1,2] },
 				"m" : { 
 					"cvalues" : [11500, 11750, 15000, 17000],
-					"range" : [1000, 2000, 25000]
+					"range" : [2000, 1000, 15000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
@@ -24,7 +24,7 @@
 				"iterations" : { "values" : [1,4] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [], "range": [0.01, 0.01, 0.04 ]},
+				"p_cons" : { "cvalues" : [0.0], "range": [0.04, 0.01, 0.08 ]},
 				"p_des" : { "values" : [0.0] }
 			}
 		}
