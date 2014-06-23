@@ -75,8 +75,10 @@ if bconfig
 
 	@time for (iexp, experiment) in enumerate(experiments)
 		for (k, v) in experiment
+			@eval  $(convert(Symbol, k)) = $v 
+			
 			#eval(quote $(convert(Symbol, k)) = $v end)
-			@assigne k v
+			#@assigne k v
 		end
 		#function_params = experiment["function_params"]
 		#network_params = experiment["network_params"]
@@ -89,8 +91,10 @@ if bconfig
 
 		## On pourrait déclarer tout cela avec de la métaprog :  eval( quote $(convert(Symbol, chaine)) = valeur end) : défaut -> le programme dépend du json mais moins de boulot
 		for (k, v) in network_params
+			@eval  $(convert(Symbol, string("v", k))) = $(choisit(network_params, k))
+
 			#eval(quote $(convert(Symbol, string("v", k))) = $(choisit(network_params, k)) end)
-			@assigne string("v", k) choisit(network_params, k)
+			#@assigne string("v", k) choisit(network_params, k)
 		end
 	#	vl = choisit(network_params, "l")
 	#	vc = choisit(network_params, "c")
