@@ -20,6 +20,10 @@ function choisit(d, s)
 	end
 end
 
+macro assigne(s, v)
+	esc(:($(convert(Symbol, s)) = $v))
+end
+
 function init_file(fileprefix, dir = "results")
 	#i = hash((l, c, erasures, m, tests, "$fsum", ugamma))
 	#	"#Clique network parameters : fsum=$(fsum), fcorrupt=$(fcorrupt)\n"
@@ -71,7 +75,8 @@ if bconfig
 
 	@time for (iexp, experiment) in enumerate(experiments)
 		for (k, v) in experiment
-			eval(quote $(convert(Symbol, k)) = $v end)
+			#eval(quote $(convert(Symbol, k)) = $v end)
+			@assigne k v
 		end
 		#function_params = experiment["function_params"]
 		#network_params = experiment["network_params"]
@@ -84,7 +89,8 @@ if bconfig
 
 		## On pourrait déclarer tout cela avec de la métaprog :  eval( quote $(convert(Symbol, chaine)) = valeur end) : défaut -> le programme dépend du json mais moins de boulot
 		for (k, v) in network_params
-			eval(quote $(convert(Symbol, string("v", k))) = $(choisit(network_params, k)) end)
+			#eval(quote $(convert(Symbol, string("v", k))) = $(choisit(network_params, k)) end)
+			@assigne string("v", k) choisit(network_params, k)
 		end
 	#	vl = choisit(network_params, "l")
 	#	vc = choisit(network_params, "c")

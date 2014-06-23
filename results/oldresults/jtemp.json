@@ -1,0 +1,69 @@
+{
+	"experiments" : [
+		{
+			"function_params" : {
+				"fsum" : [0],
+				"fcorrupt" : [0]
+			},
+			"trials" : 1,
+			"tests" : 1000,
+			"pool_size" : 20,
+			"network_params" : {
+				"ugamma" : { 
+					"values" : [0],
+					"scan" : false,
+					"range" : [0, 1, 5],
+					"both" : false
+				},
+				"activities" : { 
+					"values" : [1]
+				},
+				"m" : { 
+					"values" : [100, 250, 500],
+					"scan" : true,
+					"range" : [5000, 500, 5000],
+					"both" : false
+				},
+				"l" : { 
+					"values" : [128]
+				},
+				"c" : { 
+					"values" : [8]
+				},
+				"erasures" : { 
+					"values" : [],
+					"scan" : true,
+					"range" : [0, 1, 8],
+					"both" : false
+				},
+				"iterations" : { 
+					"values" : [1,4],
+					"scan" : false,
+					"range" : [1, 1, 5],
+					"both" : false
+				},
+				"winners" : { 
+					"values" : [1]
+				},
+				"degree" : { 
+					"values" : [0],
+					"scan" : false,
+					"range" : [10, 10, 20],
+					"both" : true
+				},
+				"p_cons" : { 
+					"values" : [1.0],
+					"scan" : false,
+					"range" : [0.0, 0.0, 0.0],
+					"both" : false
+				},
+				"p_des" : { 
+					"values" : [0.0],
+					"scan" : false,
+					"range" : [0.0, 1.0, 0.0],
+					"both" : false
+				}
+			}
+		}
+	]
+}
