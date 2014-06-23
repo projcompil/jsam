@@ -411,7 +411,8 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 		binomial_annoncee =  binomial(l, activities)
 	catch    # Rien à faire.
 	end
-	efficacy = (1 - res[1]) * res[4]
+	pretrieved = 1 - res[1]
+	efficacy = pretrieved * res[4]
 	p = erasures/c
 	b = (fcorrupt == erase_clusters!)
 	cap = (if b 
@@ -419,8 +420,8 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	else 
 		1 - p * log2(1/p) - (1- p) * log2(1/(1-p)) 
 	end)
-	proportion = m * res[1]
-	eta = ( 1 - res[4] ) * proportion
+	proportion = m * pretrieved
+	eta = res[4] * proportion # efficiency times proportion
 	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta]
 end
 
