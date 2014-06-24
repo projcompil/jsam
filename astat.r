@@ -4,6 +4,7 @@ library(getopt)
 library(ggplot2)
 library(scales)
 
+library(plyr)
 
 spec = matrix(c(
 'file', 'f', 1, "character",
@@ -184,7 +185,22 @@ p <- function(d, l, c, ce, a) 1 - (1- d^(a * (c - ce)))^(ce * (l - a))
 po <- function(m, l, c, ce, a) p(dens(m, l, a), l, c, ce, a)
 
 if (!is.null(opt$thm)) {
-	qpl <- qpl + stat_function(fun = function(x) po(x, unique(data$l), unique(data$c), unique(data$erasures), unique(data$activities)))
+	#coefs <- data.frame(l = unique(data$l), c = unique(data$c), erasures = unique(data$erasures), activities = unique(data$activities))
+	#coeflines <- alply(as.matrix(coefs), 1, function(coef) { stat_function(fun=function(x){ po(x, l, c, erasures, 1)}) })
+	#qpl <- qpl + coeflines
+	for (l in unique(data$l)) {
+		for (c in unique(data$c)) {
+			for (erasures in unique(data$erasures)) {
+				for (activities in unique(data$activities)) {
+					print(activities)
+					qpl <- qpl + stat_function(fun = function(x) po(x, l, c, erasures, activities), color = "red")
+					#qpl
+					#message("Press Return To Continue")
+					#invisible(readLines("stdin", n=1))
+				}
+			}
+		}
+	}
 }
 
 qpl #+ geom_bar()#+stat_smooth()

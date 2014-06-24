@@ -13,13 +13,13 @@
 				"activities" : { "values" : [1, 2, 3] },
 				"m" : { 
 					"cvalues" : [11500, 11750, 15000, 17000],
-					"range" : [9000, 1000, 20000]
+					"range" : [21000, 1000, 40000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
 				"erasures" : { 
 					"cvalues" : [4],
-					"range" : [1, 1, 2]
+					"range" : [1, 1, 1]
 				},
 				"iterations" : { "values" : [1] },
 				"winners" : { "values" : [0] },
