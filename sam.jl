@@ -406,9 +406,9 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	end
 	res /= pool_size
 
-	binomial_annoncee = 1
+	alphabet_size = 1
 	try
-		binomial_annoncee =  binomial(l, activities)
+		alphabet_size =  binomial(l, activities)
 	catch    # Rien à faire.
 	end
 	info_alphabet = res[6]
@@ -419,16 +419,18 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	cap = (if b 
 		(1-p) 
 	else 
-		1 - p * log2(1/p) - (1- p) * log2(1/(1-p)) 
+		info_alphabet - p * (1 - 1/alphabet_size) * log2(alphabet_size/p) - (p/alphabet_size + (1- p)) * log2(1/(p/alphabet_size + (1-p))) 
 	end)
 	proportion = m * pretrieved
 	eta = res[4] * pretrieved # efficiency times proportion # m already in res[4] == eff
 	aeta = res[5] * pretrieved
-	peta = eta * c / (c - erasures)
+	peta = eta / cap
+	paeta = aeta / cap
+	ieta = eta / info_alphabet
+	iaeta = aeta / info_alphabet
 	ipeta = peta / info_alphabet
-	paeta = aeta * c / (c - erasures)
 	ipaeta = paeta / info_alphabet
-	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities binomial_annoncee winners pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta]
+	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size winners pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet ]
 end
 
 #function set_proba(pr)
