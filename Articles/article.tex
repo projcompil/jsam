@@ -17,7 +17,7 @@
 %\usepackage{tikz}
 %
 
-\title{Sparse associative memories}
+\title{Storing messages with neural multipartite cliques}
 \author{L}
 \date{
 	}
@@ -66,23 +66,7 @@
 \newcommand{\fonct}[3]{\begin{array}{ccccc}
 #1: & #2 & \longrightarrow & \displaystyle{#3}\end{array}}
 \newcommand{\pent}[1]{\lfloor #1 \rfloor}
-\newcommand{\ent}[2]{
-	%\comp{#3}{\N}{#1\leqslant #3 \leqslant #2}
-	[\![#1\,;\,#2]\!]
-	}
-\newcommand{\entnb}[1]{
-	%\comp{#2}{\N}{#1 \leqslant #2}
-	[\![#1\,;\,+\infty[\![
-	}
-\newcommand{\entr}[2]{
-	%\comp{#3}{\Z}{#1\leqslant #3 \leqslant #2}
-	[\![#1\,;\,#2]\!]
-	}
-\newcommand{\entrnb}[1]{
-	%\comp{#2}{\Z}{#2 \leqslant #1}
-	]\!]-\infty\,;\,#1]\!]
-	}
-	
+
 % Le point-virgule bien espacé
 \newcommand{\pv}{\ensuremath{\, ; }}
 % Les intervalles
@@ -167,8 +151,20 @@
 	
 	Marche un petit peu, mais pas forcément significatif : à tester plus en détail.
 	
+	Marche mieux pour des bruits importants
+	
+	$P(n_{v_c} = n_0) = {a c_k \choose n_0} (1-\psi)^{n_0} \psi ^ { a c_k - n_0 }$
+	
+	$P_+ = \psi (1 - d) + (1 - \psi) d$
+	
+	$P(n_v = x) = {a c_k \choose x} P_+^x (1-P_+)^{a c_k -x }$
+
+	\[P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \]	
+	
+	\[P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}\]
+	
+	Sans tenir compte du choix au hasard si plus sont activés.
 	\nocite{*}
-	%\nocite{*}
-	%\bibliographystyle{alpha-fr} % Le style est mis entre crochets.
-         \bibliography{bibli}
+	\bibliographystyle{plain} % Le style est mis entre crochets.
+         \bibliography{bibli.bib}
 \end{document}
