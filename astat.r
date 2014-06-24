@@ -46,6 +46,7 @@ spec = matrix(c(
 'minabs', NA, 2, "double",
 'minord', NA, 2, "double",
 'onlymax', 'O', 2, "logical",
+'fcolor', NA, 2, "logical",
 'thm', 'T', 2, "logical",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
@@ -136,7 +137,13 @@ if(!is.null(opt$onlymax)) {
 #} #else { ligne = "o" }
 if(!is.null(opt$color)) {
 
-qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "", color = data[,opt$color]) + labs(colour = opt$color)# + guides(fill = guide_colourbar(title=opt$color))#+ scale_colour_continuous(name=opt$color) #, size = data[,opt$size])#opt$color) # col="blue")
+if (!is.null(opt$fcolor)) {
+	cdata = factor(data[, opt$color])
+} else {
+	cdata <- data[,opt$color]
+}
+
+qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "", color = cdata) + labs(colour = opt$color)# + guides(fill = guide_colourbar(title=opt$color))#+ scale_colour_continuous(name=opt$color) #, size = data[,opt$size])#opt$color) # col="blue")
 } else {qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "")  }
 
 
