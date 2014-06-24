@@ -15,6 +15,8 @@ spec = matrix(c(
 'box', NA, 2, "character",
 'fsum', 's', 2, "character",
 'fcorrupt', 'z', 2, "character",
+'xlab', 'x', 2, "character",
+'ylab', 'y', 2, "character",
 'title', NA, 2, "character",
 'abs', NA, 2, "character",
 'ord', NA, 2, "character",
@@ -182,6 +184,13 @@ if(!is.null(opt$step)) {
 if(!is.null(opt$ordstep)) {
    qpl <- qpl + scale_y_continuous(aes(breaks = seq(0.0, 1.0, by = 0.1)))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
+if(!is.null(opt$xlab)) {
+	qpl <- qpl + xlab(opt$xlab)
+}
+if(!is.null(opt$ylab)) {
+	qpl <- qpl + ylab(opt$ylab)
+}
+
 qpl <- qpl + labs(title = titre)
 
 
@@ -200,7 +209,7 @@ if (!is.null(opt$thm)) {
 			for (erasures in unique(data$erasures)) {
 				for (activities in unique(data$activities)) {
 					print(activities)
-					qpl <- qpl + stat_function(fun = function(x) po(x, l, c, erasures, activities), color = "red")
+					qpl <- qpl + stat_function(fun = function(x) po(x, l, c, erasures, activities), color = "black")
 					#qpl
 					#message("Press Return To Continue")
 					#invisible(readLines("stdin", n=1))
