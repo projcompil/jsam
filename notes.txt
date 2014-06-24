@@ -90,3 +90,5 @@ Ajouter possibilité tracé théorique
 Faire théorie "unreliable---"
 
 iaeta et ieta ?
+
+scale_linetype

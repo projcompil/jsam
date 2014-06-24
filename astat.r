@@ -10,6 +10,7 @@ spec = matrix(c(
 'color', NA, 2, "character",
 'shape', NA, 2, "character",
 'size', NA, 2, "character",
+'lt', 'L', 2, "character",
 'box', NA, 2, "character",
 'fsum', 's', 2, "character",
 'fcorrupt', 'z', 2, "character",
@@ -44,6 +45,7 @@ spec = matrix(c(
 'minabs', NA, 2, "double",
 'minord', NA, 2, "double",
 'onlymax', 'O', 2, "logical",
+'thm', 'T', 2, "logical",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
 opt = getopt(spec);
@@ -118,7 +120,7 @@ X11()
 
 booleen <- is.null(c(opt$color, opt$size, opt$shape))
 if (!booleen) {
-	data$grp <- paste(data[,opt$color], data[,opt$size], data[,opt$shape])
+	data$grp <- paste(data[,opt$color], data[,opt$size], data[,opt$shape], data[,opt$lt])
 }
 
 if(!is.null(opt$onlymax)) {
@@ -151,7 +153,7 @@ if(!is.null(opt$box)) { qpl <- qpl + geom_boxplot(aes(fill = factor(data[,opt$ab
 
 if(!is.null(opt$lines)) {
 	if (!booleen) {
-	qpl <- qpl + geom_line(aes(group = factor(data$grp)))
+	qpl <- qpl + geom_line(aes(group = factor(data$grp)), linetype="dashed")
 #	if(!is.null(opt$color)) {
 #		qpl <- qpl + geom_line(aes(group = factor(data[,opt$color])))
 #	} else if(!is.null(opt$size)) {
@@ -162,6 +164,10 @@ if(!is.null(opt$lines)) {
 		qpl <- qpl + geom_line()
 	}
 }
+
+if(!is.null(opt$lt)) {
+	qpl <- qpl + scale_linetype(breaks = (data[,opt$lt]))
+}
 if(!is.null(opt$step)) {
    qpl <- qpl + scale_x_continuous( breaks = seq(0, max(data[,opt$abs]), by = opt$step))#, labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
 }
@@ -169,6 +175,18 @@ if(!is.null(opt$ordstep)) {
    qpl <- qpl + scale_y_continuous(aes(breaks = seq(0.0, 1.0, by = 0.1)))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 qpl <- qpl + labs(title = titre)
+
+
+dens <- function (m, l, a) 1 - (1-(a/l)^2)^m
+
+p <- function(d, l, c, ce, a) 1 - (1- d^(a * (c - ce)))^(ce * (l - a))
+
+po <- function(m, l, c, ce, a) p(dens(m, l, a), l, c, ce, a)
+
+if (!is.null(opt$thm)) {
+	qpl <- qpl + stat_function(fun = function(x) po(x, unique(data$l), unique(data$c), unique(data$erasures), unique(data$activities)))
+}
+
 qpl #+ geom_bar()#+stat_smooth()
 #title(titre)
 temp <- data.frame(y = data[,1], x = data[,8])
