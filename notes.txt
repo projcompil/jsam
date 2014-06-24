@@ -92,3 +92,18 @@ Faire théorie "unreliable---"
 iaeta et ieta ?
 
 scale_linetype
+
+
+pvc <- function(x, d, c, ce, a) choose(a * ce, x) * d^x * (1-d)^(a * ce - x)
+pv <- function(x, d, c, a) choose(a * c, x) * d^x * (1-d)^(a * c - x)
+
+pvcsupn <- sum(pvc((n- a*(c-ce-1)):(a*(c-1)), d, c, ce, a)
+
+
+pvinfn <- function(n, d, c, ce, l, a) sum(pv(0:(n-1), d, c, a))^(l-a)
+
+ppartiel  <- function(n, d, c, ce, l, a) a * ( pnvcsupn(n,d,c,ce,l,a) )^(a-1) * pvc(n - a*(c-ce-1), d, c, ce, a) * pvinfn(n,d,c,ce,l,a)
+
+
+ptotal <- function(m, c, ce, l, a) { d = density(m, l, a) ;  sum(ppartiel( (a * (c - ce -1)):(a * (c-1)), d, c, ce, l, a)) }
+

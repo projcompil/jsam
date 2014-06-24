@@ -50,6 +50,7 @@ spec = matrix(c(
 'onlymax', 'O', 2, "logical",
 'fcolor', NA, 2, "logical",
 'thm', 'T', 2, "logical",
+'thd', NA, 2, "logical",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
 opt = getopt(spec);
@@ -214,6 +215,18 @@ if (!is.null(opt$thm)) {
 					#message("Press Return To Continue")
 					#invisible(readLines("stdin", n=1))
 				}
+			}
+		}
+	}
+}
+if (!is.null(opt$thd)) {
+	#coefs <- data.frame(l = unique(data$l), c = unique(data$c), erasures = unique(data$erasures), activities = unique(data$activities))
+	#coeflines <- alply(as.matrix(coefs), 1, function(coef) { stat_function(fun=function(x){ po(x, l, c, erasures, 1)}) })
+	#qpl <- qpl + coeflines
+	for (l in unique(data$l)) {
+		for (c in unique(data$c)) {
+			for (activities in unique(data$activities)) {
+				qpl <- qpl + stat_function(fun = function(x) dens(x, l, activities), color = "black")
 			}
 		}
 	}
