@@ -31,6 +31,7 @@ spec = matrix(c(
 'minpoolsize' , NA, 2, "integer",
 'minwinners' , NA, 2, "integer",
 'minpcons' , NA, 2, "double",
+'maxpcons' , NA, 2, "double",
 'gamma' , 'g', 2, "integer",
 'iterations' , 'i', 2, "integer",
 'maxiterations' , 'I', 2, "integer",
@@ -87,6 +88,7 @@ if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
 if(!is.null(opt$poolsize)) { data = subset(data, poolsize == opt$poolsize) }
 if(!is.null(opt$pcons)) { data = subset(data, pcons == opt$pcons) }
 if(!is.null(opt$minpcons)) { data = subset(data, pcons >= opt$minpcons) }
+if(!is.null(opt$maxpcons)) { data = subset(data, pcons <= opt$maxpcons) }
 if(!is.null(opt$minpoolsize)) { data = subset(data, poolsize >= opt$minpoolsize) }
 if(!is.null(opt$minwinners)) { data = subset(data, winners >= opt$minwinners) }
 if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
