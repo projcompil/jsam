@@ -7,24 +7,24 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 1,
+			"pool_size" : 5,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [4] },
+				"activities" : { "values" : [2] },
 				"m" : { 
 					"cvalues" : [11500, 11750, 15000, 17000],
-					"range" : [500, 500, 8000]
+					"range" : [1000, 1000, 30000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
 				"erasures" : { 
 					"values" : [2],
-					"crange" : [3, 1 , 3]
+					"crange" : [3,1,3]
 				},
-				"iterations" : { "values" : [1, 4] },
-				"winners" : { "values" : [0] },
+				"iterations" : { "values" : [1] },
+				"winners" : { "values" : [1] },
 				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [], "range": [0.01, 0.01, 0.08 ]},
+				"p_cons" : { "values" : [0.0], "crange": [0.01, 0.01, 0.08 ]},
 				"p_des" : { "values" : [0.0] }
 			}
 		}

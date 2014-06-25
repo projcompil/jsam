@@ -1,4 +1,4 @@
-\documentclass[english,12pt]{article}
+\documentclass[english,11pt,twocolumn]{article}
 \usepackage[utf8]{inputenc}  
 
 \usepackage[english]{babel} 
@@ -17,9 +17,11 @@
 %\usepackage{tikz}
 %
 %\usepackage[style=numeric,backend=bibtex]{biblatex}
+\pagestyle{myheadings}
 
-\title{Storing messages with neural multipartite cliques}
-\author{L}
+
+\title{Storing messages with multipartite neural cliques}
+\author{???}
 \date{
 	}
 %
@@ -84,7 +86,7 @@
 \theoremstyle{definition}
 \newtheorem{theoreme}{Theorem}
 \renewcommand{\thetheoreme}{\arabic{section}.\arabic{theoreme}}
-
+\providecommand{\keywords}[1]{\textbf{Index terms---} #1}
 
 \newcommand{\comp}[3]{\left\{
 	#1\,;\, #1\in #2 \, /\, #3
@@ -96,8 +98,38 @@
 
 \begin{document}
 
-	\maketitle%
-	%\section*{Introduction}
+	\maketitle
+
+	 \begin{abstract}
+	 ???
+	 \end{abstract}
+	 
+	\keywords{associative memory, error correcting code}
+	
+	\section{Introduction}
+	
+	\section{Networks of neural cliques}
+		
+	\subsection{Learning messages}
+	
+		\subsection{Retrieving messages}	
+	
+		\subsubsection{The "winner takes all" rule}	
+	
+		\subsubsection{The "$a$ winners take all" rule}
+		
+		less biologically plausible rule
+		
+		same algorithmic complexity
+	
+
+	\section{Retrieval performance}	
+	
+
+		\subsection{Analytical results}		
+		
+		
+		
 	
 	number of neurons per cluster $l$
 	
@@ -132,7 +164,7 @@
 	
 	Whence error rate is : \[P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} \]
 	
-	The simulations agree with the analytical result.
+	The simulations agree with the analytical results for density and error rate.
 	
 
 	For one iteration (for erasures, not for errors), winner takes all is the same as $a$-winners take all.
@@ -144,14 +176,26 @@
 	
 	For errors : only better than only 1 activity per cluster if multiple iterations of the $a$-winners take all rule.
 	For one iteration, it is less efficient.
+	
+	\subsection{Simulations}
+		Improves the retrieval rate for multiple iterations and/or corrupted messages.
+	\begin{figure}
+		\includegraphics[width=8.5cm]{densiteexemple.pdf}
+		\caption{Theoretical and empirical densities}
+	\end{figure}
+	
+	\begin{figure}
+		\includegraphics[width=8.5cm]{comparaison_regles_pool5_a2c4l512e2}
+		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messagges, analytical result in continuous black}
+		\end{figure}	
+		
 		
 	\newpage
 	Spéculations en Français :
 	
 	Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	Marche un petit peu, mais pas forcément significatif : à tester plus en détail.
-	
+
 	Marche mieux pour des bruits importants
 	
 	$P(n_{v_c} = n_0) = {a c_k \choose n_0} (1-\psi)^{n_0} \psi ^ { a c_k - n_0 }$
@@ -160,11 +204,18 @@
 	
 	$P(n_v = x) = {a c_k \choose x} P_+^x (1-P_+)^{a c_k -x }$
 
-	\[P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \]	
+	% À corriger avec sommes multiparties
+	%\[P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \]	
 	
-	\[P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}\]
+	%\[P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}\]
 	
 	Sans tenir compte du choix au hasard si plus sont activés.
+	
+
+	\section{Conclusion}	
+	
+	
+	%Marche mieux pouur de petits c --> le faire sur le sparse ?
 	\nocite{*}
 	\bibliographystyle{plain} % Le style est mis entre crochets.
          \bibliography{bibli.bib}

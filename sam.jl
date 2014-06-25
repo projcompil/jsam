@@ -430,7 +430,7 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	iaeta = aeta / info_alphabet
 	ipeta = peta / info_alphabet
 	ipaeta = paeta / info_alphabet
-	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size winners pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet ]
+	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet ]
 end
 
 #function set_proba(pr)
