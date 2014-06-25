@@ -81,7 +81,13 @@ if(!is.null(opt$iterations)) { data = subset(data, iterations == opt$iterations)
 if(!is.null(opt$maxiterations)) { data = subset(data, maxiterations == opt$maxiterations) }
 if(!is.null(opt$erasures)) { data = subset(data, erasures == opt$erasures) }
 if(!is.null(opt$activities)) { data = subset(data, activities == opt$activities) }
-if(!is.null(opt$winners)) { data = subset(data, winners == opt$winners) }
+if(!is.null(opt$winners)) { 
+	if(opt$winners == 0) {
+		data = subset(data, winners == activities | winners == 0)
+	} else {
+		data = subset(data, winners == opt$winners)
+	}
+}
 if(!is.null(opt$tests)) { data = subset(data, tests == opt$tests) }
 if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
