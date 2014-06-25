@@ -51,6 +51,7 @@ spec = matrix(c(
 'minord', NA, 2, "double",
 'onlymax', 'O', 2, "logical",
 'fcolor', NA, 2, "logical",
+'fsize', NA, 2, "logical",
 'thm', 'T', 2, "logical",
 'thd', NA, 2, "logical",
 'noreg' , NA, 2, "logical"
@@ -155,7 +156,13 @@ qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = 
 
 
 if(!is.null(opt$jitter)) { qpl <- qpl + geom_jitter() }
-if(!is.null(opt$size)) { qpl <- qpl + geom_point(aes(size = data[,opt$size])) + labs(size = opt$size) } # + scale_size(name=opt$size)  }
+if(!is.null(opt$size)) { 
+	if(!is.null(opt$fsize)) {
+		sdata = factor(data[, opt$size])
+	} else {
+		sdata = data[,opt$size]
+	}
+	qpl <- qpl + geom_point(aes(size = sdata)) + labs(size = opt$size) } # + scale_size(name=opt$size)  }
 if(!is.null(opt$shape)) { qpl <- qpl + geom_point(aes(shape = factor(data[,opt$shape])), size = 3) + labs(shape = opt$shape) }# + scale_shape(name=opt$shape)  }
 #if(!is.null(opt$color)) { qpl <- qpl + geom_point(colour = data[opt$color]) }
 

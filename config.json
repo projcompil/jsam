@@ -13,7 +13,7 @@
 				"activities" : { "values" : [2] },
 				"m" : { 
 					"cvalues" : [11500, 11750, 15000, 17000],
-					"range" : [1000, 1000, 25000]
+					"range" : [31000, 1000, 35000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
@@ -22,7 +22,7 @@
 					"crange" : [3,1,3]
 				},
 				"iterations" : { "values" : [4] },
-				"winners" : { "values" : [1, 2] },
+				"winners" : { "values" : [2] },
 				"degree" : { "values" : [0] },
 				"p_cons" : { "values" : [0.0], "crange": [0.01, 0.01, 0.08 ]},
 				"p_des" : { "values" : [0.0] }
