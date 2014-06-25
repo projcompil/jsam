@@ -126,3 +126,12 @@ sommes multinomiales ?
 
 
 Tracer graphique abec bonne ordonnée : ./astat.r -f results/clique_results.csv -e 2 -c 4 -z erase_clusters! --abs m --shape maxiterations --fcolor --ord ipeta --abs pcons -O --color activities --shape maxiterations --lines -S 0.01 -w ipeta_c4l512eras2psi.pdf --xlab psi
+
+psi uniquement arêtes qui meurent
+
+
+convergence divergence
+
+réseaux Willshaw
+
+activités variables dans chaque cluster
