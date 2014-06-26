@@ -141,3 +141,6 @@ comparer laplacien
 réseaux plus aléatoires
 
 différentes probas d'activités.
+ gamma = n activités pour les erreurs ?
+
+ Pour les erreurs, prendre gamma = n activités

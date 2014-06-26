@@ -44,6 +44,7 @@ spec = matrix(c(
 'ordstep', NA, 2, "double",
 'maxefficiency', 'E', 2, "double",
 'maxactivities', 'A', 2, "double",
+'mmiterations', NA, 2, "double",
 'pcons', 'p', 2, "double",
 'maxabs', NA, 2, "double",
 'maxord', NA, 2, "double",
@@ -101,6 +102,7 @@ if(!is.null(opt$minwinners)) { data = subset(data, winners >= opt$minwinners) }
 if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
 if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
 if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
+if(!is.null(opt$mmiterations)) { data = subset(data, maxiterations <= opt$mmiterations) }
 if(!is.null(opt$maxabs)) { data = subset(data, data[, opt$abs ] <= opt$maxabs) }
 if(!is.null(opt$minabs)) { data = subset(data, data[, opt$abs ] >= opt$minabs) }
 if(!is.null(opt$maxord)) { data = subset(data, data[, opt$ord ] <= opt$maxord) }

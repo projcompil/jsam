@@ -37,6 +37,7 @@ function init_file(fileprefix, dir = "results")
 end
 
 function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 0.0, p_des = 0.0, degree = degree, activities = 1, winners = 1, pool_size = 1)
+	@assert erasures <= c
 	for i=1:trials
 		@time res = Sam.output_test(l, c, m, ugamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, pool_size)
 		if !nowrite
