@@ -3,13 +3,13 @@
 		{
 			"function_params" : {
 				"fsum" : [0],
-				"fcorrupt" : [0,1]
+				"fcorrupt" : [1]
 			},
 			"trials" : 1,
 			"tests" : 1000,
 			"pool_size" : 1,
 			"network_params" : {
-				"ugamma" : { "values" : [1, 2] },
+				"ugamma" : { "values" : [3] },
 				"activities" : { "values" : [2] },
 				"m" : { 
 					"cvalues" : [11500, 11750, 15000, 17000],
@@ -18,7 +18,7 @@
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
 				"erasures" : { 
-					"values" : [1,2,3],
+					"values" : [1,2],
 					"crange" : [3,1,3]
 				},
 				"iterations" : { "values" : [1, 4] },

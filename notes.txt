@@ -144,3 +144,5 @@ différentes probas d'activités.
  gamma = n activités pour les erreurs ?
 
  Pour les erreurs, prendre gamma = n activités
+
+ tester gamma = 2 avec bruit (psi)
