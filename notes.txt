@@ -135,3 +135,9 @@ convergence divergence
 réseaux Willshaw
 
 activités variables dans chaque cluster
+scores partiels ? (avoir réussi à reconstituer la moitié de ce qu'il manquait)
+comparer laplacien
+
+réseaux plus aléatoires
+
+différentes probas d'activités.

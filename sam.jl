@@ -59,7 +59,7 @@ function create_messages(l, c, m, activities = 1)#; useBitArray = false)
 
 	const n = l * c
 	#if !useBitArray
-		#sparseMessages = spzeros(Uint8, m,n)
+		#sparseMessages = spzeros(Uint8, n,m)
 
 		sparseMessages = zeros(Bool,n, m)
 	#else	
