@@ -247,4 +247,24 @@ function ptotal(m, c, ce, l)
            d = density(m, l)
            sum( map(x -> pcpar(x, d, c, ce, l), [1:c]))^(c-ce) * sum(map(x -> pepar(x, d, c, ce, l), [1:c]))^ce
        end
+-
+
+
+> pvgc <- function (n, d, c, ce)  { x = n - (c-ce); choose(ce, x) * d^x * (1-d)^(ce-x) }
+> pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
+> pv<- function (x, d, c, ce) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+> pvabe <- function(n, d, c, ce) { x = n - 1 ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+> pcpar <- function(n, d, c, ce, l) { pvgc(n,d,c,ce) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce))) )^(l-1) }
+> pepar<- function(n, d, c, ce, l) { pvge(n,d,c,ce) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce)))) }
+> ptotal <- function (m, c, ce, l) {
++  d= 1- (1-1/l^2)^m
++  sum( map(x -> pcpar(x, d, c, ce, l), [1:c]))^(c-ce) * sum(map(x -> pepar(x, d, c, ce, l), [1:c]))^ce
+Erreur : '[' inattendu(e) in:
+" d= 1- (1-1/l^2)^m
+ sum( map(x -> pcpar(x, d, c, ce, l), ["
+> ptotal <- function (m, c, ce, l) {
++  d= 1- (1-1/l^2)^m
++  sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l)))^ce
++ }
+> 
 
