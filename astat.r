@@ -56,6 +56,7 @@ spec = matrix(c(
 'fcolor', NA, 2, "logical",
 'fsize', NA, 2, "logical",
 'thm', 'T', 2, "logical",
+'ther', NA, 2, "logical",
 'thd', NA, 2, "logical",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
@@ -215,7 +216,6 @@ if(!is.null(opt$ylab)) {
 	qpl <- qpl + ylab(opt$ylab)
 }
 
-qpl <- qpl + labs(title = titre)
 
 
 dens <- function (m, l, a) 1 - (1-(a/l)^2)^m
@@ -224,6 +224,52 @@ p <- function(d, l, c, ce, a) 1 - (1- d^(a * (c - ce)))^(ce * (l - a))
 
 po <- function(m, l, c, ce, a) p(dens(m, l, a), l, c, ce, a)
 
+
+pvgc <- function (n, d, c, ce)  { x = n - (c-ce); choose(ce, x) * d^x * (1-d)^(ce-x) }
+pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
+pv<- function (x, d, c, ce) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+pvabe <- function(n, d, c, ce) { x = n - 1 ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+pcpar <- function(n, d, c, ce, l) { pvgc(n,d,c,ce) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce))) )^(l-1) }
+pepar<- function(n, d, c, ce, l) { pvge(n,d,c,ce) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce)))) }
+ptotal <- function (m, c, ce, l) {
+ d= 1- (1-1/l^2)^m
+ sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l)))^ce
+}
+
+
+
+#pvgc <- function (n, d, c, ce, g)  { x = n -( (c-ce)-1) - g; choose(ce, x) * d^x * (1-d)^(ce-x) }
+#pvge <- function (n, d, c, ce, g) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
+#pv<- function (x, d, c, ce, g) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+#pvabe <- function(n, d, c, ce, g) { x = n - g ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+#pcpar <- function(n, d, c, ce, l, g) { pvgc(n,d,c,ce, g) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, g))) )^(l-1) }
+#pepar<- function(n, d, c, ce, l, g) { pvge(n,d,c,ce, g) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,g))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce, g)))) }
+#ptotal <- function (m, l, c, ce, g) {
+# d= dens(m, l, 1)
+# sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l, g)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l, g)))^ce
+#}
+
+#qplot(m, 1-sapply(m, function(x) ptotal(x, 4, 1, 512))) + geom_line()
+
+if (!is.null(opt$ther)) {
+	#coefs <- data.frame(l = unique(data$l), c = unique(data$c), erasures = unique(data$erasures), activities = unique(data$activities))
+	#coeflines <- alply(as.matrix(coefs), 1, function(coef) { stat_function(fun=function(x){ po(x, l, c, erasures, 1)}) })
+	#qpl <- qpl + coeflines
+	for (l in unique(data$l)) {
+		for (c in unique(data$c)) {
+			for (erasures in unique(data$erasures)) {
+				for(gamma in unique(data$gamma)) {
+					print(l)
+					print(c)
+					print(erasures)
+					print(gamma)
+					print("Ok hein")
+					qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, l, c, erasures) }, color = "black")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+				}
+			}
+		}
+	}
+}
 if (!is.null(opt$thm)) {
 	#coefs <- data.frame(l = unique(data$l), c = unique(data$c), erasures = unique(data$erasures), activities = unique(data$activities))
 	#coeflines <- alply(as.matrix(coefs), 1, function(coef) { stat_function(fun=function(x){ po(x, l, c, erasures, 1)}) })
@@ -255,6 +301,7 @@ if (!is.null(opt$thd)) {
 	}
 }
 
+qpl <- qpl + labs(title = titre)
 qpl #+ geom_bar()#+stat_smooth()
 #title(titre)
 temp <- data.frame(y = data[,1], x = data[,8])
