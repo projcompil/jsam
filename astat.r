@@ -236,8 +236,6 @@ ptotal <- function (m, c, ce, l) {
  sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l)))^ce
 }
 
-
-
 #pvgc <- function (n, d, c, ce, g)  { x = n -( (c-ce)-1) - g; choose(ce, x) * d^x * (1-d)^(ce-x) }
 #pvge <- function (n, d, c, ce, g) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
 #pv<- function (x, d, c, ce, g) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
@@ -248,7 +246,6 @@ ptotal <- function (m, c, ce, l) {
 # d= dens(m, l, 1)
 # sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l, g)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l, g)))^ce
 #}
-
 #qplot(m, 1-sapply(m, function(x) ptotal(x, 4, 1, 512))) + geom_line()
 
 if (!is.null(opt$ther)) {
@@ -264,7 +261,9 @@ if (!is.null(opt$ther)) {
 					print(erasures)
 					print(gamma)
 					print("Ok hein")
-					qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, l, c, erasures) }, color = "black")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+					qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, c, erasures, l) }, color = "black", geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+					tempd = data.frame(m = data$m, errorrate=1-sapply(data$m, function(x) { 1 - ptotal(x, c, erasures, l) }))
+					#qpl <- qpl + geom_point(data=tempd, color = "red")
 				}
 			}
 		}
