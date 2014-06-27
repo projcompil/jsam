@@ -219,7 +219,7 @@ julia> function pr(m, l, c, ce)
 julia> function pvgc(n, d, c, ce)  x = n - (c-ce); binomial(ce, x) * d^x * (1-d)^(ce-x) end
 pvgc (generic function with 1 method)
 
-julia> function pvge(n, d, c, ce)  x = n - (c-ce)-1; binomial(ce-1, x) * d^x * (1-d)^(ce-1-x) end
+julia> function pvge(n, d, c, ce)  x = n - (c-ce); binomial(ce-1, x) * d^x * (1-d)^(ce-1-x) end
 pvge (generic function with 1 method)
 
 julia> pv(x, d, c, ce) = binomial(c-1, x) * d^x * (1-d)^(c-1-x)

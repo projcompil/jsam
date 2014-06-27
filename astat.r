@@ -28,6 +28,7 @@ spec = matrix(c(
 'erasures' , 'e', 2, "integer",
 'winners' , 'W', 2, "integer",
 'poolsize' , 'P', 2, "integer",
+'degree' , 'd', 2, "integer",
 'minpoolsize' , NA, 2, "integer",
 'minwinners' , NA, 2, "integer",
 'minpcons' , NA, 2, "double",
@@ -95,6 +96,7 @@ if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
 if(!is.null(opt$optwinners)) { data = subset(data, winners == activities) }
 if(!is.null(opt$poolsize)) { data = subset(data, poolsize == opt$poolsize) }
+if(!is.null(opt$degree)) { data = subset(data, degree == opt$degree) }
 if(!is.null(opt$pcons)) { data = subset(data, pcons == opt$pcons) }
 if(!is.null(opt$minpcons)) { data = subset(data, pcons >= opt$minpcons) }
 if(!is.null(opt$maxpcons)) { data = subset(data, pcons <= opt$maxpcons) }
