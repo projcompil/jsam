@@ -51,6 +51,7 @@ spec = matrix(c(
 'minabs', NA, 2, "double",
 'minord', NA, 2, "double",
 'onlymax', 'O', 2, "logical",
+'onlydrop', NA, 2, "logical",
 'fcolor', NA, 2, "logical",
 'fsize', NA, 2, "logical",
 'thm', 'T', 2, "logical",
@@ -107,6 +108,7 @@ if(!is.null(opt$maxabs)) { data = subset(data, data[, opt$abs ] <= opt$maxabs) }
 if(!is.null(opt$minabs)) { data = subset(data, data[, opt$abs ] >= opt$minabs) }
 if(!is.null(opt$maxord)) { data = subset(data, data[, opt$ord ] <= opt$maxord) }
 if(!is.null(opt$minord)) { data = subset(data, data[, opt$ord ] >= opt$minord) }
+if(!is.null(opt$onlydrop)) { data = subset(data, onlydrop == "true" | pcons == 0.0) } else { data = subset(data, !(onlydrop == "true") | pcons == 0.0) }
 #data <- subset(data, (is.null(opt$neurons) | l == opt$neurons) & (is.null(opt$clusters) | c == opt$clusters) & (is.null(opt$gamma) | gamma == opt$gamma) & (is.null(opt$messages) | m == opt$messages) )
 #data <- subset(x, (is.null(opt$neurons) || l == opt$neurons) & (is.null(opt$clusters) || c == opt$clusters) & (is.null(opt$gamma) || gamma == opt$gamma) & (is.null(opt$messages) || m == opt$messages) )
 #data <- subset(data, (l==opt$neurons & c==opt$clusters & m==opt$messages & gamma==opt$gamma))
@@ -257,19 +259,19 @@ temp <- data.frame(y = data[,1], x = data[,8])
 # fit non-linear model
 tryCatch({
 if(is.null(opt$noreg)) {
-mod <- nls(y ~ 1/(1+exp(a + b * x)), data = temp, start = list(a = 0, b = 0))
-#
-coef = coef(mod)
-a = coef[1]
-b = coef[2]
-print(coef)
-print("Middle :")
-print(-a/b)
-# add fitted curve
-#lines(temp$x, predict(mod, list(x = temp$x)))
-func <-function(x) 1/(1+exp(a+ b * x))
-#curve(func, from = 0, to = max(data$c), n = 300, add=TRUE, col=opt$color)
-#qpl + qplot(1:10, stat = "function",     fun = func)
+#mod <- nls(y ~ 1/(1+exp(a + b * x)), data = temp, start = list(a = 0, b = 0))
+##
+#coef = coef(mod)
+#a = coef[1]
+#b = coef[2]
+#print(coef)
+#print("Middle :")
+#print(-a/b)
+## add fitted curve
+##lines(temp$x, predict(mod, list(x = temp$x)))
+#func <-function(x) 1/(1+exp(a+ b * x))
+##curve(func, from = 0, to = max(data$c), n = 300, add=TRUE, col=opt$color)
+##qpl + qplot(1:10, stat = "function",     fun = func)
 #qpl + stat_function(fun = func)
 }
 },

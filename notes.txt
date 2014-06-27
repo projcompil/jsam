@@ -141,8 +141,110 @@ comparer laplacien
 réseaux plus aléatoires
 
 différentes probas d'activités.
- gamma = n activités pour les erreurs ?
+ gamma = n activités pour les erreurs ? -> marche bien mieux !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! !!!!!!!!!!!!!!!!!!!!!!!!!!
 
  Pour les erreurs, prendre gamma = n activités
 
  tester gamma = 2 avec bruit (psi)
+
+ essayer 1 activité, gamma = 2,3
+
+
+ pvc(x, d, ce) = binomial(ce, x) * d^x * (1-d)^(ce - x)
+ pv(x, d, c) = binomial(c-1, x) * d^x * (1-d)^(c-1-x)
+
+ ppar(n, d, c, ce, l) = apvc(n,d,c,ce) * ((sum (map(x -> pv(x, d, c), [0:n-1]))))^(l-1)
+ 
+function pr(m, l, c, ce)
+           d = density(m, l)
+           (sum( map(n -> ppar(n, d, c, ce, l), [1:c-1])))^ce
+       end
+using PyPlot
+INFO: Loading help data...
+^[[A^[[AWarning: using PyPlot.hist2d in module Main conflicts with an existing identifier.
+
+density(m, l) = 1 - (1-1/l^2)^m
+julia> plot(m, 1 - map(m) do a pr(a, 512, 4, 1) end)
+
+
+bpvc(x, d, ce) = binomial(ce-1, x) * d^x * (1-d)^(ce-1 - x)
+
+ pinter(n, d, c, ce, l) = ((sum (map(x -> pv(x, d, c), [0:n-1]))))^(l-1)
+
+
+
+ppar(n, d, c, ce, l) = apvc(n,d,c,ce) * pinter(n, d, c, ce, l)
+ppar (generic function with 1 method)
+
+julia> qpvc(x, d, ce) = binomial(ce-1, x) * d^x * (1-d)^(ce-1 - x)
+qpvc (generic function with 1 method)
+
+julia> bpvc(n,d, c, ce) = qpvc(n - (c - ce-1), d, ce)
+bpvc (generic function with 2 methods)
+
+julia> ppar(n, d, c, ce, l) = apvc(n,d,c,ce) * pinter(n, d, c, ce, l)
+ppar (generic function with 1 method)
+
+julia> bppar(n, d, c, ce, l) = bpvc(n,d,c,ce) * pinter(n, d, c, ce, l)
+bppar (generic function with 1 method)
+
+julia> function pr(m, l, c, ce)
+           d = density(m, l)
+           (sum( map(n -> ppar(n, d, c, ce, l), [1:c-1])))^(c-ce) * ((sum( map(n -> bppar(n, d, c, ce, l), [1:c-1])))^ce
+       end
+ERROR: syntax: missing separator in tuple
+
+julia> function pr(m, l, c, ce)
+           d = density(m, l)
+           (sum( map(n -> ppar(n, d, c, ce, l), [1:c-1])))^(c-ce) * ((sum( map(n -> bppar(n, d, c, ce, l), [1:c-1]))))^ce
+
+julia> bpvc(n,d, c, ce) = qpvc(n - (c - ce), d, ce)
+bpvc (generic function with 2 methods)
+
+julia> bppar(n, d, c, ce, l) = bpvc(n,d,c,ce) * pinter(n, d, c, ce, l)
+bppar (generic function with 1 method)
+
+julia> function pr(m, l, c, ce)
+           d = density(m, l)
+           (sum( map(n -> ppar(n, d, c, ce, l), [1:c-1])))^(c-ce) * ((sum( map(n -> bppar(n, d, c, ce, l), [1:c-1]))))^ce
+       end
+
+
+*
+
+
+
+
+
+julia> function pvgc(n, d, c, ce)  x = n - (c-ce); binomial(ce, x) * d^x * (1-d)^(ce-x) end
+pvgc (generic function with 1 method)
+
+julia> function pvge(n, d, c, ce)  x = n - (c-ce)-1; binomial(ce-1, x) * d^x * (1-d)^(ce-1-x) end
+pvge (generic function with 1 method)
+
+julia> pv(x, d, c, ce) = binomial(c-1, x) * d^x * (1-d)^(c-1-x)
+pv (generic function with 1 method)
+
+julia> function pvabe(n, d, c, ce) x = n - 1 ; binomial(c-1, x) * d^x * (1-d)^(c-1-x)
+       end
+pvabe (generic function with 1 method)
+
+julia> 
+
+
+
+julia> pcpar(n, d, c, ce, l) = pvgc(n,d,c,ce) * ( sum (map(x->pv(x,d,c,ce), [0:n-1])) )^(l-1)
+pcpar (generic function with 1 method)
+
+julia> pepar(n, d, c, ce, l) = pvge(n,d,c,ce) * ( sum (map(x->pv(x,d,c,ce), [0:n-1])) )^(l-2) * (sum (map(x->pvabe(x, d, c, ce), [0:n-1]))
+       )
+pepar (generic function with 1 method)
+
+
+
+
+function ptotal(m, c, ce, l)
+           d = density(m, l)
+           sum( map(x -> pcpar(x, d, c, ce, l), [1:c]))^(c-ce) * sum(map(x -> pepar(x, d, c, ce, l), [1:c]))^ce
+       end
+

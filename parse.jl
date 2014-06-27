@@ -109,6 +109,10 @@ function parse_commandline()
 			   help = "Scan on numbers of messages (hardcoded at the moment)."
 			   action = :store_true
 
+			   "--only_drop"
+			   help = "pcons is now only dropping and not adding edges."
+			   action = :store_true
+
 			   "--file"
 			   help = "Prefix of the output file."
 			   default = "clique_results"
