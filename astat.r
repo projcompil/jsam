@@ -73,6 +73,7 @@ data = read.csv(opt$file, comment.char = "#")
 noms = names(data)
 
 
+X11()
 #if(is.null(opt$color)) { opt$color = "red" ; }
 if(is.null(opt$abs)) { opt$abs = "erasures" ; }
 if(is.null(opt$ord)) { opt$ord = "errorrate" ; }
@@ -138,7 +139,6 @@ if (is.null(opt$title)) {
 	titre <- opt$title
 }
 print(titre)
-X11()
 
 
 booleen <- is.null(c(opt$color, opt$size, opt$shape))
@@ -225,15 +225,15 @@ p <- function(d, l, c, ce, a) 1 - (1- d^(a * (c - ce)))^(ce * (l - a))
 po <- function(m, l, c, ce, a) p(dens(m, l, a), l, c, ce, a)
 
 
-pvgc <- function (n, d, c, ce)  { x = n - (c-ce); choose(ce, x) * d^x * (1-d)^(ce-x) }
+pvgc <- function (n, d, c, ce, g)  { x = n - (c-ce-1) - g ; choose(ce, x) * d^x * (1-d)^(ce-x) }
 pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
 pv<- function (x, d, c, ce) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
-pvabe <- function(n, d, c, ce) { x = n - 1 ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
-pcpar <- function(n, d, c, ce, l) { pvgc(n,d,c,ce) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce))) )^(l-1) }
-pepar<- function(n, d, c, ce, l) { pvge(n,d,c,ce) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce)))) }
-ptotal <- function (m, c, ce, l) {
+pvabe <- function(n, d, c, ce, g) { x = n - g ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+pcpar <- function(n, d, c, ce, l,g) { pvgc(n,d,c,ce, g) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce))) )^(l-1) }
+pepar<- function(n, d, c, ce, l,g) { pvge(n,d,c,ce) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g)))) }
+ptotal <- function (m, c, ce, l, g) {
  d= 1- (1-1/l^2)^m
- sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l)))^ce
+ sum( sapply(1:(c+g-1), function (x) pcpar(x, d, c, ce, l,g)))^(c-ce) * sum(sapply(1:(c+g-1), function(x) pepar(x, d, c, ce, l,g)))^ce
 }
 
 #pvgc <- function (n, d, c, ce, g)  { x = n -( (c-ce)-1) - g; choose(ce, x) * d^x * (1-d)^(ce-x) }
@@ -253,32 +253,42 @@ if (!is.null(opt$ther)) {
 	#coeflines <- alply(as.matrix(coefs), 1, function(coef) { stat_function(fun=function(x){ po(x, l, c, erasures, 1)}) })
 	#qpl <- qpl + coeflines
 	for (l in unique(data$l)) {
-		for (c in unique(data$c)) {
+		for (ci in unique(data$c)) {
 			for (erasures in unique(data$erasures)) {
 				for(gamma in unique(data$gamma)) {
 					print(l)
-					print(c)
+					print(ci)
 					print(erasures)
 					print(gamma)
+					print(ptotal(10000, 4, 1, 512, 1))
 					print("Ok hein")
-					qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, c, erasures, l) }, color = "black", geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
-					tempd = data.frame(m = data$m, errorrate=1-sapply(data$m, function(x) { 1 - ptotal(x, c, erasures, l) }))
+					qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, ci, erasures, l, gamma) }, color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+					newd = data
+					newd$errorrate = sapply(data$m, function (x) { 1 - ptotal(x, ci, erasures, l, gamma) })
 					#qpl <- qpl + geom_point(data=tempd, color = "red")
+					qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "blue")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
 				}
 			}
 		}
 	}
 }
+#if(!is.null(opt$ther) && !is.null(opt$erasures) && !is.null(opt$gamma) && !is.null(opt$gamma) && !is.null(opt$clusters) && !is.null(opt$neurons)) {
+#	newd = data
+#	newd$errorrate = sapply(data$m, function (x) { 1 - ptotal(x, opt$clusters, opt$erasures, opt$neurons, opt$gamma) })
+#	print("Hein ok")
+#	qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "blue")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+#}
+
 if (!is.null(opt$thm)) {
 	#coefs <- data.frame(l = unique(data$l), c = unique(data$c), erasures = unique(data$erasures), activities = unique(data$activities))
 	#coeflines <- alply(as.matrix(coefs), 1, function(coef) { stat_function(fun=function(x){ po(x, l, c, erasures, 1)}) })
 	#qpl <- qpl + coeflines
 	for (l in unique(data$l)) {
-		for (c in unique(data$c)) {
+		for (ci in unique(data$c)) {
 			for (erasures in unique(data$erasures)) {
 				for (activities in unique(data$activities)) {
 					print(activities)
-					qpl <- qpl + stat_function(fun = function(x) po(x, l, c, erasures, activities), color = "black")
+					qpl <- qpl + stat_function(fun = function(x) po(x, l, ci, erasures, activities), color = "black")
 					#qpl
 					#message("Press Return To Continue")
 					#invisible(readLines("stdin", n=1))

@@ -262,3 +262,8 @@ ptotal <- function (m, c, ce, l) {
 }
 
 qplot(m, 1-sapply(m, function(x) ptotal(x, 4, 1, 512))) + geom_line()
+
+
+plotter en fonction de m let taux d'erreur pour les erreurs psi /effacements
+
+blokeh python ?
