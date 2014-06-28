@@ -198,6 +198,8 @@
 	\end{figure}
 		
 	\newpage
+	a
+	\newpage
 	Spéculations en Français :
 	
 	Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
@@ -218,6 +220,14 @@
 	
 	Sans tenir compte du choix au hasard si plus sont activés.
 	
+		a priori for noise on edges :
+	
+	\[P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a c_k} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \]	
+	
+	\[P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n = 1}^{a c_k} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}\]	
+	
+	\newpage
+	a
 	\newpage
 	
 	Formula for errors insted of erasures : 
@@ -239,6 +249,8 @@
 	$P(n_{abe} = \gamma + x) = {c - 1 \choose x} d^x (1-d)^{c-1-x}$
 	
 	$P(n_{be} = x) = P(n_{bc} = x) = {c - 1 \choose x} d^x (1-d)^{c- 1 -x}$
+	
+	
 	
 	\begin{align*}
 	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{gc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
@@ -263,6 +275,8 @@
 	\end{align*}
 	
 	$P_{err} = 1 - P_{retrieve}$
+	
+
 
 	\section{Conclusion}	
 	
