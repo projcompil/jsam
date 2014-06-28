@@ -258,7 +258,7 @@
 	
 	
 	\begin{align*}
-	P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ]\left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-a} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1} { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
+	P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ]\left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-a} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-a-1} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
 	\end{align*}
 	
 	$P_{err} = 1 - P_{retrieve}$
