@@ -6,6 +6,7 @@ library(scales)
 
 library(plyr)
 
+
 spec = matrix(c(
 'file', 'f', 1, "character",
 'color', NA, 2, "character",
@@ -18,6 +19,7 @@ spec = matrix(c(
 'xlab', 'x', 2, "character",
 'ylab', 'y', 2, "character",
 'title', NA, 2, "character",
+'facet', NA, 2, "character",
 'abs', NA, 2, "character",
 'ord', NA, 2, "character",
 'help' , 'h', 0, "logical",
@@ -69,10 +71,27 @@ if ( !is.null(opt$help) ) {
 
 #args = commandArgs()
 
-data = read.csv(opt$file, comment.char = "#")
+#data = read.csv(opt$file, comment.char = "#", as.is = FALSE)
+data = read.csv(opt$file, comment.char = "#")#, na.strings="NA") #stringAsFactors=FALSE)#, as.is= TRUE)
 noms = names(data)
 
+#i <- sapply(data, function (x) is.factor(x) && is.numeric(x))
+#data[i] <- lapply(data[i], function (x) as.numeric(levels(x))[x])
 
+# Pour réparer les putains de conneries de R
+#repare <- function(x) { data[,x] <- as.numeric(levels(data[,x]))[data[,x]] } #ne marche pas !?
+#repare("errorrate")
+# Comme rien n'y fait, allons y comme des brutes
+#data$errorrate <- as.numeric(levels(data$errorrate))[data$errorrate]
+#data$eta <- as.numeric(levels(data$eta))[data$eta]
+#data$ipeta <- as.numeric(levels(data$ipeta))[data$ipeta]
+#data$ipaeta <- as.numeric(levels(data$ipaeta))[data$ipaeta]
+#data$c <- as.numeric(levels(data$c))[data$c]
+#data$l <- as.numeric(levels(data$l))[data$l]
+#data$winners <- as.numeric(levels(data$winners))[data$winners]
+## Solution la plus élégante trouvée : repassée à la version précédente de R, whaaaa !
+
+print(is.factor(data$errorrate))
 X11()
 #if(is.null(opt$color)) { opt$color = "red" ; }
 if(is.null(opt$abs)) { opt$abs = "erasures" ; }
@@ -168,6 +187,10 @@ qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = 
 } else {qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "")  }
 
 
+if(!is.null(opt$facet)) {
+	qpl <- qpl + facet_wrap(as.formula(paste("~", opt$facet)))
+}
+
 if(!is.null(opt$jitter)) { qpl <- qpl + geom_jitter() }
 if(!is.null(opt$size)) { 
 	if(!is.null(opt$fsize)) {
@@ -207,7 +230,7 @@ if(!is.null(opt$step)) {
    qpl <- qpl + scale_x_continuous( breaks = seq(0, max(data[,opt$abs]), by = opt$step))#, labels = abbreviate)#,#pretty_breaks(n = length(data[,opt$abs]))) #
 }
 if(!is.null(opt$ordstep)) {
-   qpl <- qpl + scale_y_continuous(aes(breaks = seq(0.0, 1.0, by = 0.1)))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
+   qpl <- qpl + scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 if(!is.null(opt$xlab)) {
 	qpl <- qpl + xlab(opt$xlab)
@@ -236,17 +259,21 @@ ptotal <- function (m, c, ce, l, g) {
  sum( sapply(1:(c+g-1), function (x) pcpar(x, d, c, ce, l,g)))^(c-ce) * sum(sapply(1:(c+g-1), function(x) pepar(x, d, c, ce, l,g)))^ce
 }
 
-#pvgc <- function (n, d, c, ce, g)  { x = n -( (c-ce)-1) - g; choose(ce, x) * d^x * (1-d)^(ce-x) }
-#pvge <- function (n, d, c, ce, g) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
-#pv<- function (x, d, c, ce, g) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
-#pvabe <- function(n, d, c, ce, g) { x = n - g ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
-#pcpar <- function(n, d, c, ce, l, g) { pvgc(n,d,c,ce, g) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, g))) )^(l-1) }
-#pepar<- function(n, d, c, ce, l, g) { pvge(n,d,c,ce, g) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,g))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce, g)))) }
-#ptotal <- function (m, l, c, ce, g) {
-# d= dens(m, l, 1)
-# sum( sapply(1:c, function (x) pcpar(x, d, c, ce, l, g)))^(c-ce) * sum(sapply(1:c, function(x) pepar(x, d, c, ce, l, g)))^ce
+
+
+#pvgc <- function (n, d, c, ce, g, a)  { x = n - a*(c-ce-1) - g ; choose(a * ce, x) * d^x * (1-d)^(a*ce-x) }
+#pvge <- function (n, d, c, ce, a) {  x = n - a*(c-ce); choose(a*(ce-1), x) * d^x * (1-d)^(a *(ce-1)-x) }
+#pv<- function (x, d, c, ce, a) { choose(a*(c-1), x) * d^x * (1-d)^(a*(c-1)-x) }
+#pvabe <- function(n, d, c, ce, g, a) { x = n - g ; choose(a*(c-1), x) * d^x * (1-d)^(a*(c-1)-x) }
+#pcpar <- function(n, d, c, ce, l, g, a) { (sum(sapply(n:(a*(c-1)+g), function(x) pvgc(x,d,c,ce,g,a))))^(a-1) * pvgc(n,d,c,ce, g, a) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, a))) )^(l-a) }
+#
+#pepar<- function(n, d, c, ce, l, g, a) { (sum(sapply(n:(a*(c-1)+g), function(x) pvge(x,d,c,ce,a))))^(a-1) * pvge(n,d,c,ce,a) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
+#
+#ptotal <- function (m, c, ce, l, g, a) {
+# d= 1- (1-(a/l)^2)^m
+# sum( sapply(1:(g+a*(c-1)), function (x) pcpar(x, d, c, ce, l,g,a)))^(c-ce) * sum(sapply(1:(g+a*(c-1)), function(x) pepar(x, d, c, ce, l,g,a)))^ce
 #}
-#qplot(m, 1-sapply(m, function(x) ptotal(x, 4, 1, 512))) + geom_line()
+
 
 if (!is.null(opt$ther)) {
 	#coefs <- data.frame(l = unique(data$l), c = unique(data$c), erasures = unique(data$erasures), activities = unique(data$activities))

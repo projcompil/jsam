@@ -267,3 +267,42 @@ qplot(m, 1-sapply(m, function(x) ptotal(x, 4, 1, 512))) + geom_line()
 plotter en fonction de m let taux d'erreur pour les erreurs psi /effacements
 
 blokeh python ?
+ne pas mettre à jour R !!!!!!!!!!!!! factorise les données (stupide logiciel)
+
+
+#pvgc <- function (n, d, c, ce, g, a)  { x = n - a*(c-ce-1) - g ; choose(a * ce, x) * d^x * (1-d)^(a*ce-x) }
+#pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d>  
+
+
+
+
+library(ggplot2)
+pvgc <- function (n, d, c, ce, g, a)  { x = n - a*(c-ce-1) - g ; choose(a * ce, x) * d^x * (1-d)^(a*ce-x) }
+pvge <- function (n, d, c, ce, a) {  x = n - a*(c-ce); choose(a*(ce-1), x) * d^x * (1-d)^(a *(ce-1)-x) }
+pv<- function (x, d, c, ce, a) { choose(a*(c-1), x) * d^x * (1-d)^(a*(c-1)-x) }
+pvabe <- function(n, d, c, ce, g, a) { x = n - g ; choose(a*(c-1), x) * d^x * (1-d)^(a*(c-1)-x) }
+
+psupc <- function(n, d, c, ce, l, g, a) sum(sapply((n+1):(a*(c-1)+g), function(x) pvgc(x,d,c,ce,g,a)))
+psupe <- function(n, d, c, ce, l, g, a) sum(sapply((n+1):(a*(c-1)+g), function(x) pvge(x,d,c,ce,a)))
+
+pcpar <- function(n, d, c, ce, l, g, a) { (sum(sapply(0:(a-1), function(x) choose(a, x) * psupc(n,d,c,ce,l,g,a)^x * pvgc(n,d,c,ce,g,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, a))) )^(l-a) }
+
+pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
+
+ptotal <- function (m, c, ce, l, g, a) {
+ d= 1- (1-(a/l)^2)^m
+ sum( sapply(1:(g+a*(c-1)), function (x) pcpar(x, d, c, ce, l,g,a)))^(c-ce) * sum(sapply(1:(g+a*(c-1)), function(x) pepar(x, d, c, ce, l,g,a)))^ce
+ }
+
+
+m = seq(1000, 50000, by = 1000)
+qplot(m, 1 - sapply(m, function (x) ptotal(x, 8, 2, 512, 1, 2)))
+ faire une binomiale sur les scores str supérieures et les scores égaux
+
+
+
+ #
+#pcpar <- function(n, d, c, ce, l, g, a) { (sum(sapply(n:(a*(c-1)+g), function(x) pvgc(x,d,c,ce,g,a))))^(a-1) * pvgc(n,d,c,ce, g, a) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, a))) )^(l-a) }
+
+#pepar<- function(n, d, c, ce, l, g, a) { (sum(sapply(n:(a*(c-1)+g), function(x) pvge(x,d,c,ce,a))))^(a-1) * pvge(n,d,c,ce,a) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
+ #
