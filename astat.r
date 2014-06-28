@@ -248,16 +248,34 @@ p <- function(d, l, c, ce, a) 1 - (1- d^(a * (c - ce)))^(ce * (l - a))
 po <- function(m, l, c, ce, a) p(dens(m, l, a), l, c, ce, a)
 
 
-pvgc <- function (n, d, c, ce, g)  { x = n - (c-ce-1) - g ; choose(ce, x) * d^x * (1-d)^(ce-x) }
-pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
-pv<- function (x, d, c, ce) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
-pvabe <- function(n, d, c, ce, g) { x = n - g ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
-pcpar <- function(n, d, c, ce, l,g) { pvgc(n,d,c,ce, g) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce))) )^(l-1) }
-pepar<- function(n, d, c, ce, l,g) { pvge(n,d,c,ce) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g)))) }
-ptotal <- function (m, c, ce, l, g) {
- d= 1- (1-1/l^2)^m
- sum( sapply(1:(c+g-1), function (x) pcpar(x, d, c, ce, l,g)))^(c-ce) * sum(sapply(1:(c+g-1), function(x) pepar(x, d, c, ce, l,g)))^ce
+pvgc <- function (n, d, c, ce, g, a)  { x = n - a*(c-ce-1) - g ; choose(a * ce, x) * d^x * (1-d)^(a*ce-x) }
+pvge <- function (n, d, c, ce, a) {  x = n - a*(c-ce); choose(a*(ce-1), x) * d^x * (1-d)^(a *(ce-1)-x) }
+pv<- function (x, d, c, ce, a) { choose(a*(c-1), x) * d^x * (1-d)^(a*(c-1)-x) }
+pvabe <- function(n, d, c, ce, g, a) { x = n - g ; choose(a*(c-1), x) * d^x * (1-d)^(a*(c-1)-x) }
+
+psupc <- function(n, d, c, ce, l, g, a) sum(sapply((n+1):(a*(c-1)+g), function(x) pvgc(x,d,c,ce,g,a)))
+psupe <- function(n, d, c, ce, l, g, a) sum(sapply((n+1):(a*(c-1)+g), function(x) pvge(x,d,c,ce,a)))
+
+pcpar <- function(n, d, c, ce, l, g, a) { (sum(sapply(0:(a-1), function(x) choose(a, x) * psupc(n,d,c,ce,l,g,a)^x * pvgc(n,d,c,ce,g,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, a))) )^(l-a) }
+
+pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
+
+ptotal <- function (m, c, ce, l, g, a) {
+	d= 1- (1-(a/l)^2)^m
+	sum( sapply(1:(g+a*(c-1)), function (x) pcpar(x, d, c, ce, l,g,a)))^(c-ce) * sum(sapply(1:(g+a*(c-1)), function(x) pepar(x, d, c, ce, l,g,a)))^ce
 }
+
+
+#pvgc <- function (n, d, c, ce, g)  { x = n - (c-ce-1) - g ; choose(ce, x) * d^x * (1-d)^(ce-x) }
+#pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
+#pv<- function (x, d, c, ce) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+#pvabe <- function(n, d, c, ce, g) { x = n - g ; choose(c-1, x) * d^x * (1-d)^(c-1-x) }
+#pcpar <- function(n, d, c, ce, l,g) { pvgc(n,d,c,ce, g) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce))) )^(l-1) }
+#pepar<- function(n, d, c, ce, l,g) { pvge(n,d,c,ce) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce))) )^(l-2) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g)))) }
+#ptotal <- function (m, c, ce, l, g) {
+# d= 1- (1-1/l^2)^m
+# sum( sapply(1:(c+g-1), function (x) pcpar(x, d, c, ce, l,g)))^(c-ce) * sum(sapply(1:(c+g-1), function(x) pepar(x, d, c, ce, l,g)))^ce
+#}
 
 
 
@@ -283,17 +301,18 @@ if (!is.null(opt$ther)) {
 		for (ci in unique(data$c)) {
 			for (erasures in unique(data$erasures)) {
 				for(gamma in unique(data$gamma)) {
-					print(l)
-					print(ci)
-					print(erasures)
-					print(gamma)
-					print(ptotal(10000, 4, 1, 512, 1))
-					print("Ok hein")
-					qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, ci, erasures, l, gamma) }, color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
-					newd = data
-					newd$errorrate = sapply(data$m, function (x) { 1 - ptotal(x, ci, erasures, l, gamma) })
-					#qpl <- qpl + geom_point(data=tempd, color = "red")
-					qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "blue")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+					for(activities in unique(data$activities)) {
+						print(l)
+						print(ci)
+						print(erasures)
+						print(gamma)
+						print("Ok hein")
+						qpl <- qpl + stat_function(fun = function(x) { 1 - ptotal(x, ci, erasures, l, gamma, activities) }, color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+						newd = data
+						newd$errorrate = sapply(data$m, function (x) { 1 - ptotal(x, ci, erasures, l, gamma, activities) })
+						#qpl <- qpl + geom_point(data=tempd, color = "red")
+						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "blue")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+					}
 				}
 			}
 		}

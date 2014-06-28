@@ -10,11 +10,11 @@
 			"pool_size" : 1,
 			"only_drop" : false,
 			"network_params" : {
-				"ugamma" : { "values" : [0,1,2] },
+				"ugamma" : { "values" : [1,2] },
 				"activities" : { "values" : [2] },
 				"m" : { 
 					"cvalues" : [1000],
-					"range" : [1000, 2000, 30000]
+					"range" : [2000, 2000, 50000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [8] },
