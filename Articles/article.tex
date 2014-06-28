@@ -244,6 +244,23 @@
 	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{gc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
 	\end{align*}
 	
+	
+	generalisation to multiple activities per cluster :
+	
+	$P(n_{gc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
+	
+	$P(n_{ge} = a(c - c_e) + \gamma + x) = {a c_e - 1 \choose x} d^x (1-d)^{a c_e-1-x}$
+	
+	$P(n_{abe} = \gamma + x) = {a(c - 1) \choose x} d^x (1-d)^{a(c-1)-x}$
+	
+	$P(n_{be} = x) = P(n_{bc} = x) = {a(c - 1) \choose x} d^x (1-d)^{a(c- 1) -x}$	
+
+	
+	
+	\begin{align*}
+	P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ]\left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-a} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1} { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
+	\end{align*}
+	
 	$P_{err} = 1 - P_{retrieve}$
 
 	\section{Conclusion}	
