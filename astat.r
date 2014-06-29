@@ -33,6 +33,8 @@ spec = matrix(c(
 'degree' , 'd', 2, "integer",
 'minpoolsize' , NA, 2, "integer",
 'minwinners' , NA, 2, "integer",
+'maxwinners' , NA, 2, "integer",
+'maxgamma' , NA, 2, "integer",
 'minpcons' , NA, 2, "double",
 'maxpcons' , NA, 2, "double",
 'gamma' , 'g', 2, "integer",
@@ -91,6 +93,10 @@ noms = names(data)
 #data$winners <- as.numeric(levels(data$winners))[data$winners]
 ## Solution la plus élégante trouvée : repassée à la version précédente de R, whaaaa !
 
+
+data[data$winners == 0,]$winners <-  data[data$winners == 0,]$activities
+
+
 print(is.factor(data$errorrate))
 X11()
 #if(is.null(opt$color)) { opt$color = "red" ; }
@@ -123,6 +129,8 @@ if(!is.null(opt$minpcons)) { data = subset(data, pcons >= opt$minpcons) }
 if(!is.null(opt$maxpcons)) { data = subset(data, pcons <= opt$maxpcons) }
 if(!is.null(opt$minpoolsize)) { data = subset(data, poolsize >= opt$minpoolsize) }
 if(!is.null(opt$minwinners)) { data = subset(data, winners >= opt$minwinners) }
+if(!is.null(opt$maxwinners)) { data = subset(data, winners <= opt$maxwinners) }
+if(!is.null(opt$maxgamma)) { data = subset(data, gamma <= opt$maxgamma) }
 if(!is.null(opt$maxefficiency)) { data = subset(data, efficiency <= opt$maxefficiency) }
 if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
 if(!is.null(opt$maxactivities)) { data = subset(data, activities <= opt$maxactivities) }
@@ -312,7 +320,7 @@ if (!is.null(opt$ther)) {
 						newd = data
 						newd$errorrate = sapply(data$m, function (x) { 1 - ptotal(x, ci, erasures, l, gamma, activities) })
 						#qpl <- qpl + geom_point(data=tempd, color = "red")
-						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "blue")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
 					}
 				}
 			}

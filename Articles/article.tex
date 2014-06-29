@@ -189,12 +189,12 @@
 	
 	\begin{figure}
 		\includegraphics[width=8.5cm]{comparaison_regles_pool5_a2c4l512e2}
-		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messagges, analytical result in continuous black}
+		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
 		\end{figure}	
 		
 	\begin{figure}
-		\includegraphics[width=8.5cm]{comp_erreurs_a2l512c4er1}
-		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messagges, analytical result in continuous black}
+		\includegraphics[width=8.5cm]{remplacement_figure3g1}
+		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, one erroneous cluster, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
 	\end{figure}
 		
 	\newpage
@@ -262,7 +262,7 @@
 	
 	$P(n_{gc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
 	
-	$P(n_{ge} = a(c - c_e) + \gamma + x) = {a c_e - 1 \choose x} d^x (1-d)^{a c_e-1-x}$
+	$P(n_{ge} = a(c - c_e) + x) = {a (c_e - 1) \choose x} d^x (1-d)^{a (c_e - 1)-x}$
 	
 	$P(n_{abe} = \gamma + x) = {a(c - 1) \choose x} d^x (1-d)^{a(c-1)-x}$
 	
