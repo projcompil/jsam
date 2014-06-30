@@ -3,7 +3,7 @@
 module Sam
 
 
-#Floyd algorithm
+#Floyd algorithm : contrib ?
 function rand_combination(n, m)
 	s = Set()
 	for j=n-m+1:n

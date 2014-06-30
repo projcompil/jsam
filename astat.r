@@ -64,6 +64,7 @@ spec = matrix(c(
 'fsize', NA, 2, "logical",
 'thm', 'T', 2, "logical",
 'ther', NA, 2, "logical",
+'thpsi', NA, 2, "logical",
 'thd', NA, 2, "logical",
 'noreg' , NA, 2, "logical"
 ), byrow=TRUE, ncol=4);
@@ -279,7 +280,7 @@ psupe <- function(n, d, c, ce, l, g, a) sum(sapply((n+1):(a*(c-1)+g), function(x
 pcpar <- function(n, d, c, ce, l, g, a) { (sum(sapply(0:(a-1), function(x) choose(a, x) * psupc(n,d,c,ce,l,g,a)^x * pvgc(n,d,c,ce,g,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, a))) )^(l-a) }
 
 #pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
-pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^max(0,(l-2*a)) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a))))^a }
+pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce,a))) )^max(0,(l-2*a)) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a))))^a }
 
 ptotal <- function (m, c, ce, l, g, a) {
 	d= 1- (1-(a/l)^2)^m
