@@ -306,3 +306,5 @@ qplot(m, 1 - sapply(m, function (x) ptotal(x, 8, 2, 512, 1, 2)))
 
 #pepar<- function(n, d, c, ce, l, g, a) { (sum(sapply(n:(a*(c-1)+g), function(x) pvge(x,d,c,ce,a))))^(a-1) * pvge(n,d,c,ce,a) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
  #
+
+ classification via plusieurs activités ? associer des classes

@@ -10,6 +10,9 @@ library(plyr)
 spec = matrix(c(
 'file', 'f', 1, "character",
 'color', NA, 2, "character",
+'ncolor', NA, 2, "character",
+'nshape', NA, 2, "character",
+'nsize', NA, 2, "character",
 'shape', NA, 2, "character",
 'size', NA, 2, "character",
 'lt', 'L', 2, "character",
@@ -194,6 +197,9 @@ if (!is.null(opt$fcolor)) {
 qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "", color = cdata) + labs(colour = opt$color)# + guides(fill = guide_colourbar(title=opt$color))#+ scale_colour_continuous(name=opt$color) #, size = data[,opt$size])#opt$color) # col="blue")
 } else {qpl <- qplot(data[,opt$abs], data[,opt$ord], ylab=opt$ord, xlab=opt$abs, main = "")  }
 
+if(!is.null(opt$ncolor)) {
+	qpl <- qpl + labs(colour = opt$ncolor)
+}
 
 if(!is.null(opt$facet)) {
 	qpl <- qpl + facet_wrap(as.formula(paste("~", opt$facet)))
@@ -210,8 +216,14 @@ if(!is.null(opt$size)) {
 if(!is.null(opt$shape)) { qpl <- qpl + geom_point(aes(shape = factor(data[,opt$shape])), size = 3) + labs(shape = opt$shape) }# + scale_shape(name=opt$shape)  }
 #if(!is.null(opt$color)) { qpl <- qpl + geom_point(colour = data[opt$color]) }
 
+if(!is.null(opt$nsize)) {
+	qpl <- qpl + labs(size = opt$nsize)
+}
 
 
+if(!is.null(opt$nshape)) {
+	qpl <- qpl + labs(shape = opt$nshape)
+}
 
 # Ajouter factor group si besoin est.
 if(!is.null(opt$box)) { qpl <- qpl + geom_boxplot(aes(fill = factor(data[,opt$abs]))) }
@@ -365,7 +377,8 @@ if (!is.null(opt$thd)) {
 	}
 }
 
-qpl <- qpl + labs(title = titre)
+
+qpl <- qpl + labs(title = titre) + guides(colour = guide_legend(nrow = 2))
 qpl #+ geom_bar()#+stat_smooth()
 #title(titre)
 temp <- data.frame(y = data[,1], x = data[,8])
