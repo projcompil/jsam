@@ -84,7 +84,7 @@ noms = names(data)
 #i <- sapply(data, function (x) is.factor(x) && is.numeric(x))
 #data[i] <- lapply(data[i], function (x) as.numeric(levels(x))[x])
 
-# Pour réparer les putains de conneries de R
+# Pour réparer les erreurs dues à la mise à jour de R
 #repare <- function(x) { data[,x] <- as.numeric(levels(data[,x]))[data[,x]] } #ne marche pas !?
 #repare("errorrate")
 # Comme rien n'y fait, allons y comme des brutes
