@@ -289,6 +289,28 @@ ptotal <- function (m, c, ce, l, g, a) {
 }
 
 
+
+
+##############
+
+pcpsi <- function(n, c, ce, a, psi) choose(a * (c- ce), n) * (1-psi)^n * psi^(a*(c-ce) - n)
+pplus <- function (d, psi) psi * (1-d) + (1- psi) * d
+
+pvpsi <- function(x, d, c, ce, a, psi) {
+	p = pplus(d, psi) ;
+	choose(a * (c - ce), c) * p^x * (1-p)^(a*(c-ce) - x)
+}
+pcsuppsi <- function(n, c, ce, a, psi) sum(sapply((n+1):(a*(c-ce)), function(x) pcpsi(x, c, ce, a, psi)))
+
+pvinfpsi <- function(n,d, c, ce, a, psi) sum(sapply(0:(n-1), function(x) pvpsi(x, d, c, ce, a, psi)))
+
+pcparpsi <- function(n, d, c, ce, l, a, psi) { (sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * pvinfpsi(n,d, c, ce, a, psi)^(l-a) }
+
+ptotalpsi <- function (m, c, ce, l, a, psi) {
+	d = dens(m, l, a)
+	sum( sapply(1:(a*(c-ce)), function (x) pcparpsi(x, d, c, ce, l,a, psi)))^(c-ce)
+}
+
 #pvgc <- function (n, d, c, ce, g)  { x = n - (c-ce-1) - g ; choose(ce, x) * d^x * (1-d)^(ce-x) }
 #pvge <- function (n, d, c, ce) {  x = n - (c-ce); choose(ce-1, x) * d^x * (1-d)^(ce-1-x) }
 #pv<- function (x, d, c, ce) { choose(c-1, x) * d^x * (1-d)^(c-1-x) }
