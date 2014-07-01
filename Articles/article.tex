@@ -109,12 +109,14 @@
 	\maketitle
 
 	 \begin{abstract}
-	 	We extend recently introduced associative memories based on cliques to multipartite cliques. We propose a variant of the classic retrieving rule. We study their relative performance for retrieving partially erased and corrupted messages. We provide both analytical and simulation results showing improvements of capacity.
+	 	We extend recently introduced associative memories based on cliques to multipartite cliques. We propose a variant of the classic retrieving rule. We study their relative performance for retrieving partially erased and corrupted messages. We provide both analytical and simulation results showing improvements of capacity over.
 	 \end{abstract}
 	 
 	\keywords{associative memory, error correcting code, cliques, multipartite cliques, neural networks}
 	
 	\section{Introduction}
+	
+		
 	
 	\section{Networks of neural cliques}
 		
@@ -232,9 +234,9 @@
 	$P(n_v = x) = {a c_k \choose x} P_+^x (1-P_+)^{a c_k -x }$
 
 	% À corriger avec sommes multiparties
-	%\[P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \]	
+	%$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
 	
-	%\[P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a c_k} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}\]
+	%$P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a ( c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$
 	
 	Sans tenir compte du choix au hasard si plus sont activés.
 	
@@ -242,15 +244,15 @@
 	\newpage
 	l
 	\newpage
-	\[P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a c_k} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \]	
+	$P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a (c - c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
 	
-	\[P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n = 1}^{a c_k} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}\]	
+	$P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$	
 	
 	\newpage
 	a
 	\newpage
 	
-	Formula for errors insted of erasures : 
+	Formula for errors instead of erasures : 
 	
 	gc : good (à remplacer par right) neuron in correct cluster
 	

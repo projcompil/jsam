@@ -281,7 +281,7 @@ psupe <- function(n, d, c, ce, l, g, a) sum(sapply((n+1):(a*(c-1)+g), function(x
 pcpar <- function(n, d, c, ce, l, g, a) { (sum(sapply(0:(a-1), function(x) choose(a, x) * psupc(n,d,c,ce,l,g,a)^x * pvgc(n,d,c,ce,g,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce, a))) )^(l-a) }
 
 #pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:n-1, function(x) pv(x,d,c,ce,a))) )^(l-a-1) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a)))) }
-pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce,a))) )^max(0,(l-2*a)) * (sum (sapply(0:n-1, function(x) pvabe(x, d, c, ce,g,a))))^a }
+pepar<- function(n, d, c, ce, l, g, a) {  (sum(sapply(0:(a-1), function(x) choose(a, x) * psupe(n,d,c,ce,l,g,a)^x * pvge(n,d,c,ce,a)^(a-x) ))) * ( sum (sapply(0:(n-1), function(x) pv(x,d,c,ce,a))) )^max(0,(l-2*a)) * (sum (sapply(0:(n-1), function(x) pvabe(x, d, c, ce,g,a))))^a }
 
 ptotal <- function (m, c, ce, l, g, a) {
 	d= 1- (1-(a/l)^2)^m
@@ -297,18 +297,18 @@ pcpsi <- function(n, c, ce, a, psi) choose(a * (c- ce), n) * (1-psi)^n * psi^(a*
 pplus <- function (d, psi) psi * (1-d) + (1- psi) * d
 
 pvpsi <- function(x, d, c, ce, a, psi) {
-	p = pplus(d, psi) ;
-	choose(a * (c - ce), c) * p^x * (1-p)^(a*(c-ce) - x)
+	pp = pplus(d, psi) ;
+	choose(a * (c - ce), x) * pp^x * (1-pp)^(a*(c-ce) - x)
 }
 pcsuppsi <- function(n, c, ce, a, psi) sum(sapply((n+1):(a*(c-ce)), function(x) pcpsi(x, c, ce, a, psi)))
 
 pvinfpsi <- function(n,d, c, ce, a, psi) sum(sapply(0:(n-1), function(x) pvpsi(x, d, c, ce, a, psi)))
 
-pcparpsi <- function(n, d, c, ce, l, a, psi) { (sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * pvinfpsi(n,d, c, ce, a, psi)^(l-a) }
+pcparpsi <- function(n, d, c, ce, l, a, psi) { (sum(sapply(n:(a *(c-ce)), function(x)  pcpsi(n, c, ce, a, psi)))) * pvinfpsi(n,d, c, ce, a, psi)^(l-a) }#(sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * (pvinfpsi(n,d, c, ce, a, psi))^(l-a) }
 
 ptotalpsi <- function (m, c, ce, l, a, psi) {
 	d = dens(m, l, a)
-	sum( sapply(1:(a*(c-ce)), function (x) pcparpsi(x, d, c, ce, l,a, psi)))^(c-ce)
+	sum( sapply(1:(a*(c-ce)), function (x) pcparpsi(x, d, c, ce, l,a, psi)))^ce
 }
 
 #pvgc <- function (n, d, c, ce, g)  { x = n - (c-ce-1) - g ; choose(ce, x) * d^x * (1-d)^(ce-x) }
@@ -363,6 +363,25 @@ if (!is.null(opt$ther)) {
 		}
 	}
 }
+
+
+if (!is.null(opt$thpsi)) {
+	for (l in unique(data$l)) {
+		for (ci in unique(data$c)) {
+			for (erasures in unique(data$erasures)) {
+				for(psi in unique(data$pcons)) {
+					for(activities in unique(data$activities)) {
+						newd = data
+						newd$errorrate = sapply(data$m, function (x) { 1 - ptotalpsi(x, ci, erasures, l, activities, psi) })
+						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+					}
+				}
+			}
+		}
+	}
+}
+
+
 #if(!is.null(opt$ther) && !is.null(opt$erasures) && !is.null(opt$gamma) && !is.null(opt$gamma) && !is.null(opt$clusters) && !is.null(opt$neurons)) {
 #	newd = data
 #	newd$errorrate = sapply(data$m, function (x) { 1 - ptotal(x, opt$clusters, opt$erasures, opt$neurons, opt$gamma) })
