@@ -401,8 +401,9 @@ const dict_corrupt = [ 0 => erase_clusters!, 1 => corrupt_clusters!, 2 => add_on
 function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 0.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1, only_drop = false)
 	#res = mean(map( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size])) ### Pas efficace, pourquoi ?
 	res = zeros(6)
+	const real_gamma = (if gamma == -1 activities else gamma end)
 	for i=1:pool_size 
-		res += test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners)
+		res += test_network(l, c, m, real_gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners)
 	end
 	res /= pool_size
 
@@ -430,7 +431,7 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	iaeta = aeta / info_alphabet
 	ipeta = peta / info_alphabet
 	ipaeta = paeta / info_alphabet
-	return [ res[1] res[2] res[3] l c m gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet only_drop]
+	return [ res[1] res[2] res[3] l c m real_gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet only_drop]
 end
 
 #function set_proba(pr)

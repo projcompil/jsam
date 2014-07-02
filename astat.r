@@ -122,7 +122,7 @@ if(!is.null(opt$winners)) {
 		data = subset(data, winners == opt$winners)
 	}
 }
-#data = subset(data, maxiterations == 1 | maxiterations == 4)
+data = subset(data, maxiterations == 1 | maxiterations == 4)
 if(!is.null(opt$tests)) { data = subset(data, tests == opt$tests) }
 if(!is.null(opt$fsum)) { data = subset(data, fsum == opt$fsum) }
 if(!is.null(opt$fcorrupt)) { data = subset(data, fcorrupt == opt$fcorrupt) }
