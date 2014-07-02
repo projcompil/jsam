@@ -154,24 +154,20 @@
 
 	edge : $(i, j)$
 	
-	probability for $i$ and $j$ to be active in their respective clusters for one message : $\frac{a}{l}$
-	
-	probability of the edge	not being added in the network for one message : $1 - \left(\frac{a}{l}\right)^2$
+	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$, providing messages are independent, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Thus the density $d$ can be expressed like this :
 	
 			
 	\[ d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m \]
 	
-	gap with density in simulations : under $1$ percent
-	
-	probability for a vertex $v$ to achieve the maximum score, that is to mean $a(c-c_e)$ : $d^	{a(c-c_e)}$
+	Thanks to the memory effect $\gamma$, activated neurons in a non-erased cluster stays activated and are the only ones doing so in their cluster. For neurons in erased clusters, the maximum attainable score is $a(c - c_e)$. Neurons corresponding to the original message achieve this score. Besides the probability for a neuron $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^	{a(c-c_e)}$.
 	
 	probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
 	
-	probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum : $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$
+	Since neurons representing messages are independent (as messages are themselves independent), the probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum is $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$.
 	
-	probability for none of the vertices in any erased cluster, excepting the correct ones, to achieve the maximum in their respective cluster : $\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)}$
+	Scores in clusters being also independent, the probability for none of the vertices in any erased cluster, excepting the correct ones, to achieve the maximum in their respective clusters is $\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)}$.
 	
-	Whence error rate is : \[P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} \]
+	Whence error rate in retrieving messages is : \[P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} \]
 	
 	
 	$\eta_m = (P_{retrieve} m ) \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times \frac{c}{(c-c_e) \log_2{l \choose a }}$
@@ -179,6 +175,7 @@
 	$\eta_{max} = \max_x \eta_x $
 	
 	\subsubsection{Simulations}
+		gap of theoretical density with density in simulations : under $1$ percent
 		Improves the retrieval rate for multiple iterations and/or corrupted messages.
 		
 		The simulations agree with the analytical results for density and error rate.
@@ -203,7 +200,7 @@
 		\end{figure}
 			
 	\newpage
-	a
+	p
 	\newpage
 	
 	\subsection{Retrieving corrupted messages}
