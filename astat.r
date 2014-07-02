@@ -421,7 +421,7 @@ if (!is.null(opt$thd)) {
 }
 
 
-qpl <- qpl + labs(title = titre) + guides(colour = guide_legend(nrow = 2))
+qpl <- qpl + labs(title = titre) #+ guides(colour = guide_legend(nrow = 2))
 qpl #+ geom_bar()#+stat_smooth()
 #title(titre)
 temp <- data.frame(y = data[,1], x = data[,8])
