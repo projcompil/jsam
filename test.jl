@@ -29,7 +29,7 @@ function init_file(fileprefix, dir = "results")
 	#	"#Clique network parameters : fsum=$(fsum), fcorrupt=$(fcorrupt)\n"
 	const suffix = ".csv" #"$(fsum)__$(fcorrupt)"
 	const filename = "$(dir)/$(fileprefix)$suffix"
-	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy,retrievedproportion,eta,aeta,peta,paeta,ipeta,ipaeta,ieta,iaeta,infoalphabet,onlydrop\n"
+	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy,retrievedproportion,eta,aeta,peta,paeta,ipeta,ipaeta,ieta,iaeta,infoalphabet,onlydrop,rceta,psieta\n"
 	open(filename, "a") do file
 		write(file, firstline)
 	end
