@@ -310,3 +310,5 @@ qplot(m, 1 - sapply(m, function (x) ptotal(x, 8, 2, 512, 1, 2)))
  classification via plusieurs activités ? associer des classes
 
  essayer gamma = activities + 1
+
+ sparse + maximum proba possible

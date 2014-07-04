@@ -126,20 +126,25 @@
 	
 	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).
 	
-	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $1 \le j \le l$ and $1 \le i \le c$, the neuron $j$ in the cluster $i$ is activated if and only if $y_{i,j} = 1$ ; then adding all connections between activated neurons excepting for neurons sharing the same cluster. Thus we obtain a multipartite clique between activated neurons of message.
+	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $1 \le j \le l$ and $1 \le i \le c$, the neuron $j$ in the cluster $i$ is activated if and only if $y_{i,j} = 1$ ; then adding all connections between activated neurons excepting for neurons sharing the same cluster. Thus we obtain a multipartite clique between activated neurons representing a message. The parameter $a$ describing the number of activated neurons per cluster will be called number of activities.
 		
 	\subsection{Retrieving messages}	
-	
-		\subsubsection{The "winner takes all" rule}	
+		
+		Retrieving messages occurs by message passing.		
+		
+		\subsubsection{The "winner takes all" rule}
+		
+		take only maximum score
 	
 		\subsubsection{The "$a$ winners take all" rule}
+		
 		$a$-rank
 		
 		less biologically plausible rule
 		
 		same algorithmic complexity
 		
-		$w = a$	
+		$w = a$	is optimal
 
 	\section{Retrieval performance}	
 	
