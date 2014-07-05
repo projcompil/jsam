@@ -312,3 +312,5 @@ qplot(m, 1 - sapply(m, function (x) ptotal(x, 8, 2, 512, 1, 2)))
  essayer gamma = activities + 1
 
  sparse + maximum proba possible
+
+ introduire terme pour assurer reste activé

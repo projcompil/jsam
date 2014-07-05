@@ -307,7 +307,9 @@ pcsuppsi <- function(n, c, ce, a, psi) sum(sapply((n+1):(a*(c-ce)), function(x) 
 
 pvinfpsi <- function(n,d, c, ce, a, psi) sum(sapply(0:(n-1), function(x) pvpsi(x, d, c, ce, a, psi)))
 
-pcparpsi <- function(n, d, c, ce, l, a, psi) { (sum(sapply(n:(a *(c-ce)), function(x)  pcpsi(n, c, ce, a, psi)))) * pvinfpsi(n,d, c, ce, a, psi)^(l-a) }#(sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * (pvinfpsi(n,d, c, ce, a, psi))^(l-a) }
+pcparpsi <- function(n, d, c, ce, l, a, psi) { (sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * (pvinfpsi(n,d, c, ce, a, psi))^(l-a) }
+
+										#	function(x)  pcpsi(n, c, ce, a, psi)^a))) * pvinfpsi(n,d, c, ce, a, psi)^(l-a) }#(sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * (pvinfpsi(n,d, c, ce, a, psi))^(l-a) }
 
 ptotalpsi <- function (m, c, ce, l, a, psi) {
 	d = dens(m, l, a)
@@ -377,7 +379,7 @@ if (!is.null(opt$thpsi)) {
 				for(psi in unique(data$pcons)) {
 					for(activities in unique(data$activities)) {
 						newd = data
-						newd$errorrate = sapply(data$m, function (x) { 1 - ptotalpsi(x, ci, erasures, l, activities, psi) })
+						newd$errorrate = sapply(data$m, function (x) { ((1 - ptotalpsi(x, ci, erasures, l, activities, psi)/activities^2)) })
 						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
 					}
 				}
