@@ -167,7 +167,7 @@
 
 	edge : $(i, j)$
 	
-	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are independent, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Thus the density $d$ can be expressed like this :
+	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$ can be expressed like this :
 	
 			
 	\[ d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m \]
@@ -183,7 +183,8 @@
 	Whence error rate in retrieving messages is : \[P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} \]
 	
 	
-	$\eta_m = (P_{retrieve} m ) \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times \frac{c}{(c-c_e) \log_2{l \choose a }}$
+	$\eta_m = (P_{retrieve} m ) \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)}$
+	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
 	$\eta_{max} = \max_x \eta_x $
 	
@@ -279,6 +280,13 @@
 	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-2a} P(n_{abc} < n)^a \right ]^{c_e}
 	\end{align*}
 	
+
+	To be really precise : (ne pas oublier de tenir compte changement des lois)
+	\begin{align*}
+	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
+	 &\times \left [ \sum_{y = 0}^a \left( \frac{{l-y \choose a} - \sum_{z = y+1}^{a} {l-z \choose a }}{{l \choose a}}\right)\sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a - y} P(n_{abc} < n)^{a - y} \right ]^{c_e}
+	\end{align*}	
+	
 	$P_{err} = 1 - P_{retrieve}$	
 
 	See \ref{corruptth}
@@ -319,6 +327,8 @@
 	
 
 	Marche mieux pour des bruits importants
+	
+	$P(n_{v_c} = n_0 + \gamma ) = {a (c_k-1) \choose n_0} (1-\psi)^{n_0} \psi ^ { a (c_k-1) - n_0 }$	
 	
 	$P(n_{v_c} = n_0) = {a c_k \choose n_0} (1-\psi)^{n_0} \psi ^ { a c_k - n_0 }$
 	

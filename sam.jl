@@ -398,8 +398,8 @@ const dict_rules = [ 0 => sum_of_sum!, 1 => sum_of_max!, 2 => mix_of_rules! ]
 const dict_corrupt = [ 0 => erase_clusters!, 1 => corrupt_clusters!, 2 => add_one_in_clusters!, 3 => add_some_in_clusters! ]
 
 function xlog2(x)
-	if x == 0
-		0
+	if x == 0.0
+		0.0
 	else
 		x * log2(x)
 	end
