@@ -165,9 +165,9 @@
 	
 	density : $d$
 
-	edge : $(i, j)$
+	%edge : $(i, j)$
 	
-	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$ can be expressed like this :
+	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed like this :
 	
 			
 	\[ d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m \]
@@ -217,7 +217,14 @@
 		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
 			\label{erasuresth}
 		\end{figure}
-			
+		
+		
+		
+		\begin{figure}[!htb]
+		\includegraphics[width=8.5cm]{Courbes/5portant_erasures_c8l256}
+		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5}
+	\end{figure}
+	
 	\newpage
 	p
 	\newpage
@@ -273,8 +280,7 @@
 	
 	
 	\newpage
-	$\,$
-	\newpage	
+
 	\begin{align*}
 	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
 	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-2a} P(n_{abc} < n)^a \right ]^{c_e}
@@ -303,10 +309,7 @@
 	\end{figure}
 		
 		
-		\begin{figure}
-		\includegraphics[width=8.5cm]{Courbes/5portant_erasures_c8l256}
-		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5}
-	\end{figure}
+		
 		
 
 	
@@ -353,7 +356,7 @@
 	$\,$
 	\newpage
 	\begin{figure}
-		\includegraphics[width=8.5cm]{Courbes/4portant_psi_c8l256e4}
+		\includegraphics[width=8.5cm]{Courbes/5portant_psi_c8l256e4}
 		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks}
 	\end{figure}
 

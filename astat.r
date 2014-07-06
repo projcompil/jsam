@@ -260,10 +260,10 @@ if(!is.null(opt$ordstep)) {
    qpl <- qpl + scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 if(!is.null(opt$xlab)) {
-	qpl <- qpl + xlab(opt$xlab)
+	qpl <- qpl + xlab(opt$xlab)#expression(psi))#opt$xlab)
 }
 if(!is.null(opt$ylab)) {
-	qpl <- qpl + ylab(opt$ylab)
+	qpl <- qpl + ylab(opt$ylab)#expression(eta))#opt$ylab)
 }
 
 
