@@ -438,7 +438,7 @@ const real_gamma = (if (gamma == -1) activities elseif (gamma == -2) activities 
 	iaeta = aeta / info_alphabet
 	ipeta = peta / info_alphabet
 	ipaeta = paeta / info_alphabet
-	rceta = eta * exp(exp((log(m-1)- (c-erasures) * info_alphabet)))
+	rceta = eta * exp(exp2((log2(m-1)- (c-erasures) * info_alphabet)))
 	psieta = rceta / (1 + xlog2(p_cons) + xlog2(1-p_cons))
 	return [ res[1] res[2] res[3] l c m real_gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet only_drop rceta psieta ]
 end
