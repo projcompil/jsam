@@ -145,18 +145,21 @@
 	
 		\subsubsection{The "$a$ winners take all" rule}
 		
+
+		To fully exploit the local regularity of the code (constant weight of $a$), we make a small modification the classic retrieving rule	by keeping activated all neurons that achieve a score equal or greater than the score appearing in $a$-th position in the ordered array of scores.	
+		
 		$a$-rank
 		
-		less biologically plausible rule
+		Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $a$-th element in an array of $n$ elements is $O(n)$ in complexity.
 		
-		same algorithmic complexity
+		Intuitively the choice $w = a$ is optimal (it it is the most natural with $w = 1$)
 		
-		$w = a$	is optimal
 		\begin{algorithm}
 		\caption{$a$-sum of sum \label{asumsum}}
 		
-		\begin{algorithmic}
-		\Require{}
+		\begin{algorithmic}[1]
+		\Require{i}
+		\Procedure{Euclid}{$a,b$}
 		\Statex
 		\While{$s < I$}
 		\Let{a}{b}
@@ -168,6 +171,7 @@
     		\EndIf
 		\EndIf
 		\EndWhile
+		\EndProcedure
 		\end{algorithmic}
 		\end{algorithm}
 
@@ -293,9 +297,13 @@
 	
 	A message is retrieved after one iteration, if and only if correct neurons achieve strictly the best scores.	
 	
-	\begin{align}
-	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
-	\end{align}
+%	\begin{align}
+%	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
+%	\end{align}
+	
+	\begin{align*}
+	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n)  P(n_{bc} < n)^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) P(n_{bc} < n)^{l-2} P(n_{abc} < n) \right ]^{c_e}
+	\end{align*}
 
 	
 	%à changer : prendre en compte les $a$ neurones activés : problème des recouvrements !! on est trop optimiste si grand nombre d'activités (ou pessimiste ?)
@@ -395,7 +403,7 @@
 	\begin{figure}
 		
 		\includegraphics[scale=0.55]{Courbes/5portant_psi_c8l256e4}
-		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks \label{comppsi}}
+		\caption{Comparison of efficiencies between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks \label{comppsi}}
 	\end{figure}
 
 	We compute values represented on figure \ref{comppsi} by scanning on the number of messages, so as to find the maximum efficiency.	
