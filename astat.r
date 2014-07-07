@@ -387,7 +387,7 @@ if (!is.null(opt$thpsi)) {
 				for(psi in unique(data$pcons)) {
 					for(activities in unique(data$activities)) {
 						newd = data
-						newd$errorrate = sapply(data$m, function (x) { ((1 - ptotalpsi(x, ci, erasures, l, activities, psi)/activities^2)) })
+						newd$errorrate = sapply(data$m, function (x) { ((1 - ptotalpsi(x, ci, erasures, l, activities, psi))) })
 						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
 					}
 				}
