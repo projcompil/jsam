@@ -305,10 +305,16 @@ pvpsi <- function(x, d, c, ce, a, psi) {
 	pp = pplus(d, psi) ;
 	choose(a * (c - ce), x) * pp^x * (1-pp)^(a*(c-ce) - x)
 }
-pcsuppsi <- function(n, c, ce, a, psi) sum(sapply((n+1):(a*(c-ce)), function(x) pcpsi(x, c, ce, a, psi)))
-
-pvinfpsi <- function(n,d, c, ce, a, psi) sum(sapply(0:(n-1), function(x) pvpsi(x, d, c, ce, a, psi)))
-
+pcsuppsi <- function(n, c, ce, a, psi) {
+	if( n >= a * (c-ce)) { 0 } else {
+	sum(sapply((n+1):(a*(c-ce)), function(x) pcpsi(x, c, ce, a, psi)))
+	}
+}
+pvinfpsi <- function(n,d, c, ce, a, psi) {
+	if(n<1) { 0 } else {
+		sum(sapply(0:(n-1), function(x) pvpsi(x, d, c, ce, a, psi)))
+	}
+}
 pcparpsi <- function(n, d, c, ce, l, a, psi) { (sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * (pvinfpsi(n,d, c, ce, a, psi))^(l-a) }
 
 										#	function(x)  pcpsi(n, c, ce, a, psi)^a))) * pvinfpsi(n,d, c, ce, a, psi)^(l-a) }#(sum(sapply(0:(a-1), function(x) choose(a, x) * pcsuppsi(n, c, ce, a, psi)^x * pcpsi(n, c, ce, a, psi)^(a-x)))) * (pvinfpsi(n,d, c, ce, a, psi))^(l-a) }

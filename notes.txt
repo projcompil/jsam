@@ -333,4 +333,4 @@ tester sum of max !!
 
 
 
- f <- function(m, c, ce, l, a) { al = 1/choose(l,a) ; (sum(sapply((ce+1):c, function (k) (1-al)^k * al^(c-k))))^(m-1) }   : à rentrer pour comparer efficacités
+ f <- function(m, c, ce, l, a) { al = 1/choose(l,a) ; (sum(sapply((ce+1):c, function (k) choose(c, k) * (1-al)^k * al^(c-k))))^(m-1) }   : à rentrer pour comparer efficacités
