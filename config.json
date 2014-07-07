@@ -11,9 +11,9 @@
 			"only_drop" : false,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [1] },
+				"activities" : { "values" : [2,3,4] },
 				"m" : { 
-					"cvalues" : [125, 250,500],
+					"values" : [125, 250,500],
 					"range" : [1000, 1000, 20000]
 				},
 				"l" : { "values" : [256] },
