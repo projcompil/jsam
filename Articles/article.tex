@@ -69,6 +69,10 @@
 \renewcommand{\thesubsection}{\arabic{subsection}}
 \renewcommand{\thesubsubsection}{\alph{subsubsection}}
 
+\newcommand*\Let[2]{\State #1 $\gets$ #2}
+\algrenewcommand\algorithmicrequire{\textbf{Precondition:}}
+\algrenewcommand\algorithmicensure{\textbf{Postcondition:}}
+
 \newcommand{\fonction}[5]{\begin{array}{cllll}
 #1 & : & #2 & \longrightarrow & #3 \\
 &    & #4 & \longmapsto & #5 \end{array}}
@@ -154,7 +158,8 @@
 		\Require{}
 		\Statex
 		\While{step < I}
-		\If {$i\geq maxval$}
+		\Let{a}{b}
+		\If {$i\ge maxval$}
    	 	\State $i\gets 0$
 		\Else
     		\If {$i+k\leq maxval$}
@@ -205,7 +210,7 @@
 	
 	The network is a symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \approx m(c \log_2{l \choose a } - \log_2(m) + 1) $. The information effectively stored in the network is $P_{retrieve} \times m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2}$.
 	
-	Ambiguities would occur in a perfect associative memory if at least two messages would be identical over non-erased letters. The probability it doesn't happen is $ (1-{l \choose a}^{c - c_e})^{m-1}$.
+	Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{l \choose a}^{c - c_e})^{m-1}$.
 	
 	
 	$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)}$
@@ -216,9 +221,9 @@
 	\subsubsection{Simulations}
 		Theoretical and empirical densities match very closely, see Figure \ref{densiteth} %gap of theoretical density with density in simulations : under $1$ percent, 
 		
-		New rule : Improves the retrieval rate for multiple iterations and/or corrupted messages.
+		The variant rule improves the retrieval rate for multiple iterations and/or corrupted messages.
 		
-		The simulations agree with the analytical results for density and error rate.
+		The simulations agree with the analytical results for both density and error rate.
 	
 
 	For one iteration (for erasures, not for errors), winner takes all is the same as $a$-winners take all.
@@ -314,7 +319,7 @@
 	\end{align*}
 	
 
-	To be really precise : (ne pas oublier de tenir compte changement des lois)
+	To be really precise : (ne pas oublier de tenir compte changement des lois, formule inexacte pour l'instant)
 	\begin{align*}
 	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
 	 &\times \left [ \sum_{y = 0}^a \left( \frac{{l-y \choose a} - \sum_{z = y+1}^{a} {l-z \choose a }}{{l \choose a}}\right)\sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a - y} P(n_{abc} < n)^{a - y} \right ]^{c_e}
@@ -351,12 +356,12 @@
 	%Marche mieux pouur de petits c --> le faire sur le sparse ?
 	
 	\section{Resilience}
-	Spéculations en Français :
+	%Spéculations en Français 
+	%Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
-	
+	As information is shared accross connections with multiple activated neurons per cluster, they are more resilient to network damages.
 
-	Marche mieux pour des bruits importants
+	%Marche mieux pour des bruits importants
 	
 	$P(n_{v_c} = n_0 + \gamma ) = {a (c_k-1) \choose n_0} (1-\psi)^{n_0} \psi ^ { a (c_k-1) - n_0 }$	
 	
@@ -380,8 +385,8 @@
 	$P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$	
 	
 	\newpage
-	$\,$
-	\newpage
+	%$\,$
+	%\newpage
 	\begin{figure}
 		\includegraphics[scale=0.55]{Courbes/5portant_psi_c8l256e4}
 		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks}
@@ -389,6 +394,9 @@
 
 	Absolute values of slopes diminish for increasing number of activities (resilience is better)
 	
+	$\eta_{m, \psi} = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
+	
+	$\eta_\psi = max_x \eta_{x, \psi}$
 	
 	\nocite{*}
 	\bibliographystyle{plain} % Le style est mis entre crochets.
