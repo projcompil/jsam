@@ -329,3 +329,4 @@ essayer laplaciens graphes
 ./astat.r -f results/clique_results.csv --color activities --maxactivities 4 --fcolor -z erase_clusters! --shape maxiterations --mmiterations 4 -O --lines -d 0 --ord psieta -c 8 -l 256 --minpoolsize 5 -e 4 --abs pcons --ncolor Activities --nshape Iterations -S 0.01 --xlab psi
 
 
+tester sum of max !!

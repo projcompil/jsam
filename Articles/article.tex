@@ -172,7 +172,7 @@
 			
 	\[ d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m \]
 	
-	Thanks to the memory effect $\gamma$, activated neurons in a non-erased cluster stay activated and are the only ones doing so in their cluster. For neurons in erased clusters, the maximum attainable score is $a(c - c_e)$. Neurons corresponding to the original message achieve this score. Besides the probability for a neuron $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^	{a(c-c_e)}$.
+	Thanks to the memory effect $\gamma$, activated neurons in a non-erased cluster stay activated and are the only ones doing so in their cluster. For neurons in erased clusters, the maximum attainable score is $a(c - c_e)$. Neurons corresponding to the original message achieve this score. Besides the probability for a neuron $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
 	
 	%probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
 	
@@ -246,9 +246,11 @@
 	
 	bc : bad neuron in correct cluster
 	
+	Knowing the density of the network, we can compute the laws for scores achieved by different neurons in different clusters. Subscript $g$ will indicate a neuron being part of the message (it should be activated), subscript $b$ the contrary (the neuron should not be activated). Subscript $a$ means the neuron is activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
 	Correct neurons in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
+	Being connected to a given activated neuron occurs with probability $d$. However corrects neurons see their scores shift, as well as activated neurons respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
 	
-	$P(n_{gc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
+	$P(n_{agc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
 	
 	Correct neurons in corrupted clusters achieve at least a score of $a(c - c_e)$. 
 	
@@ -258,10 +260,10 @@
 	
 	$P(n_{be} = x) = P(n_{bc} = x) = {c - 1 \choose x} d^x (1-d)^{c- 1 -x}$
 	
-	
+	A message is retrieved after one iteration, if and only if correct neurons achieve strictly the best scores.
 	
 	\begin{align}
-	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{gc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
+	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
 	\end{align}
 
 	
@@ -269,7 +271,7 @@
 	
 	generalisation to multiple activities per cluster :
 	
-	$P(n_{gc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
+	$P(n_{agc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
 	
 	$P(n_{ge} = a(c - c_e) + x) = {a (c_e - 1) \choose x} d^x (1-d)^{a (c_e - 1)-x}$
 	
@@ -282,7 +284,7 @@
 	\newpage
 
 	\begin{align*}
-	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
+	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = n)^k P(n_{agc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
 	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-2a} P(n_{abc} < n)^a \right ]^{c_e}
 	\end{align*}
 	
@@ -356,13 +358,14 @@
 	$\,$
 	\newpage
 	\begin{figure}
-		\includegraphics[width=8.5cm]{Courbes/5portant_psi_c8l256e4}
+		\includegraphics[scale=0.55]{Courbes/5portant_psi_c8l256e4}
 		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks}
 	\end{figure}
 
+	Absolute values of slopes diminish for increasing number of activities (resilience is better)
 	
 	
 	\nocite{*}
-	\bibliographystyle{numeric} % Le style est mis entre crochets.
-         \bibliography{bibli.bib}
+	\bibliographystyle{plain} % Le style est mis entre crochets.
+         \bibliography{bibli}
 \end{document}
