@@ -213,7 +213,7 @@
 	Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{l \choose a}^{c - c_e})^{m-1}$.
 	
 	
-	$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)}$
+	$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-(\frac{1}{{l \choose a}})^{c - c_e})^{-(m-1)}$
 	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
 	$\eta_{max} = \max_x \eta_x $
@@ -301,7 +301,11 @@
 	
 	generalisation to multiple activities per cluster :
 	
+	For example an \textbf{a}ctivated \textbf{g}ood neuron in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated neuron in an erroneous cluster is $d$. Thereby its law is :
+	
 	$P(n_{agc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
+	
+	The other laws are also easily expressed : 
 	
 	$P(n_{ge} = a(c - c_e) + x) = {a (c_e - 1) \choose x} d^x (1-d)^{a (c_e - 1)-x}$
 	
@@ -312,7 +316,7 @@
 	
 	
 	\newpage
-
+	
 	\begin{align*}
 	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = n)^k P(n_{agc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
 	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-2a} P(n_{abc} < n)^a \right ]^{c_e}
@@ -340,7 +344,7 @@
 		\label{corruptth}
 	\end{figure}
 		
-		
+		$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{l \choose a}} \right )^k \left (\frac{1}{{l \choose a}} \right )^{c-k} \right ] ^{-(m-1)}$
 		
 		
 
