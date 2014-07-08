@@ -386,11 +386,11 @@
 	$P(n_v = x) = {a c_k \choose x} P_+^x (1-P_+)^{a c_k -x }$
 
 	% À corriger avec sommes multiparties
-	%$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
+	$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
 	
-	%$P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a ( c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$
+	% Approx : ?! $P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a ( c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$
 	
-	Sans tenir compte du choix au hasard si plus sont activés.
+	Sans tenir compte du choix au hasard si plus sont activés. Pour une itération $\gamma = \infty$. Pour plusieurs $\gamma = 1$.
 	
 		a priori for noise on edges :
 
@@ -403,7 +403,7 @@
 	%\newpage
 	\begin{figure}
 		
-		\includegraphics[scale=0.55]{Courbes/5portant_psi_c8l256e4}
+		\includegraphics[scale=0.50]{Courbes/5portant_psi_c8l256e4}
 		\caption{Comparison of efficiencies between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks \label{comppsi}}
 	\end{figure}
 
@@ -416,6 +416,20 @@
 	$\eta_{m, \psi} = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
 	
 	$\eta_\psi = max_x \, \eta_{x, \psi}$
+	
+	\section{Maximum theoretical efficiency}
+		\begin{align*}
+			H(M) = m c \log_2 {l \choose a}\\
+			d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m\\
+			M \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}\\
+			\log_2 {l \choose a} = k c\\
+			\eta \sim c \log_2 {l \choose a} \log2(1-d) \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}\\
+			\eta \sim - 2 k  \log_2 ((1-d)a^{-2}\log 2\\
+			P_{\exists e} \le {l \choose a}^c d^{a^2 {c \choose 2}} = 2^{c \log_ 2 {l \choose a} + a^2 {c \choose 2 }\log_2(d)} \approx 2^{c^2(k + \frac{a^2}{2} \log_2 (d))}\\
+			k^* = -\frac{a^2}{2} \log_2 (d)\\
+			\eta \sim \log_2 d \log_2 (1-d) \log 2\\
+			\eta_{max} \rightarrow \log 2
+		\end{align*}
 	
 	\nocite{*}
 	\bibliographystyle{plain} % Le style est mis entre crochets.
