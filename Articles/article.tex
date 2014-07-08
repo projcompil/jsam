@@ -401,6 +401,12 @@
 	\newpage
 	%$\,$
 	%\newpage
+	\begin{figure}[!htb]
+		\includegraphics[width=8.5cm]{Courbes/thpsi_c8l256e4}
+		\caption{2 activities per cluster, 8 clusters, 256 neurons per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
+		\label{psith}
+	\end{figure}
+	
 	\begin{figure}
 		
 		\includegraphics[scale=0.50]{Courbes/5portant_psi_c8l256e4}
@@ -419,7 +425,7 @@
 	
 	\section{Maximum theoretical efficiency}
 		\begin{align*}
-			H(M) = m c \log_2 {l \choose a}\\
+			H(M) \approx m c \log_2 {l \choose a}\\
 			d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m\\
 			M \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}\\
 			\log_2 {l \choose a} = k c\\
