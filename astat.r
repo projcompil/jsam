@@ -101,6 +101,8 @@ noms = names(data)
 ## Solution la plus élégante trouvée : repassée à la version précédente de R, whaaaa !
 
 
+#data = subset(data, (gamma == 1 & maxiterations == 4) || (gamma > 50 & maxiterations == 1))
+
 data[data$winners == 0,]$winners <-  data[data$winners == 0,]$activities
 
 

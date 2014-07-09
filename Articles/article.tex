@@ -146,21 +146,21 @@
 		\subsubsection{The "$a$ winners take all" rule}
 		
 
-		To fully exploit the local regularity of the code (constant weight of $a$), we make a small modification the classic retrieving rule	by keeping activated all neurons that achieve a score equal or greater than the score appearing in $a$-th position in the ordered array of scores.	
+		To fully exploit the local regularity of the code (constant weight of $a$), we make a small modification the classic retrieving rule	by keeping activated all neurons that achieve a score equal or greater than the score appearing in $w$-th position in the ordered array of scores (where $w$ is a positive integer parameter)
 		
-		$a$-rank
+		%$a$-rank
 		
-		Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $a$-th element in an array of $n$ elements is $O(n)$ in complexity.
+		Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th element in an array of $n$ elements is $O(n)$ in complexity.
 		
-		Intuitively the choice $w = a$ is optimal (it it is the most natural with $w = 1$)
+		Intuitively the choice $w = a$ is optimal (it it is the most natural with $w = 1$).
 		
 		\begin{algorithm}
-		\caption{$a$-sum of sum \label{asumsum}}
+		\caption{$w$-sum of sum \label{asumsum}}
 		
 		\begin{algorithmic}[1]
-		\Require{i}
-		\Procedure{Euclid}{$a,b$}
-		\Statex
+		\Require{$v$ a binary array of length $n = c\cdot l$}
+		\Procedure{Sum of sum}{$v, w$}
+		%\Statex
 		\While{$s < I$}
 		\Let{a}{b}
 		\If {$i\ge maxval$}
