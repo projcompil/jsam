@@ -153,7 +153,7 @@
 		Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th element in an array of $n$ elements is $O(n)$ in complexity.
 		
 		Intuitively the choice $w = a$ is optimal (it it is the most natural with $w = 1$).
-		
+		The following is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		\begin{algorithm}
 		\caption{$w$-sum of sum \label{asumsum}}
 		
@@ -161,8 +161,7 @@
 		\Require{$v$ a binary array of length $n = c\cdot l$, $W$ the weight matrix representing the network}
 		\Procedure{Sum of sum}{$v, W, \gamma, S, w$}
 		%\Statex
-		\Let{s}{1}
-		\While{$s \le S$}
+		\For{$s$ from $1$ to S}
 		\State $s = \gamma v + W v$
 		\For{$i$ from $1$ to $c$}
 			\Let{treshold}{Select(s[$i$], $w$)} \Comment{Select(t, w) returns the element that would be in rank $w$ if the array t was sorted}
@@ -170,8 +169,7 @@
 			\Let{$v[i][j]$}{$s[i][j]$ $\ge$ treshold}
 			\EndFor
 		\EndFor
-		\Let{s}{s+1}
-		\EndWhile
+		\EndFor
 		\State\Return v
 		\EndProcedure
 		\end{algorithmic}
