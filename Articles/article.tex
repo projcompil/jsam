@@ -394,7 +394,7 @@
 	
 		a priori for noise on edges :
 
-	$P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a (c - c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
+	$P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a (c - c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] P(n_v < n)^{l-a}$%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
 	
 	$P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$	
 	
@@ -427,7 +427,7 @@
 		\begin{align*}
 			H(M) \approx m c \log_2 {l \choose a}\\
 			d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m\\
-			M \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}\\
+			m \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}\\
 			\log_2 {l \choose a} = k c\\
 			\eta \sim c \log_2 {l \choose a} \log2(1-d) \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}\\
 			\eta \sim - 2 k  \log_2 ((1-d)a^{-2}\log 2\\

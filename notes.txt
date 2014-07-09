@@ -1,20 +1,8 @@
- Marche pas :Diffusion supplémentaire inefficace dans le cadre d'Erdo-R.
- /// bof : Ceci dit, cela ne semble pas heurter utiliser avec mix-of_rules.
-
-Mauvaise idée ? Difficile à synchroniser, on ne sait pas quand un neurone va recevoir le bon message.
-
-
-
-
 Activités variables
-tracer densité
+
 
 Essayer autres erreurs
 
-
-sum_of_max! pour corriger des erreurs ?
-
-1 iteration max
 
  ./astat.r -f results/newclique.csv --color fcorrupt --abs efficiency -W 0  --shape activities -s sum_of_sum!  --lines -S 0.03 -I 1  -E 0.1 -e 12
 
@@ -36,41 +24,15 @@ x = seq(500, 15000, by = 500)
 
 
 
-
-
-4 x 512 ->>>> théorique +
-winner takes all ? formule trouvée ? OK
-winners take all -->> pareil pour une itération avec des effacements
-
-
 sparse -> Ala pour les règles
-
-Commencer écriture
 
 Austin --> lire
 
-
-Mail vers mercredi
-
-Multiplier efficacité par proba retrieve / proba succès maxi (sur tous les messages) ::: tracer les 2 
-maximum sur tous le nbres de messages possibles 
-3d
-
-une courbe effacements 1,2
-une courbes intérêt déc via erreurs
-
-une courbe résumé avec nouvelle notion efficacité
-
-Modifier script R pour tracer courbes théoriques !!!!
-
-Tracer densité théorique et réelle pour les comparer 
 
 Faire write csv avec R pour obtenir la bonne efficacité, puis la rajouter dans Julia
 
 Essayer winner takes all/ comparer au théorique
 
-Explication phénomène effi > 1 ???!!!
-Plus d'iter n'aident pas trop
 
 forumle théorique trouvée ! :  p <- function(d, l, c, ce, a) 1 - (1-d^(a * (c - ce)))^(ce * (l-a))
 
@@ -145,9 +107,6 @@ différentes probas d'activités.
 
  Pour les erreurs, prendre gamma = n activités
 
- tester gamma = 2 avec bruit (psi)
-
- essayer 1 activité, gamma = 2,3
 
 
  pvc(x, d, ce) = binomial(ce, x) * d^x * (1-d)^(ce - x)
@@ -160,8 +119,6 @@ function pr(m, l, c, ce)
            (sum( map(n -> ppar(n, d, c, ce, l), [1:c-1])))^ce
        end
 using PyPlot
-INFO: Loading help data...
-^[[A^[[AWarning: using PyPlot.hist2d in module Main conflicts with an existing identifier.
 
 density(m, l) = 1 - (1-1/l^2)^m
 julia> plot(m, 1 - map(m) do a pr(a, 512, 4, 1) end)
