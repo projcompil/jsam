@@ -158,19 +158,21 @@
 		\caption{$w$-sum of sum \label{asumsum}}
 		
 		\begin{algorithmic}[1]
-		\Require{$v$ a binary array of length $n = c\cdot l$}
-		\Procedure{Sum of sum}{$v, w$}
+		\Require{$v$ a binary array of length $n = c\cdot l$, $W$ the weight matrix representing the network}
+		\Procedure{Sum of sum}{$v, W, \gamma, S, w$}
 		%\Statex
-		\While{$s < I$}
-		\Let{a}{b}
-		\If {$i\ge maxval$}
-   	 	\State $i\gets 0$
-		\Else
-    		\If {$i+k\leq maxval$}
-        	\State $i\gets i+k$ \Comment{$\oplus$: bitwise exclusive-or}
-    		\EndIf
-		\EndIf
+		\Let{s}{1}
+		\While{$s \le S$}
+		\State $s = \gamma v + W v$
+		\For{$i$ from $1$ to $c$}
+			\Let{treshold}{Select(s[$i$], $w$)} \Comment{Select(t, w) returns the element that would be in rank $w$ if the array t was sorted}
+			\For{$j$ from $1$ to $l$}
+			\Let{$v[i][j]$}{$s[i][j]$ $\ge$ treshold}
+			\EndFor
+		\EndFor
+		\Let{s}{s+1}
 		\EndWhile
+		\State\Return v
 		\EndProcedure
 		\end{algorithmic}
 		\end{algorithm}
