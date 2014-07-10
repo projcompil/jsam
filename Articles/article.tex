@@ -162,7 +162,7 @@
 		\Procedure{Sum of sum}{$v, W, \gamma, S, w$}
 		%\Statex
 		\For{$s$ from $1$ to S}
-		\State $s = \gamma v + W v$
+		\State $s \gets \gamma v + W v$
 		\For{$i$ from $1$ to $c$}
 			\Let{treshold}{Select(s[$i$], $w$)} \Comment{Select(t, w) returns the element that would be in rank $w$ if the array t was sorted}
 			\For{$j$ from $1$ to $l$}
@@ -170,7 +170,7 @@
 			\EndFor
 		\EndFor
 		\EndFor
-		\State\Return v
+		%\State\Return v
 		\EndProcedure
 		\end{algorithmic}
 		\end{algorithm}
@@ -182,25 +182,27 @@
 		
 	\subsubsection{Analytical result}
 		
-	number of neurons per cluster $l$
+	%number of neurons per cluster $l$
 	
-	number of clusters $c$
+	%number of clusters $c$
 	
-	number of erased clusters $c_e$
+	%number of erased clusters $c_e$
 	
-	number of messages : $m$
+	%number of messages : $m$
 	
-	number of activities per cluster : $a$
+	%number of activities per cluster : $a$
 	
-	density : $d$
+	%density : $d$
 	
 	%edge : $(i, j)$
 	Suppose we are trying to recover a message where $c_e$ clusters have been erased.
 	
 	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed like this :
 	
-			
-	\[ d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m \]
+	\begin{align}
+		\label{formula_density}
+		d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m 
+	\end{align}		
 	
 	Thanks to the memory effect $\gamma$, activated neurons in a non-erased cluster stay activated and are the only ones doing so in their cluster. For neurons in erased clusters, the maximum attainable score is $a(c - c_e)$. Neurons corresponding to the original message achieve this score. Besides the probability for a neuron $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
 	
@@ -214,7 +216,7 @@
 	
 	We define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and recover messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
-	The network is a symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \approx m(c \log_2{l \choose a } - \log_2(m) + 1) $. The information effectively stored in the network is $P_{retrieve} \times m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2}$.
+	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \approx m(c \log_2{l \choose a } - \log_2(m) + 1) $. The information effectively stored in the network is $P_{retrieve} \times m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2}$.
 	
 	Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{l \choose a}^{c - c_e})^{m-1}$.
 	
@@ -222,31 +224,30 @@
 	$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-(\frac{1}{{l \choose a}})^{c - c_e})^{-(m-1)}$
 	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
-	$\eta_{max} = \max_x \eta_x $
+	The maximum information that can be stored in the network is therefore $\eta = \max_x \eta_x $.
 	
 	\subsubsection{Simulations}
-		Theoretical and empirical densities match very closely, see Figure \ref{densiteth} %gap of theoretical density with density in simulations : under $1$ percent, 
+		Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
 		
-		The variant rule improves the retrieval rate for multiple iterations and/or corrupted messages.
 		
-		The simulations agree with the analytical results for both density and error rate.
+		
+		Simulations agree with the analytical results for error rate, see Figure \ref{erasuresth}.
 	
 
-	For one iteration (for erasures, not for errors), winner takes all is the same as $a$-winners take all.
+	For one iteration (for erasures, not for errors), "winner takes all" is the same as "$a$-winners take all".
 	
 	For multiple iterations $a$-winners take all is a significant improvement.
+	%The variant of the rule significantly improves the retrieval rate over multiple iterations. (For one iteration, is is the same as taking only maximum scores.)
 	
-	See Figure \ref{erasuresth}	
+	%See Figure \ref{erasuresth}	
 	
-		"$a$-winners take all" better than "winner takes all" with errors instead of erasures, even for one iteration.
-	
-	For errors : only better than only 1 activity per cluster if multiple iterations of the $a$-winners take all rule.
-	For one iteration, it is less efficient.
+		
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/densiteexemple.pdf}
 		\caption{Theoretical and empirical densities}
 			\label{densiteth}
 	\end{figure}
+	
 	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_figure2g1} %{comparaison_regles_pool5_a2c4l512e2}
@@ -254,18 +255,19 @@
 			\label{erasuresth}
 		\end{figure}
 		
-		
+		Figure \ref{comperth} shows improvements in capacities over unipartite cliques network. The more the problem is difficult, the more redundancies introduced by multipartite cliques are useful.
 		
 		\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/5portant_erasures_c8l256}
 		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5}
+		\label{comperth}
 	\end{figure}
-	
-	\newpage
-	p
-	\newpage
-	$\,$
-	\newpage
+%	
+%	\newpage
+%	$\,$
+%	\newpage
+%	$\,$
+%	\newpage
 	
 	\subsection{Retrieving corrupted messages}
 	
@@ -282,9 +284,9 @@
 	
 	bc : bad neuron in correct cluster
 	
-	Knowing the density of the network, we can compute the laws for scores achieved by different neurons in different clusters. Subscript $g$ will indicate a neuron being part of the message (it should be activated), subscript $b$ the contrary (the neuron should not be activated). Subscript $a$ means the neuron is activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
+	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute the laws of probabilities for scores achieved by different type of neurons in different clusters. We can divide neurons in 5 groups. Subscript $g$ will indicate a neuron being part of the message (it should be activated), subscript $b$ the contrary (the neuron should not be activated). Subscript $a$ means the neuron is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
 	Correct neurons in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
-	Being connected to a given activated neuron occurs with probability $d$. However corrects neurons see their scores shift, as well as activated neurons respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
+	Being connected to a given activated neuron in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover corrects neurons see their scores shift, as do all activated neurons respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
 	
 	$P(n_{agc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
 	
@@ -292,7 +294,9 @@
 	
 	$P(n_{ge} = (c - c_e) + x) = {c_e - 1 \choose x} d^x (1-d)^{c_e-1-x}$
 	
+	Activated neurons benefits of the memory effect $\gamma$ :	
 	$P(n_{abe} = \gamma + x) = {c - 1 \choose x} d^x (1-d)^{c-1-x}$
+	
 	
 	$P(n_{be} = x) = P(n_{bc} = x) = {c - 1 \choose x} d^x (1-d)^{c- 1 -x}$
 	
@@ -323,9 +327,7 @@
 	
 	$P(n_{be} = x) = P(n_{bc} = x) = {a(c - 1) \choose x} d^x (1-d)^{a(c- 1) -x}$	
 
-	
-	
-	\newpage
+
 	
 	\begin{align*}
 	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = n)^k P(n_{agc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
@@ -333,21 +335,26 @@
 	\end{align*}
 	
 
-	To be really precise : (ne pas oublier de tenir compte changement des lois, formule inexacte pour l'instant)
-	\begin{align*}
-	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
-	 &\times \left [ \sum_{y = 0}^a \left( \frac{{l-y \choose a} - \sum_{z = y+1}^{a} {l-z \choose a }}{{l \choose a}}\right)\sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a - y} P(n_{abc} < n)^{a - y} \right ]^{c_e}
-	\end{align*}	
+%	To be really precise : (ne pas oublier de tenir compte changement des lois, formule inexacte pour l'instant)
+%	\begin{align*}
+%	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{gc} = n)^k P(n_{gc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
+%	 &\times \left [ \sum_{y = 0}^a \left( \frac{{l-y \choose a} - \sum_{z = y+1}^{a} {l-z \choose a }}{{l \choose a}}\right)\sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a - y} P(n_{abc} < n)^{a - y} \right ]^{c_e}
+%	\end{align*}	
 	
 	$P_{err} = 1 - P_{retrieve}$	
 
-	See \ref{corruptth}
+	
 	
 	\newpage
 	$\,$
 	\newpage	
 	
 	\subsubsection{Simulations}
+	See Figure \ref{corruptth}
+	"$a$-winners take all" better than "winner takes all" with errors instead of erasures, even for one iteration.
+	
+	For errors : only better than only 1 activity per cluster if multiple iterations of the $a$-winners take all rule.
+	For one iteration, it is less efficient.
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_figure3g1}
 		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, one erroneous cluster, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
@@ -358,16 +365,6 @@
 		
 		
 
-	
-	
-	
-
-	
-	\section{Conclusion}	
-	
-	
-	
-	%Marche mieux pouur de petits c --> le faire sur le sparse ?
 	
 	\section{Resilience}
 	%Spéculations en Français 
@@ -436,6 +433,17 @@
 			\eta \sim \log_2 d \log_2 (1-d) \log 2\\
 			\eta_{max} \rightarrow \log 2
 		\end{align*}
+	
+		Multipartite cliques don't improve theoretical efficiency (for not accepting messages that weren't previously seen by the network)
+
+	
+	\section{Conclusion}	
+	
+	
+	
+	%Marche mieux pouur de petits c --> le faire sur le sparse ?
+	
+	
 	
 	\nocite{*}
 	\bibliographystyle{plain} % Le style est mis entre crochets.
