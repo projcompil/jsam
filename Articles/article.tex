@@ -58,6 +58,8 @@
 \renewcommand{\L}[1]{L^{#1} (\R )}
 \newcommand{\leg}[2]{\left(\dfrac{#1}{#2}\right)}
 
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+
 \newcommand{\vect}[1]{\overrightarrow{#1}}
 \newcommand{\disp}[1]{\displaystyle{#1}}
 
@@ -129,7 +131,7 @@
 		
 	\subsection{Learning messages}
 		
-	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or neurons. 
+	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or neurons. Messages are considered independent and identically distributed.
 	
 	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).
 	
@@ -328,10 +330,10 @@
 
 
 	
-	\begin{align}
+	\begin{align*}
 	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = n)^k P(n_{agc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
-	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{be} < n)^{l-2a} P(n_{abe} < n)^a \right ]^{c_e}
-	\end{align}
+	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{be} < n)^{l-2a} P(n_{abe} < n)^a \right ]^{c_e} \numberthis \label{from_err_th}
+	\end{align*}
 	
 
 %	To be really precise : (ne pas oublier de tenir compte changement des lois, formule inexacte pour l'instant)
@@ -367,24 +369,20 @@
 	%Spéculations en Français 
 	%Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	As information is shared accross connections with multiple activated neurons per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct neuron that should be activated, $v$ the other type of neurons.
+	As information is shared across connections with multiple activated neurons per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct neuron that should be activated, $v$ the other type of neurons.
 	
 	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges.
 	
 	%gamma = infini meilleur sur une itération
+	With probability $1 - \psi$, the correct vertex is still connected to a given activated neuron in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
 	
-	$P(n_{v_c} = x + \gamma ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
+	%$P(n_{v_c} = x) = {a c_k \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e) - x }$
 	
-	$P(n_{v_c} = x) = {a c_k \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e) - x }$
+	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$. So for other neurons $P(n_v = x) = {a (c - c_e) \choose x} P_+^x (1-P_+)^{a (c - c_e) -x }$.
 	
-	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$.
-	
-	
-	$P(n_v = x) = {a c_k \choose x} P_+^x (1-P_+)^{a c_k -x }$
-
 	% À corriger avec sommes multiparties
-	$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
-	
+%	$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
+%	
 	% Approx : ?! $P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a ( c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$
 	
 	Sans tenir compte du choix au hasard si plus sont activés. Pour une itération $\gamma = \infty$. Pour plusieurs $\gamma = 1$.
