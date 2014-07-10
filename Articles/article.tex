@@ -369,13 +369,16 @@
 	
 	As information is shared accross connections with multiple activated neurons per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct neuron that should be activated, $v$ the other type of neurons.
 	
-	Our deviation model is drawn from \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}.
+	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges.
+	
+	%gamma = infini meilleur sur une itération
 	
 	$P(n_{v_c} = x + \gamma ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
 	
 	$P(n_{v_c} = x) = {a c_k \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e) - x }$
 	
-	$P_+ = \psi (1 - d) + (1 - \psi) d$
+	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$.
+	
 	
 	$P(n_v = x) = {a c_k \choose x} P_+^x (1-P_+)^{a c_k -x }$
 
@@ -390,8 +393,11 @@
 
 	$P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a (c - c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] P(n_v < n)^{l-a}$%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
 	
-	$P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] \left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$	
-	
+	%P(\mbox{no other vertex activated in any cluster})
+	\begin{align*}
+	P_{retrieve}=  \Bigg ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ]\\
+	\left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \Bigg)^{c_e}	
+	\end{align*}
 	\newpage
 	%$\,$
 	%\newpage
