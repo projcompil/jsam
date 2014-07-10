@@ -133,7 +133,7 @@
 		
 	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or neurons. Messages are considered independent and identically distributed.
 	
-	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).
+	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
 	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $1 \le j \le l$ and $1 \le i \le c$, the neuron $j$ in the cluster $i$ is activated if and only if $y_{i,j} = 1$ ; then adding all connections between activated neurons excepting for neurons sharing the same cluster. Thus we obtain a multipartite clique between activated neurons representing a message. The parameter $a$ describing the number of activated neurons per cluster will be called number of activities.
 		
@@ -158,7 +158,6 @@
 		The following is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		\begin{algorithm}
 		\caption{$w$-sum of sum \label{asumsum}}
-		
 		\begin{algorithmic}[1]
 		\Require{$v$ a binary array of length $n = c\cdot l$, $W$ the binary weight matrix representing the network}
 		\Procedure{Sum of sum}{$v, W, \gamma, S, w$}
@@ -197,6 +196,8 @@
 	%density : $d$
 	
 	%edge : $(i, j)$
+	We generalise results on erasures obtained in \cite{GriBer20117} to multipartie cliques.
+	
 	Suppose we are trying to recover a message where $c_e$ clusters have been erased.
 	
 	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed like this :
@@ -256,7 +257,7 @@
 	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_figure2g1} %{comparaison_regles_pool5_a2c4l512e2}
-		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
+		\caption{Evolution of error rate for increasing number of stored messages, 2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
 			\label{erasuresth}
 		\end{figure}
 		
@@ -276,7 +277,7 @@
 	
 	\subsection{Retrieving corrupted messages}
 	
-	\subsubsection{Analytical result}	
+	\subsubsection{Analytical result}
 %	Formula for errors instead of erasures : 
 %	
 %	gc : good (à remplacer par right/wrong ?) neuron in correct cluster
@@ -288,7 +289,10 @@
 %	be : others bad (à remplacer par wrong ou incorrect etc.) neurons in erroneous cluster
 %	
 %	bc : bad neuron in correct cluster
-	Messages can be corrupted, our models for errors is : fix $c_e$ the number of erroneous clusters, we draw at random $c_e$ clusters and in each of these draw at random, uniformly, a new letter in the alphabet that will replace the old one (it could be the same).
+	
+	We provide a formula for error rate in case of messages with corrupted clusters.
+
+	Messages can be corrupted, our models for errors is : given $c_e$ the number of erroneous clusters, we draw at random $c_e$ clusters and in each of these draw at random, uniformly, a new letter in the alphabet that will replace the old one (it could be the same).
 	
 	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute the laws of probabilities for scores achieved by different type of neurons in different clusters. We can divide neurons in 5 groups. Subscript $g$ will indicate a neuron being part of the message (it should be activated), subscript $b$ the contrary (the neuron should not be activated). Subscript $a$ means the neuron is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
 	Correct neurons in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
@@ -371,7 +375,7 @@
 	
 	As information is shared across connections with multiple activated neurons per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct neuron that should be activated, $v$ the other type of neurons.
 	
-	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges.
+	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges. We generalise results of \cite{LedGriRabGro20145} to multipartite cliques.
 	
 	%gamma = infini meilleur sur une itération
 	With probability $1 - \psi$, the correct vertex is still connected to a given activated neuron in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
@@ -413,7 +417,7 @@
 
 	We compute values represented on figure \ref{comppsi} by scanning on the number of messages, so as to find the maximum efficiency.	
 	
-	After a transition, efficiencies seem to follow a linear decreasing low according to $\psi$.	
+	After a transition, efficiencies seem to follow a linear decreasing low according to $\psi$.
 	
 	Absolute values of slopes diminish for increasing number of activities per cluster. We can conclude multipartite cliques improve the resilience of the network.
 	
@@ -424,7 +428,7 @@
 	
 	Figure \ref{comppsi} seems to indicate a linear relationship (after a transition for multiple activities) between $\eta_\psi -\eta_0$ and $\psi$.
 	\section{Maximum theoretical efficiency}
-		It was shown in \cite{oo}, asymptotic capacities of clique networks is $\log 2$. We generalise this result to multipartite cliques.
+		It was shown in \cite{oo} that maximal asymptotic capacity of clique networks is $\log 2$. We generalise this result to multipartite cliques.
 		
 		The entropy of the messages set can be approximated as $H(\mathcal{M}) \approx m c \log_2 {l \choose a}$. From $d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m$, we can deduce $m \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}$.
 		We set $\log_2 {l \choose a} = k c$ (otherwise density approaches $0$ or $1$, and efficiency $0$). It follows that $\eta \sim c \log_2 {l \choose a} \log2(1-d) \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}$. 
@@ -433,7 +437,7 @@
 		
 		We can bound the probability $P_{\exists e}$ for a message being "present" in the network, that is to mean adding it will not add any edge to the network. By union-bound $P_{\exists e} \le {l \choose a}^c d^{a^2 {c \choose 2}} = 2^{c \log_ 2 {l \choose a} + a^2 {c \choose 2 }\log_2(d)} \approx 2^{c^2(k + \frac{a^2}{2} \log_2 (d))}$.
 		
-		Fixing $k^* = -\frac{a^2}{2} \log_2 (d)$ gives us $\eta \sim \log_2 d \log_2 (1-d) \log 2$ and therefore \[\eta_{max} = \log 2\]
+		Fixing $k^* = -\frac{a^2}{2} \log_2 (d)$ gives us $P_{\exists e}$ and $\eta \sim \log_2 d \log_2 (1-d) \log 2$ and therefore \[\eta_{max} = \log 2\]
 	
 		Multipartite cliques don't improve theoretical efficiency (for not accepting messages that weren't previously seen by the network)
 
@@ -442,7 +446,7 @@
 	
 	
 	
-	%Marche mieux pouur de petits c --> le faire sur le sparse ?
+	%Marche mieux pour de petits c --> le faire sur le sparse ?
 	
 	
 	

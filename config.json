@@ -11,16 +11,16 @@
 			"only_drop" : false,
 			"network_params" : {
 				"ugamma" : { "values" : [-1] },
-				"activities" : { "values" : [1,2,3,4] },
+				"activities" : { "values" : [3,4] },
 				"m" : { 
 					"cvalues" : [125, 250,500],
-					"range" : [500, 500, 5000]
+					"range" : [7250, 250, 9000]
 				},
 				"l" : { "values" : [256] },
 				"c" : { "values" : [8] },
 				"erasures" : { 
-					"cvalues" : [4],
-					"range" : [1, 1, 7]
+					"values" : [1,2,3],
+					"crange" : [1, 1, 7]
 				},
 				"iterations" : { "values" : [1,4] },
 				"winners" : { "values" : [0] },
