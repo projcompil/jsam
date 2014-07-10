@@ -219,12 +219,12 @@
 	
 	We define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and recover messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
-	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \approx m(c \log_2{l \choose a } - \log_2(m) + 1) $. The information effectively stored in the network is $P_{retrieve} \times m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2}$.
+	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \mathop{=}_{m \rightarrow +\infty} m(c \log_2{l \choose a } - \log_2(m) + 1 + o(1)) $. The information effectively stored in the network is $P_{retrieve} \times m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2}$.
 	
 	Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{l \choose a}^{c - c_e})^{m-1}$.
 	
 	
-	$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-(\frac{1}{{l \choose a}})^{c - c_e})^{-(m-1)}$
+	$\eta_m = P_{retrieve}  \frac{2 m\left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times (1-(\frac{1}{{l \choose a}})^{c - c_e})^{-(m-1)}$
 	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
 	The maximum information that can be stored in the network is therefore $\eta = \max_x \eta_x $.
@@ -358,7 +358,7 @@
 		\label{corruptth}
 	\end{figure}
 		
-		$\eta_m = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{l \choose a}} \right )^k \left (\frac{1}{{l \choose a}} \right )^{c-k} \right ] ^{-(m-1)}$
+		$\eta_m = P_{retrieve}  \frac{2 m\left(c \log_2{l \choose a } - \log_2(m) + 1 \right)}{c(c-1)l^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{l \choose a}} \right )^k \left (\frac{1}{{l \choose a}} \right )^{c-k} \right ] ^{-(m-1)}$
 		
 		
 
