@@ -3,87 +3,29 @@
 		{
 			"function_params" : {
 				"fsum" : [0],
-				"fcorrupt" : [0]
+				"fcorrupt" : [1]
 			},
 			"trials" : 1,
 			"tests" : 1000,
 			"pool_size" : 5,
 			"only_drop" : false,
 			"network_params" : {
-				"ugamma" : { "values" : [1,100] },
-				"activities" : { "values" : [2] },
+				"ugamma" : { "values" : [-1] },
+				"activities" : { "values" : [1,2,3,4] },
 				"m" : { 
 					"cvalues" : [125, 250,500],
-					"range" : [5125, 250, 7500]
+					"range" : [500, 500, 5000]
 				},
 				"l" : { "values" : [256] },
 				"c" : { "values" : [8] },
 				"erasures" : { 
-					"values" : [4],
-					"crange" : [1, 1, 3]
+					"cvalues" : [4],
+					"range" : [1, 1, 7]
 				},
-				"iterations" : { "values" : [1] },
+				"iterations" : { "values" : [1,4] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [0.0025, 0.005, 0.0075], "crange": [0.01, 0.01, 0.1]},
-				"p_des" : { "values" : [0.0] }
-			}
-		},
-		{
-			"function_params" : {
-				"fsum" : [0],
-				"fcorrupt" : [0]
-			},
-			"trials" : 1,
-			"tests" : 1000,
-			"pool_size" : 5,
-			"only_drop" : false,
-			"network_params" : {
-				"ugamma" : { "values" : [1,100] },
-				"activities" : { "values" : [3] },
-				"m" : { 
-					"cvalues" : [125, 250,500],
-					"range" : [3125, 250, 5000]
-				},
-				"l" : { "values" : [256] },
-				"c" : { "values" : [8] },
-				"erasures" : { 
-					"values" : [4],
-					"crange" : [1, 1, 3]
-				},
-				"iterations" : { "values" : [1] },
-				"winners" : { "values" : [0] },
-				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [0.0025, 0.005, 0.0075], "crange": [0.01, 0.01, 0.1]},
-				"p_des" : { "values" : [0.0] }
-			}
-		},
-		{
-			"function_params" : {
-				"fsum" : [0],
-				"fcorrupt" : [0]
-			},
-			"trials" : 1,
-			"tests" : 1000,
-			"pool_size" : 5,
-			"only_drop" : false,
-			"network_params" : {
-				"ugamma" : { "values" : [1,100] },
-				"activities" : { "values" : [4] },
-				"m" : { 
-					"cvalues" : [125, 250,500],
-					"range" : [2725, 250, 4000]
-				},
-				"l" : { "values" : [256] },
-				"c" : { "values" : [8] },
-				"erasures" : { 
-					"values" : [4],
-					"crange" : [1, 1, 3]
-				},
-				"iterations" : { "values" : [1] },
-				"winners" : { "values" : [0] },
-				"degree" : { "values" : [0] },
-				"p_cons" : { "values" : [0.0025, 0.005, 0.0075], "crange": [0.01, 0.01, 0.1]},
+				"p_cons" : { "values" : [0.0], "crange": [0.01, 0.01, 0.1]},
 				"p_des" : { "values" : [0.0] }
 			}
 		}

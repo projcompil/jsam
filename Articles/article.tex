@@ -116,7 +116,7 @@
 	\maketitle
 
 	 \begin{abstract}
-	 	We extend recently introduced associative memories based on clustered cliques to multipartite cliques. We propose a variant of the classic retrieving rule. We study its performance relatively to the former one for retrieving partially erased or corrupted messages. We provide both analytical and simulation results showing improvements in both networks capacities and resilience.
+	 	We extend recently introduced associative memories based on clustered cliques to multipartite cliques. We propose a variant of the classic retrieving rule. We study its performance relatively to the former one for retrieving partially erased or corrupted messages. We provide both analytical and simulation results showing improvements in both networks capacities and resilience. We compute asymptotic capacities of these networks.
 	 \end{abstract}
 	 
 	\keywords{associative memory, error correcting code, cliques, multipartite cliques, neural networks}
@@ -212,7 +212,10 @@
 	
 	Scores in clusters being also independent, the probability for none of the vertices in any erased cluster, excepting the correct ones, to achieve the maximum in their respective clusters is $\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)}$.
 	
-	Whence error rate in retrieving messages is : \[P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} \]
+	Whence error rate in retrieving messages is : 
+	\begin{align}	
+	P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} 
+	\end{align}	 
 	
 	We define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and recover messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
@@ -272,33 +275,39 @@
 	\subsection{Retrieving corrupted messages}
 	
 	\subsubsection{Analytical result}	
-	Formula for errors instead of erasures : 
-	
-	gc : good (à remplacer par right/wrong ?) neuron in correct cluster
-	
-	ge : good neuron in erroneous cluster
-	
-	abe : bad activated neuron in erroneous cluster
-	
-	be : others bad (à remplacer par wrong ou incorrect etc.) neurons in erroneous cluster
-	
-	bc : bad neuron in correct cluster
+%	Formula for errors instead of erasures : 
+%	
+%	gc : good (à remplacer par right/wrong ?) neuron in correct cluster
+%	
+%	ge : good neuron in erroneous cluster
+%	
+%	abe : bad activated neuron in erroneous cluster
+%	
+%	be : others bad (à remplacer par wrong ou incorrect etc.) neurons in erroneous cluster
+%	
+%	bc : bad neuron in correct cluster
+	Messages can be corrupted, our models for errors is : fix $c_e$ the number of erroneous clusters, we draw at random $c_e$ clusters and in each of these draw at random, uniformly, a new letter in the alphabet that will replace the old one (it could be the same).
 	
 	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute the laws of probabilities for scores achieved by different type of neurons in different clusters. We can divide neurons in 5 groups. Subscript $g$ will indicate a neuron being part of the message (it should be activated), subscript $b$ the contrary (the neuron should not be activated). Subscript $a$ means the neuron is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
 	Correct neurons in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
 	Being connected to a given activated neuron in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover corrects neurons see their scores shift, as do all activated neurons respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
+	For example an \textbf{a}ctivated \textbf{g}ood neuron in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated neuron in an erroneous cluster is $d$. Thereby its law is :
 	
-	$P(n_{agc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
+	%$P(n_{agc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
+	$P(n_{agc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
 	
 	Correct neurons in corrupted clusters achieve at least a score of $a(c - c_e)$. 
+	$P(n_{ge} = a(c - c_e) + x) = {a (c_e - 1) \choose x} d^x (1-d)^{a (c_e - 1)-x}$
 	
-	$P(n_{ge} = (c - c_e) + x) = {c_e - 1 \choose x} d^x (1-d)^{c_e-1-x}$
+	%$P(n_{ge} = (c - c_e) + x) = {c_e - 1 \choose x} d^x (1-d)^{c_e-1-x}$
 	
-	Activated neurons benefits of the memory effect $\gamma$ :	
-	$P(n_{abe} = \gamma + x) = {c - 1 \choose x} d^x (1-d)^{c-1-x}$
+	Activated neurons benefits of the memory effect $\gamma$ :	\\
+	$P(n_{abe} = \gamma + x) = {a(c - 1) \choose x} d^x (1-d)^{a(c-1)-x}$
+	%$P(n_{abe} = \gamma + x) = {c - 1 \choose x} d^x (1-d)^{c-1-x}$
 	
 	
-	$P(n_{be} = x) = P(n_{bc} = x) = {c - 1 \choose x} d^x (1-d)^{c- 1 -x}$
+	%$P(n_{be} = x) = P(n_{bc} = x) = {c - 1 \choose x} d^x (1-d)^{c- 1 -x}$
+	Finally $P(n_{be} = x) = P(n_{bc} = x) = {a(c - 1) \choose x} d^x (1-d)^{a(c- 1) -x}$	
 	
 	A message is retrieved after one iteration, if and only if correct neurons achieve strictly the best scores.	
 	
@@ -306,33 +315,23 @@
 %	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
 %	\end{align}
 	
-	\begin{align*}
-	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n)  P(n_{bc} < n)^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) P(n_{bc} < n)^{l-2} P(n_{abc} < n) \right ]^{c_e}
-	\end{align*}
+%	\begin{align*}
+%	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n)  P(n_{bc} < n)^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) P(n_{bc} < n)^{l-2} P(n_{abc} < n) \right ]^{c_e}
+%	\end{align*}
 
 	
 	%à changer : prendre en compte les $a$ neurones activés : problème des recouvrements !! on est trop optimiste si grand nombre d'activités (ou pessimiste ?)
 	
-	Generalisation to multiple activities per cluster :
 	
-	For example an \textbf{a}ctivated \textbf{g}ood neuron in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated neuron in an erroneous cluster is $d$. Thereby its law is :
 	
-	$P(n_{agc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
 	
-	The other laws are also easily expressed : 
-	
-	$P(n_{ge} = a(c - c_e) + x) = {a (c_e - 1) \choose x} d^x (1-d)^{a (c_e - 1)-x}$
-	
-	$P(n_{abe} = \gamma + x) = {a(c - 1) \choose x} d^x (1-d)^{a(c-1)-x}$
-	
-	$P(n_{be} = x) = P(n_{bc} = x) = {a(c - 1) \choose x} d^x (1-d)^{a(c- 1) -x}$	
 
 
 	
-	\begin{align*}
+	\begin{align}
 	&P_{retrieve} = \left [ \sum_{n = 1}^{a(c-1) + \gamma} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = n)^k P(n_{agc} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a} \right ]^{c - c_e}\\ 
-	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-2a} P(n_{abc} < n)^a \right ]^{c_e}
-	\end{align*}
+	 &\times \left [ \sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{be} < n)^{l-2a} P(n_{abe} < n)^a \right ]^{c_e}
+	\end{align}
 	
 
 %	To be really precise : (ne pas oublier de tenir compte changement des lois, formule inexacte pour l'instant)
@@ -350,11 +349,9 @@
 	\newpage	
 	
 	\subsubsection{Simulations}
-	See Figure \ref{corruptth}
+	See Figure \ref{corruptth} compares the two rules.
 	"$a$-winners take all" better than "winner takes all" with errors instead of erasures, even for one iteration.
 	
-	For errors : only better than only 1 activity per cluster if multiple iterations of the $a$-winners take all rule.
-	For one iteration, it is less efficient.
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_figure3g1}
 		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, one erroneous cluster, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
@@ -421,18 +418,15 @@
 	$\eta_\psi = max_x \, \eta_{x, \psi}$
 	
 	\section{Maximum theoretical efficiency}
-		\begin{align*}
-			H(M) \approx m c \log_2 {l \choose a}\\
-			d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m\\
-			m \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}\\
-			\log_2 {l \choose a} = k c\\
-			\eta \sim c \log_2 {l \choose a} \log2(1-d) \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}\\
-			\eta \sim - 2 k  \log_2 ((1-d)a^{-2}\log 2\\
-			P_{\exists e} \le {l \choose a}^c d^{a^2 {c \choose 2}} = 2^{c \log_ 2 {l \choose a} + a^2 {c \choose 2 }\log_2(d)} \approx 2^{c^2(k + \frac{a^2}{2} \log_2 (d))}\\
-			k^* = -\frac{a^2}{2} \log_2 (d)\\
-			\eta \sim \log_2 d \log_2 (1-d) \log 2\\
-			\eta_{max} \rightarrow \log 2
-		\end{align*}
+		It was shown in \cite{oo}, asymptotic capacities of clique networks is $\log 2$. We generalise this result to multipartite cliques.
+		The entropy of the messages set can be approximated as $H(M) \approx m c \log_2 {l \choose a}$. From $d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m$, we can deduce $m \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}$.
+		We set $\log_2 {l \choose a} = k c$ (otherwise density approaches $0$ or $1$, and efficiency $0$). It follows that $\eta \sim c \log_2 {l \choose a} \log2(1-d) \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}$. 
+		
+		$\eta \sim - 2 k  \log_2 ((1-d)a^{-2}\log 2$.
+		
+		We can bound the probability $P_{\exists e}$ for a message being "present" in the network, that is to mean adding it will not add any edge to the network. By union-bound $P_{\exists e} \le {l \choose a}^c d^{a^2 {c \choose 2}} = 2^{c \log_ 2 {l \choose a} + a^2 {c \choose 2 }\log_2(d)} \approx 2^{c^2(k + \frac{a^2}{2} \log_2 (d))}$.
+		
+		Fixing $k^* = -\frac{a^2}{2} \log_2 (d)$ gives us $\eta \sim \log_2 d \log_2 (1-d) \log 2$ and therefore \[\eta_{max} = \log 2\]
 	
 		Multipartite cliques don't improve theoretical efficiency (for not accepting messages that weren't previously seen by the network)
 
