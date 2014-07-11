@@ -402,18 +402,21 @@
 	
 	Sans tenir compte du choix au hasard si plus sont activés. Pour une itération $\gamma = \infty$. Pour plusieurs $\gamma = 1$.
 	
+	The probability for all correct units to achieve a score equal or greater than $x$, with at least one achieving a score of $x$ is $P_c (x) =\sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = x)^k P(n_{v_c} > x)^{a-k} $
 
-	If $\gamma$ is big,
-	$P(\mbox{no other vertex activated in this cluster})= \sum_{n = 1}^{a (c - c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ] P(n_v < n)^{l-a}$%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
-	
-	\newpage
+	If $\gamma$ is big enough,
+	$P(\mbox{no other vertex activated in this cluster})= \sum_{x = 1}^{a (c - c_e)} P_c(x) P(n_v < x)^{l-a}$%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
 	
 	%P(\mbox{no other vertex activated in any cluster})
-	\begin{align*}
-	P_{retrieve}=  \Bigg ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ]\\
-	\left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \Bigg)^{c_e}	
-	\end{align*}
-	\newpage
+%	\begin{align*}
+%	P_{retrieve}=  \Bigg ( \sum_{n = 1}^{a ( c- c_e)} \left [ \sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = n)^k P(n_{v_c} > n)^{a-k} \right ]\\
+%	\left [ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a } \Bigg)^{c_e}	
+%	\end{align*}
+
+	\begin{align}
+	P_{retrieve}=  \left( \sum_{x = 1}^{a ( c- c_e)} P_c(x) P(n_v <x)^{l-a} \right )^{c_e}	
+	\end{align}
+
 	%$\,$
 	%\newpage
 	\begin{figure}[!htb]
