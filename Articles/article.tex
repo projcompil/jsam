@@ -125,6 +125,14 @@
 	
 	\section{Introduction}
 	
+		
+		Associative memories
+		
+		Recently, a new type of associative memories was proposed by Gripon and Berrou \cite{GriBer20117}.
+		
+		GBNN can also be used to retrieve messages from erroneous versions of them. We derive a formula for error rate in case of errors on messages.
+		
+		Fault tolerance of those networks was extensively studied in \cite{LedGriRabGro20145}. We extend this to multipartite cliques and show significant improvements in resilience to faults.
 	
 	
 	\section{Networks of neural cliques}
@@ -132,6 +140,8 @@
 	\subsection{Learning messages}
 		
 	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or units. Messages are considered independent and identically distributed.
+	
+	Our goal is to store messages so as to be able to retrieve them from partial or erroneous versions of them.
 	
 	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
@@ -374,7 +384,7 @@
 	%Spéculations en Français 
 	%Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	As information is shared across connections with multiple activated units per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
+	As information on a message is shared across connections with multiple activated units per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
 	
 	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges. We generalise results of \cite{LedGriRabGro20145} to multipartite cliques.
 	
