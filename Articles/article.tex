@@ -259,7 +259,7 @@
 	
 		
 	\begin{figure}[!htb]
-		\includegraphics[width=8.5cm]{Courbes/densiteexemple.pdf}
+		\includegraphics[width=8.5cm]{Courbes/remplacement_densite_c8l256a4}
 		\caption{Theoretical and empirical densities}
 			\label{densiteth}
 	\end{figure}
@@ -414,11 +414,11 @@
 %	\end{align*}
 
 	\begin{align}
-	P_{retrieve}=  \left( \sum_{x = 1}^{a ( c- c_e)} P_c(x) P(n_v <x)^{l-a} \right )^{c_e}	
+	P_{retrieve}=  \left( \sum_{x = 1}^{a ( c- c_e)} P_c(x) P(n_v <x)^{l-a} \right )^{c_e}
+	\label{psi_formula_th}
 	\end{align}
 
-	%$\,$
-	%\newpage
+
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/thpsi_c8l256e4}
 		\caption{$\psi = 0.05$, 2 activities per cluster, 8 clusters, 256 units per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
@@ -436,7 +436,7 @@
 	
 	After a transition, efficiencies seem to follow a linear decreasing low according to $\psi$.
 	
-	Absolute values of slopes diminish for increasing number of activities per cluster. We can conclude multipartite cliques improve the resilience of the network.
+	Absolute values of slopes diminish for increasing number of activities per cluster. We can conclude usage of multipartite cliques improve the resilience of the network.
 	
 	$\eta_{m, \psi} = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
 	

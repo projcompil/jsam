@@ -29,17 +29,17 @@ function init_file(fileprefix, dir = "results")
 	#	"#Clique network parameters : fsum=$(fsum), fcorrupt=$(fcorrupt)\n"
 	const suffix = ".csv" #"$(fsum)__$(fcorrupt)"
 	const filename = "$(dir)/$(fileprefix)$suffix"
-	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy,retrievedproportion,eta,aeta,peta,paeta,ipeta,ipaeta,ieta,iaeta,infoalphabet,onlydrop,rceta,psieta\n"
+	firstline = isfile(filename) ? "" : "errorrate,iterations,density,l,c,m,gamma,erasures,maxiterations,tests,efficiency,fsum,fcorrupt,pcons,pdes,degree,activities,alphabetsize,winners,poolsize,efficacy,refficacy,retrievedproportion,eta,aeta,peta,paeta,ipeta,ipaeta,ieta,iaeta,infoalphabet,onlydrop,rceta,psieta,csparse\n"
 	open(filename, "a") do file
 		write(file, firstline)
 	end
 	return filename
 end
 
-function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 0.0, p_des = 0.0, degree = degree, activities = 1, winners = 1, pool_size = 1, only_drop = false)
+function enregistre(filename ; trials=10, l=128, c=8, m=5000, ugamma = 1, erasures=4 , iterations = 4, tests=1000, fsum=Sam.sum_of_sum!, fcorrupt = Sam.erase_clusters!, nowrite = false, dir = "results", p_cons = 0.0, p_des = 0.0, degree = degree, activities = 1, winners = 1, pool_size = 1, only_drop = false, csparse = 0)
 	@assert erasures <= c
 	for i=1:trials
-		@time res = Sam.output_test(l, c, m, ugamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, pool_size, only_drop)
+		@time res = Sam.output_test(l, c, m, ugamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, pool_size, only_drop, csparse)
 		if !nowrite
 			open(filename, "a") do f
 				writecsv(f, res)
@@ -110,10 +110,10 @@ if bconfig
 	#	vwinners = choisit(network_params, "winners")
 
 		compteur = 1
-		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdegree, vactivities, vwinners, vfsum, vfcorrupt }))
-		@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt
+		total = prod(map(length, { vl, vc, vm, vugamma, verasures, viterations, vp_cons, vp_des, vdegree, vactivities, vwinners, vfsum, vfcorrupt, vcsparse}))
+		@time for l in vl, c in vc, m in vm, ugamma in vugamma, erasures in verasures, iterations in viterations, p_cons in vp_cons, p_des in vp_des, degree in vdegree, activities in vactivities, winners in vwinners, fsum in vfsum, fcorrupt in vfcorrupt, csparse in vcsparse
 			println("Itération : $(compteur)/$(total) de l'expérience $(iexp)/$(nexperiments).")
-			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, degree = degree, activities = activities, winners = winners, pool_size = pool_size, only_drop = only_drop)
+			@time enregistre(filename, trials = trials, l = l, c = c, m = m, ugamma = ugamma, erasures = erasures, iterations = iterations, tests = tests, fsum = fsum, fcorrupt =fcorrupt, nowrite = nowrite, dir = dir, p_cons = p_cons, p_des = p_des, degree = degree, activities = activities, winners = winners, pool_size = pool_size, only_drop = only_drop, csparse = csparse)
 			compteur += 1
 		end
 	end			

@@ -55,7 +55,7 @@ end
 # m : number of messages
 # optional useBitArray : if set to true, the function is using a BitMatrix instead of a boolean array (the size of a boolean is a byte) ; as of the writing of this code, this hurts execution time (by a factor of around 2 or 3). It should only be used if memory is a bottleneck.
 # create_messages generate m random messages, and store them in sparseMessages according to the neural scheme ; then returns both messages and sparseMessages in a tuple
-function create_messages(l, c, m, activities = 1)#; useBitArray = false)
+function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = false)
 
 	const n = l * c
 	#if !useBitArray
@@ -110,7 +110,7 @@ end
 
 # l, c, m and useBitArray have the same meaning as above
 # messages is an array that represents the messages the output network is storing.
-function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree = 0, activities = 1, only_drop = false)# ; useBitArray = false )
+function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree = 0, activities = 1, only_drop = false, csparse = 0)# ; useBitArray = false )
 	const n = l * c
 	#if !useBitArray
 		network = zeros(Bool,n,n)
@@ -201,9 +201,9 @@ end
 	#end
 
 # This function is a commodity for interactive purpose.
-function create_both(l, c, m, p_cons = 0.0, degree = 0, activities = 1, only_drop = false) # ; useBitArray = false)
-	@time messages, sparseMessages, l2, alphabet_size = create_messages(l, c, m, activities) #, useBitArray = useBitArray)
-	@time network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree, activities, only_drop) #, useBitArray = useBitArray)
+function create_both(l, c, m, p_cons = 0.0, degree = 0, activities = 1, only_drop = false, csparse = 0) # ; useBitArray = false)
+	@time messages, sparseMessages, l2, alphabet_size = create_messages(l, c, m, activities, csparse) #, useBitArray = useBitArray)
+	@time network = create_network(l2, c, m, messages, sparseMessages, p_cons, degree, activities, only_drop, csparse) #, useBitArray = useBitArray)
 	return (messages, sparseMessages, network, l2, alphabet_size)
 end
 
@@ -366,9 +366,9 @@ end
 # fsum is the rule to use in order to recover the message. It modifies "input" in place.
 # returns the error rate of the procedure and the mean of the number of iterations
 # Careful : declare_degree is not the degree per nodes ! The degree will be c-1-declared_degree
-function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 0.0, p_des = 0.0, declared_degree = 0, activities = 1, declared_winners = 1, only_drop = false)# ; useBitArray = false)
+function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, iterations = 4, tests = 1000, fsum = sum_of_sum!, fcorrupt = erase_clusters!, p_cons = 0.0, p_des = 0.0, declared_degree = 0, activities = 1, declared_winners = 1, only_drop = false, csparse = 0)
 	const degree = (if declared_degree <= 0 0 else c - 1 - declared_degree end)
-	@time const messages, sparseMessages, network, l_t, alphabet_size = create_both(l_init, c, m, p_cons, degree, activities, only_drop)#, useBitArray = useBitArray)
+	@time const messages, sparseMessages, network, l_t, alphabet_size = create_both(l_init, c, m, p_cons, degree, activities, only_drop, csparse)#, useBitArray = useBitArray)
 	const l = l_t
 	const n = l * c
 	const winners = (if declared_winners <= 0 activities else declared_winners end)
@@ -405,12 +405,12 @@ function xlog2(x)
 	end
 end
 
-function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 0.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1, only_drop = false)
+function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 0.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1, only_drop = false, csparse = 0)
 	#res = mean(map( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size])) ### Pas efficace, pourquoi ?
 	res = zeros(6)
 const real_gamma = (if (gamma == -1) activities elseif (gamma == -2) activities + 1 else gamma end)
 	for i=1:pool_size 
-		res += test_network(l, c, m, real_gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners)
+		res += test_network(l, c, m, real_gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, csparse)
 	end
 	res /= pool_size
 
@@ -441,7 +441,7 @@ const real_gamma = (if (gamma == -1) activities elseif (gamma == -2) activities 
 	# Deux mesures importantes
 	rceta = eta * exp(exp2((log2(m-1)- (c-erasures) * info_alphabet)))
 	psieta = rceta / (1 + xlog2(p_cons) + xlog2(1-p_cons))
-	return [ res[1] res[2] res[3] l c m real_gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet only_drop rceta psieta ]
+	return [ res[1] res[2] res[3] l c m real_gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet only_drop rceta psieta csparse ]
 end
 
 #function set_proba(pr)
