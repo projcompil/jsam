@@ -131,11 +131,11 @@
 		
 	\subsection{Learning messages}
 		
-	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or neurons. Messages are considered independent and identically distributed.
+	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or units. Messages are considered independent and identically distributed.
 	
 	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
-	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $1 \le j \le l$ and $1 \le i \le c$, the neuron $j$ in the cluster $i$ is activated if and only if $y_{i,j} = 1$ ; then adding all connections between activated neurons excepting for neurons sharing the same cluster. Thus we obtain a multipartite clique between activated neurons representing a message. The parameter $a$ describing the number of activated neurons per cluster will be called number of activities.
+	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $1 \le j \le l$ and $1 \le i \le c$, the unit $j$ in the cluster $i$ is activated if and only if $y_{i,j} = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message. The parameter $a$ describing the number of activated units per cluster will be called number of activities.
 		
 	\subsection{Retrieving messages}	
 		
@@ -148,7 +148,7 @@
 		\subsubsection{The "$w$-winners take all" rule}
 		
 
-		To fully exploit the local regularity of the code (constant weight of $w$), we make a small modification the classic retrieving rule	by keeping activated all neurons that achieve a score equal or greater than the score appearing in $w$-th position in the ordered array of scores (where $w$ is a positive integer parameter)
+		To fully exploit the local regularity of the code (constant weight of $w$), we make a small modification the classic retrieving rule	by keeping activated all units that achieve a score equal or greater than the score appearing in $w$-th position in the ordered array of scores (where $w$ is a positive integer parameter)
 		
 		%$a$-rank
 		
@@ -207,11 +207,11 @@
 		d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m 
 	\end{align}		
 	
-	Thanks to the memory effect $\gamma$, activated neurons in a non-erased cluster stay activated and are the only ones doing so in their cluster. For neurons in erased clusters, the maximum attainable score is $a(c - c_e)$. Neurons corresponding to the original message achieve this score. Besides the probability for a neuron $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
+	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones doing so in their cluster. For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units corresponding to the original message achieve this score. Besides the probability for a unit $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
 	
 	%probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
 	
-	Since neurons representing messages are independent (as messages are themselves independent), the probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum is $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$.
+	Since units representing messages are independent (as messages are themselves independent), the probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum is $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$.
 	
 	Scores in clusters being also independent, the probability for none of the vertices in any erased cluster, excepting the correct ones, to achieve the maximum in their respective clusters is $\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)}$.
 	
@@ -257,7 +257,7 @@
 	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_figure2g1} %{comparaison_regles_pool5_a2c4l512e2}
-		\caption{Evolution of error rate for increasing number of stored messages, 2 activities per cluster, 4 clusters, 512 neurons per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
+		\caption{Evolution of error rate for increasing number of stored messages, 2 activities per cluster, 4 clusters, 512 units per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
 			\label{erasuresth}
 		\end{figure}
 		
@@ -265,7 +265,7 @@
 		
 		\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/5portant_erasures_c8l256}
-		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5}
+		\caption{Comparison between different number of activities per cluster :  8 clusters, 256 units per cluster, 1000 sampled messages, pools of 5}
 		\label{comperth}
 	\end{figure}
 %	
@@ -280,34 +280,34 @@
 	\subsubsection{Analytical result}
 %	Formula for errors instead of erasures : 
 %	
-%	gc : good (à remplacer par right/wrong ?) neuron in correct cluster
+%	gc : good (à remplacer par right/wrong ?) unit in correct cluster
 %	
-%	ge : good neuron in erroneous cluster
+%	ge : good unit in erroneous cluster
 %	
-%	abe : bad activated neuron in erroneous cluster
+%	abe : bad activated unit in erroneous cluster
 %	
-%	be : others bad (à remplacer par wrong ou incorrect etc.) neurons in erroneous cluster
+%	be : others bad (à remplacer par wrong ou incorrect etc.) units in erroneous cluster
 %	
-%	bc : bad neuron in correct cluster
+%	bc : bad unit in correct cluster
 	
 	We provide a formula for error rate in case of messages with corrupted clusters.
 
 	Messages can be corrupted, our models for errors is : given $c_e$ the number of erroneous clusters, we draw at random $c_e$ clusters and in each of these draw at random, uniformly, a new letter in the alphabet that will replace the old one (it could be the same).
 	
-	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute the laws of probabilities for scores achieved by different type of neurons in different clusters. We can divide neurons in 5 groups. Subscript $g$ will indicate a neuron being part of the message (it should be activated), subscript $b$ the contrary (the neuron should not be activated). Subscript $a$ means the neuron is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
-	Correct neurons in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
-	Being connected to a given activated neuron in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover corrects neurons see their scores shift, as do all activated neurons respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
-	For example an \textbf{a}ctivated \textbf{g}ood neuron in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated neuron in an erroneous cluster is $d$. Thereby its law is :
+	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute the laws of probabilities for scores achieved by different type of units in different clusters. We can divide units in 5 groups. Subscript $g$ will indicate a unit being part of the message (it should be activated), subscript $b$ the contrary (the unit should not be activated). Subscript $a$ means the unit is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
+	Correct units in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
+	Being connected to a given activated unit in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover corrects units see their scores shift, as do all activated units respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
+	For example an \textbf{a}ctivated \textbf{g}ood unit in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated unit in an erroneous cluster is $d$. Thereby its law is :
 	
 	%$P(n_{agc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
 	$P(n_{agc} = a(c - c_e - 1) + \gamma + x) = {a c_e \choose x} d^x (1-d)^{a ce-x}$
 	
-	Correct neurons in corrupted clusters achieve at least a score of $a(c - c_e)$. 
+	Correct units in corrupted clusters achieve at least a score of $a(c - c_e)$. 
 	$P(n_{ge} = a(c - c_e) + x) = {a (c_e - 1) \choose x} d^x (1-d)^{a (c_e - 1)-x}$
 	
 	%$P(n_{ge} = (c - c_e) + x) = {c_e - 1 \choose x} d^x (1-d)^{c_e-1-x}$
 	
-	Activated neurons benefits of the memory effect $\gamma$ :	\\
+	Activated units benefits of the memory effect $\gamma$ :	\\
 	$P(n_{abe} = \gamma + x) = {a(c - 1) \choose x} d^x (1-d)^{a(c-1)-x}$
 	%$P(n_{abe} = \gamma + x) = {c - 1 \choose x} d^x (1-d)^{c-1-x}$
 	
@@ -315,7 +315,7 @@
 	%$P(n_{be} = x) = P(n_{bc} = x) = {c - 1 \choose x} d^x (1-d)^{c- 1 -x}$
 	Finally $P(n_{be} = x) = P(n_{bc} = x) = {a(c - 1) \choose x} d^x (1-d)^{a(c- 1) -x}$	
 	
-	A message is retrieved after one iteration, if and only if correct neurons achieve strictly the best scores.	
+	A message is retrieved after one iteration, if and only if correct units achieve strictly the best scores.	
 	
 %	\begin{align}
 %	P_{retrieve} = \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{agc} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-1} \right ]^{c - c_e} \\ \times \left [ \sum_{n = 1}^{c-1+\gamma} P(n_{ge} = n) \left [ \sum_{x=0}^{n-1} P(n_{bc} = x) \right]^{l-2} \left [ \sum_{x=0}^{n-1} P(n_{abc} = x) \right] \right ]^{c_e}
@@ -326,7 +326,7 @@
 %	\end{align*}
 
 	
-	%à changer : prendre en compte les $a$ neurones activés : problème des recouvrements !! on est trop optimiste si grand nombre d'activités (ou pessimiste ?)
+	%à changer : prendre en compte les $a$ unites activés : problème des recouvrements !! on est trop optimiste si grand nombre d'activités (ou pessimiste ?)
 	
 	
 	
@@ -360,7 +360,7 @@
 	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_figure3g1}
-		\caption{2 activities per cluster, 4 clusters, 512 neurons per cluster, one erroneous cluster, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
+		\caption{2 activities per cluster, 4 clusters, 512 units per cluster, one erroneous cluster, each point is the mean of 5 networks with 1000 sampled messages, analytical result in continuous black}
 		\label{corruptth}
 	\end{figure}
 		
@@ -373,16 +373,16 @@
 	%Spéculations en Français 
 	%Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	As information is shared across connections with multiple activated neurons per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct neuron that should be activated, $v$ the other type of neurons.
+	As information is shared across connections with multiple activated units per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
 	
 	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges. We generalise results of \cite{LedGriRabGro20145} to multipartite cliques.
 	
 	%gamma = infini meilleur sur une itération
-	With probability $1 - \psi$, the correct vertex is still connected to a given activated neuron in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
+	With probability $1 - \psi$, the correct vertex is still connected to a given activated unit in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
 	
 	%$P(n_{v_c} = x) = {a c_k \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e) - x }$
 	
-	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$. So for other neurons $P(n_v = x) = {a (c - c_e) \choose x} P_+^x (1-P_+)^{a (c - c_e) -x }$.
+	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$. So for other units $P(n_v = x) = {a (c - c_e) \choose x} P_+^x (1-P_+)^{a (c - c_e) -x }$.
 	
 	% À corriger avec sommes multiparties
 %	$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
@@ -405,14 +405,14 @@
 	%\newpage
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/thpsi_c8l256e4}
-		\caption{$\psi = 0.05$, 2 activities per cluster, 8 clusters, 256 neurons per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
+		\caption{$\psi = 0.05$, 2 activities per cluster, 8 clusters, 256 units per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
 		\label{psith}
 	\end{figure}
 	
 	\begin{figure}[!htb]
 		
 		\includegraphics[scale=0.50]{Courbes/5portant_psi_c8l256e4}
-		\caption{Comparison of efficiencies between different number of activities per cluster :  8 clusters, 256 neurons per cluster, 1000 sampled messages, pools of 5 networks \label{comppsi}}
+		\caption{Comparison of efficiencies between different number of activities per cluster :  8 clusters, 256 units per cluster, 1000 sampled messages, pools of 5 networks \label{comppsi}}
 	\end{figure}
 
 	We compute values represented on figure \ref{comppsi} by scanning on the number of messages, so as to find the maximum efficiency.	
