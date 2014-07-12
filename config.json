@@ -7,13 +7,13 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 5,
+			"pool_size" : 2,
 			"only_drop" : false,
 			"network_params" : {
 				"ugamma" : { "values" : [-1] },
-				"activities" : { "values" : [3] },
+				"activities" : { "values" : [1] },
 				"m" : { 
-					"values" : [500],
+					"values" : [10000],
 					"crange" : [7250, 250, 9000]
 				},
 				"l" : { "values" : [256] },

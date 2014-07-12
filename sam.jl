@@ -59,9 +59,11 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 
 	const n = l * c
 	#if !useBitArray
-		#sparseMessages = spzeros(Uint8, n,m)
-
-		sparseMessages = zeros(Bool,n, m)
+	if csparse == 0 || csparse == c
+		sparseMessages = zeros(Bool, n, m)
+	else
+		sparseMessages = spzeros(Uint8, n, m)
+	end
 	#else	
 	#	sparseMessages = falses(m,n)
 	#end
@@ -113,8 +115,12 @@ end
 function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree = 0, activities = 1, only_drop = false, csparse = 0)# ; useBitArray = false )
 	const n = l * c
 	#if !useBitArray
+	est_sparse = !(csparse == 0 || csparse == c)
+	if !est_sparse
 		network = zeros(Bool,n,n)
-		#network = spzeros(Uint8,n,n)
+	else
+		network = spzeros(Uint8,n,n)
+	end
 	#else
 	#	network = falses(n, n) 
 	#end
@@ -133,7 +139,11 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree 
 		else
 			const ind_n = [1:n]
 			for i=1:m
-				activations = ind_n[reshape(sparseMessages[:, i], n) .> 0]
+				if !est_sparse
+					activations = ind_n[reshape(sparseMessages[:, i], n) .> 0]
+				else
+					activations = ind_n[reshape(reshape(sparseMessages[:, i], n, 1) .> 0, n)]
+				end
 				network[activations, activations] = 1
 			end
 		end
@@ -371,6 +381,7 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 	@time const messages, sparseMessages, network, l_t, alphabet_size = create_both(l_init, c, m, p_cons, degree, activities, only_drop, csparse)#, useBitArray = useBitArray)
 	const l = l_t
 	const n = l * c
+	const est_sparse = !(csparse == 0 || csparse == c)
 	const winners = (if declared_winners <= 0 activities else declared_winners end)
 	println("Messages created and translated.")
 	dens = density(l, c, network)
@@ -380,7 +391,11 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 	const erasedNeuron = (if fsum == sum_of_max! 1 else 0 end)
 	# Computing the number of successful corrections in tests simulations and the total number of iterations (in parallel)
 	score = @parallel (+) for t=1:tests
-		init = reshape(copy(sparseMessages[:, rand(1:m)]), n)
+		if !est_sparse
+			init = reshape(copy(sparseMessages[:, rand(1:m)]), n)
+		else
+			init = reshape(copy(sparseMessages[:, rand(1:m)]), n, 1)
+		end
 		input = copy(init)
 		# Erasing some clusters. sum_of_max is easier to write by saturating erased clusters.
 		indexes = randperm(c)[1:erasures]
@@ -410,7 +425,7 @@ function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt
 	res = zeros(6)
 const real_gamma = (if (gamma == -1) activities elseif (gamma == -2) activities + 1 else gamma end)
 	for i=1:pool_size 
-		res += test_network(l, c, m, real_gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, csparse)
+		res += test_network(l, c, m, real_gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners, only_drop, csparse)
 	end
 	res /= pool_size
 
