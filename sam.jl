@@ -21,6 +21,10 @@ function rand_combination(n, m)
 	res
 end
 
+function skelet_rand_combination(n, m)
+	[1:n][rand_combination(n, m)]
+end
+
 function alphabet_table(l, activities)
 	table = cell(binomial(l, activities))
 	comb = combinations(1:l, activities)
@@ -58,8 +62,9 @@ end
 function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = false)
 
 	const n = l * c
+	const est_sparse = (csparse != c)
 	#if !useBitArray
-	if csparse == 0 || csparse == c
+	if !est_sparse
 		sparseMessages = zeros(Bool, n, m)
 	else
 		sparseMessages = spzeros(Uint8, n, m)
@@ -70,7 +75,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 	if activities <= 1  # bad "if" but the goal is to keep different test files functioning
 		messages = rand(1:l,m,c)
 		for i=1:m
-			for j=1:c
+			for j= (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
 				sparseMessages[(j-1)*l+messages[i,j], i] = 1
 			end
 		end
@@ -101,7 +106,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		#end
 		#graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
 		for i = 1:m
-			for j=1:c
+			for j= (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
 				sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
 			end
 		end
@@ -115,7 +120,7 @@ end
 function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree = 0, activities = 1, only_drop = false, csparse = 0)# ; useBitArray = false )
 	const n = l * c
 	#if !useBitArray
-	est_sparse = !(csparse == 0 || csparse == c)
+	est_sparse = (csparse != c)
 	if !est_sparse
 		network = zeros(Bool,n,n)
 	else
@@ -246,18 +251,28 @@ end
 # gamma is the memory parameter
 # indexes is not used in this function (Trouver une façon de s'en débarasser ?)
 # applies of one pass of the sum of sum rule
-function sum_of_sum!(l, c, network, input, gamma, indexes, degree = 0, activities= 1, winners = 1)
+function sum_of_sum!(l, c, network, input, gamma, indexes, degree = 0, activities= 1, winners = 1, csparse = 0)
 	prod = gamma * input + network * input
-	for i=1:c
-		if winners <= 1
-			maxi = maximum(prod[(i-1)*l+1:i*l]) 
-		else
-			#occ = occurences(prod[(i-1)*l+1:i*l], gamma + (if degree <= 0 c-1 else degree end))
-			#maxi = minvalue_winners(occ, winners)
-			maxi = select(prod[(i-1)*l+1:i*l], winners, rev = true) #[winners]
+	if csparse == c
+		for i=1:c
+			if winners <= 1
+				maxi = maximum(prod[(i-1)*l+1:i*l]) 
+			else
+				#occ = occurences(prod[(i-1)*l+1:i*l], gamma + (if degree <= 0 c-1 else degree end))
+				#maxi = minvalue_winners(occ, winners)
+				maxi = select(prod[(i-1)*l+1:i*l], winners, rev = true) #[winners]
+			end
+			for j=1:l
+				input[(i-1)*l+j] = prod[(i-1)*l+j] >= maxi	 # using a loop instead of slicing improves performance (a little).
+			end
 		end
-		for j=1:l
-			input[(i-1)*l+j] = prod[(i-1)*l+j] >= maxi	 # using a loop instead of slicing improves performance (a little).
+	else
+		positive_activations = nonzeros(prod)
+		maxi = (if length(positive_activations) < (csparse * winners) 0 else select(positive_activations, (csparse * winners), rev = true) end)
+		for i=1:c
+			for j=1:l
+				input[(i-1)*l+j] = prod[(i-1)*l+j] >= maxi
+			end
 		end
 	end
 end
@@ -284,7 +299,7 @@ end
 
 # indexes allows the function to compute activations only for erased clusters : it is the array of erased clusters
 # sum_of_max! applies one pass of the sum of max rule (it modifies input)
-function sum_of_max!(l, c, network, input, gamma, indexes, degree = 0, activities = 1, winners = 1)
+function sum_of_max!(l, c, network, input, gamma, indexes, degree = 0, activities = 1, winners = 1, csparse = 0)
 	const entrants = gamma + activities * (if degree == 0 c-1 else degree end)
 	prod = gamma * input
 	for i in indexes
@@ -306,7 +321,7 @@ function sum_of_max!(l, c, network, input, gamma, indexes, degree = 0, activitie
 	end
 end
 
-function mix_of_rules!(l, c, network, input, gamma, indexes, degree = 0, activities = 1, winners = 1)
+function mix_of_rules!(l, c, network, input, gamma, indexes, degree = 0, activities = 1, winners = 1, csparse = 0)
 	sum_of_sum!(l, c, network, input, gamma, indexes, degree, activities, winners)
 	sum_of_max!(l, c, network, input, gamma, indexes, degree, activities, winners)
 end
@@ -357,12 +372,12 @@ end
 
 
 
-function iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree = 0, activities = 1, winners = 1)
+function iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree = 0, activities = 1, winners = 1, csparse = 0)
 	corrected = 0 # Not a boolean for type stability.
 	iter = 0
 	while corrected == 0 && iter < iterations
 		# In place modifcation of input !
-		fsum(l, c, network, input, gamma, indexes, degree, activities, winners)
+		fsum(l, c, network, input, gamma, indexes, degree, activities, winners, csparse)
 		corrected = int(isequal(init, input))
 		iter += 1
 	end
@@ -401,7 +416,7 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 		indexes = randperm(c)[1:erasures]
 		fcorrupt(l, c, erasures, input, indexes, erasedNeuron, p_des)
 		# Trying to recover them.
-		iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree, activities, winners)
+		iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree, activities, winners, csparse)
 	end
 	errorRate = 1 - score[1]/tests
 	meanIter = score[2]/tests
@@ -420,8 +435,11 @@ function xlog2(x)
 	end
 end
 
-function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 0.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1, only_drop = false, csparse = 0)
+function output_test(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons = 0.0, p_des = 0.0, degree = 0, activities = 1, winners = 1, pool_size = 1, only_drop = false, declared_csparse = 0)
 	#res = mean(map( x -> test_network(l, c, m, gamma, erasures, iterations, tests, fsum, fcorrupt, p_cons, p_des, degree, activities, winners), [1:pool_size])) ### Pas efficace, pourquoi ?
+	const csparse = (if declared_csparse <= 0 || declared_csparse > c
+						c 
+					else declared_csparse end)
 	res = zeros(6)
 const real_gamma = (if (gamma == -1) activities elseif (gamma == -2) activities + 1 else gamma end)
 	for i=1:pool_size 
