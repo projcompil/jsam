@@ -27,7 +27,9 @@ function rand_combination(n, m)
 end
 
 function skelet2_rand_combination(n, m)
-	int(collect(floyd_combination(n, m)))
+	a = int(collect(floyd_combination(n, m)))
+	sort!(a)
+	a
 end
 
 function skelet_rand_combination(n, m)
@@ -72,6 +74,11 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 
 	const n = l * c
 	const est_sparse = (csparse != c)
+	if est_sparse
+		println("Sparse.")
+	else
+		println("Non sparse.")
+	end
 	#if !useBitArray
 	if !est_sparse
 		sparseMessages = zeros(Bool, n, m)
@@ -81,7 +88,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 	#else	
 	#	sparseMessages = falses(m,n)
 	#end
-	if activities <= 1  # bad "if" but the goal is to keep different test files functioning
+	if activities <= 1  # bad "if" but the goal is to keep cache efficiency
 		messages = rand(1:l,m,(if !est_sparse c else csparse end))
 		if !est_sparse
 			for i=1:m
@@ -124,12 +131,14 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		#	end
 		#end
 		#graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
-		const ind_l = [1:l]
+		#const ind_l = [1:l]
 		for i=1:m
-			for j = (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
+			for j = (if !est_sparse 1:c else skelet2_rand_combination(c, csparse) end)
 				#sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
 				#sparseMessages[(j-1)*l + ind_l[rand_combination(l, activities)], i] = 1
-				sparseMessages[(j-1)*l + skelet2_rand_combination(l, activities), i] = 1
+				for k in skelet2_rand_combination(l, activities)
+					sparseMessages[(j-1)*l + k, i] = 1
+				end
 			end
 		end
 		###############" Attention les messages n'ont plus aucun rapport avec les sparseMessages !!!!!!!
