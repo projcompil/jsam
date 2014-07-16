@@ -139,7 +139,7 @@
 		
 	\subsection{Learning messages}
 		
-	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or units. Messages are considered independent and identically distributed.
+	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or units. Messages are considered independent and identically distributed.
 	
 	Our goal is to store messages so as to be able to retrieve them from partial or erroneous versions of them.
 	
@@ -165,14 +165,14 @@
 		Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th greater element in an array of $n$ elements is $O(n)$ in complexity.
 		
 		Intuitively the choice of $w = a$ is optimal (it it is the most natural with $w = 1$).
-		The following is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
-		\begin{algorithm}
+		Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
+		\begin{algorithm}[!htb]
 		\caption{$w$-sum of sum \label{asumsum}}
 		\begin{algorithmic}[1]
-		\Require{$v$ a binary array of length $n = c\cdot l$, $W$ the binary weight matrix representing the network}
+		\Require{$v$ a binary array of length $n = c\cdot l$, $W$ the binary weight matrix representing the network, $S$ the number of iterations, $\gamma$ memory effect}
 		\Procedure{Sum of sum}{$v, W, \gamma, S, w$}
 		%\Statex
-		\For{$s$ from $1$ to S}
+		\For{$s$ from $1$ to $S$}
 		\State $s \gets \gamma v + W v$
 		\For{$i$ from $1$ to $c$}
 			\Let{treshold}{Select(s[$i$], $w$)} \Comment{Select(t, w) returns the element that would be in rank $w$ if the array t was sorted}
@@ -210,7 +210,7 @@
 	
 	Suppose we are trying to recover a message where $c_e$ clusters have been erased (i.e. all units in those clusters are set to $0$).
 	
-	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed like this :
+	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
 	
 	\begin{align}
 		\label{formula_density}
@@ -230,7 +230,7 @@
 	P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} 
 	\end{align}	 
 	
-	We define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and recover messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
+	In order to compare different networks using different alphabets, we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and recover messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
 	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \mathop{=}_{m \rightarrow +\infty} m(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The information effectively stored in the network is $P_{retrieve} \times  \frac{2m \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2}$.
 	
@@ -240,7 +240,7 @@
 	$\eta_m = P_{retrieve}  \frac{2 m\left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-(\frac{1}{{l \choose a}})^{c - c_e})^{-(m-1)}$
 	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
-	The maximum information that can be stored in the network is therefore $\eta = \max_x \eta_x $.
+	The maximum information that can be stored in the network is therefore $\eta = \max_x \eta_x $, which we will define as the efficiency of the network.
 	
 	\subsubsection{Simulations}
 		Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
@@ -340,7 +340,7 @@
 	
 	
 	
-	The probability for all good neurons of a correct cluster (resp. of an erroneous cluster) to achieve a score equal or greater than $x$, with at least one having a score of $x$ is $P_{ac} (x) = \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = x)^k P(n_{agc} > x)^{a-k}$ (resp. $P_e(x) = \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k}$)
+	The probability for all good units of a correct cluster (resp. of an erroneous cluster) to achieve a score equal or greater than $x$, with at least one having a score of $x$ is $P_{ac} (x) = \sum_{k = 1}^{a} { a \choose k }   P(n_{agc} = x)^k P(n_{agc} > x)^{a-k}$ (resp. $P_e(x) = \sum_{k = 1}^a { a \choose k } P(n_{ge} = x)^k P(n_{ge} > x)^{a-k}$)
 
 	
 	
@@ -381,15 +381,17 @@
 
 	
 	\section{Resilience}
+	\subsection{Analytical result}
 	%Spéculations en Français 
 	%Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	As information on a message is shared across connections with multiple activated units per cluster, they are more resilient to network damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
+	As information on a message is shared across connections with multiple activated units per cluster, such networks are more resilient to damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
 	
 	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges. We generalise results of \cite{LedGriRabGro20145} to multipartite cliques.
 	
 	%gamma = infini meilleur sur une itération
-	With probability $1 - \psi$, the correct vertex is still connected to a given activated unit in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
+	We assume $\gamma = \infty$ for one iteration as it prevents activated neurons to be deactivated.
+	With probability $1 - \psi$, one correct vertex is still connected to a given activated unit in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
 	
 	%$P(n_{v_c} = x) = {a c_k \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e) - x }$
 	
@@ -400,12 +402,12 @@
 %	
 	% Approx : ?! $P(\mbox{no other vertex activated in any cluster})=  \left ( \sum_{n_0 = 1}^{a ( c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a } \right)^{c_e}$
 	
-	Sans tenir compte du choix au hasard si plus sont activés. Pour une itération $\gamma = \infty$. Pour plusieurs $\gamma = 1$.
+	%Sans tenir compte du choix au hasard si plus sont activés. Pour une itération $\gamma = \infty$. Pour plusieurs $\gamma = 1$.
 	
 	The probability for all correct units to achieve a score equal or greater than $x$, with at least one achieving a score of $x$ is $P_c (x) =\sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = x)^k P(n_{v_c} > x)^{a-k} $
 
-	If $\gamma$ is big enough,
-	$P(\mbox{no other vertex activated in this cluster})= \sum_{x = 1}^{a (c - c_e)} P_c(x) P(n_v < x)^{l-a}$%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
+	%If $\gamma$ is big enough,
+	It follows that $P(\mbox{no other vertex activated in one cluster})= \sum_{x = 1}^{a (c - c_e)} P_c(x) P(n_v < x)^{l-a}$.%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
 	
 	%P(\mbox{no other vertex activated in any cluster})
 %	\begin{align*}
@@ -418,7 +420,7 @@
 	\label{psi_formula_th}
 	\end{align}
 
-
+	\subsection{Simulations}
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/thpsi_c8l256e4}
 		\caption{$\psi = 0.05$, 2 activities per cluster, 8 clusters, 256 units per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
@@ -445,7 +447,7 @@
 	
 	Figure \ref{comppsi} seems to indicate a linear relationship (after a transition for multiple activities) between $\eta_\psi -\eta_0$ and $\psi$.
 	\section{Maximum theoretical efficiency}
-		It was shown in \cite{oo} that maximal asymptotic capacity of clique networks is $\log 2$. We generalise this result to multipartite cliques.
+		It was shown in \cite{Palm1980} that maximal asymptotic capacity of Willshaw networks is $\log 2$. We adapt this result to multipartite clique clustered networks.
 		
 		The entropy of the messages set can be approximated as $H(\mathcal{M}) \approx m c \log_2 {l \choose a}$. From $d = 1 - \left (1- \left(\frac{a}{l}\right)^2 \right)^m$, we can deduce $m \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{l})^2)} \sim - \frac{l^2 \log_2(1-d) \log 2}{a^2}$.
 		We set $\log_2 {l \choose a} = k c$ (otherwise density approaches $0$ or $1$, and efficiency $0$). It follows that $\eta \sim \frac{m c \log_2 {l \choose a}}{l^2 {c \choose 2}} \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}$. 

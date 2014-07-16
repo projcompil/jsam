@@ -115,9 +115,11 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		#	end
 		#end
 		#graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
-		for i = 1:m
-			for j= (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
-				sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
+		const ind_l = [1:l]
+		for i=1:m
+			for j = (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
+				#sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
+				sparseMessages[(j-1)*l + ind_l[rand_combination(l, activities)], i] = 1
 			end
 		end
 		###############" Attention les messages n'ont plus aucun rapport avec les sparseMessages !!!!!!!
