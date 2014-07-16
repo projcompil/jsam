@@ -4,7 +4,7 @@ module Sam
 
 
 #Floyd algorithm : contrib ?
-function rand_combination(n, m)
+function floyd_combination(n, m)
 	s = Set()
 	for j=n-m+1:n
 		t = rand(1:j)
@@ -14,11 +14,20 @@ function rand_combination(n, m)
 			push!(s, j)
 		end
 	end
+	s
+end
+
+function rand_combination(n, m)
+	s = floyd_combination(n, m)
 	res = zeros(Bool, n)
 	for i in s
 		res[i] = 1
 	end
 	res
+end
+
+function skelet2_rand_combination(n, m)
+	int(collect(floyd_combination(n, m)))
 end
 
 function skelet_rand_combination(n, m)
@@ -119,7 +128,8 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		for i=1:m
 			for j = (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
 				#sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
-				sparseMessages[(j-1)*l + ind_l[rand_combination(l, activities)], i] = 1
+				#sparseMessages[(j-1)*l + ind_l[rand_combination(l, activities)], i] = 1
+				sparseMessages[(j-1)*l + skelet2_rand_combination(l, activities), i] = 1
 			end
 		end
 		###############" Attention les messages n'ont plus aucun rapport avec les sparseMessages !!!!!!!

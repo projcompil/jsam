@@ -421,6 +421,11 @@
 	\end{align}
 
 	\subsection{Simulations}
+	
+	With random noise on edges, hardness of the problem must take into account the capacity of the binary symmetric channel (the closer $\psi$ is of $0.5$, the harder the problem is). Our new is efficiency is written as :  	
+	$\eta_{m, \psi} = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
+	
+	$\eta_\psi = max_x \, \eta_{x, \psi}$
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/thpsi_c8l256e4}
 		\caption{$\psi = 0.05$, 2 activities per cluster, 8 clusters, 256 units per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
@@ -440,9 +445,7 @@
 	
 	Absolute values of slopes diminish for increasing number of activities per cluster. We can conclude usage of multipartite cliques improve the resilience of the network.
 	
-	$\eta_{m, \psi} = P_{retrieve} m  \frac{2 \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{l \choose a}^{c - c_e})^{-(m-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
 	
-	$\eta_\psi = max_x \, \eta_{x, \psi}$
 	
 	
 	Figure \ref{comppsi} seems to indicate a linear relationship (after a transition for multiple activities) between $\eta_\psi -\eta_0$ and $\psi$.
@@ -458,7 +461,7 @@
 		
 		Fixing $k^* = -\frac{a^2}{2} \log_2 (d)$ gives us $P_{\exists e}$ and $\eta \sim \log_2 d \log_2 (1-d) \log 2$ and therefore \[\eta_{max} = \log 2\]
 	
-		Multipartite cliques don't improve theoretical efficiency (for not accepting messages that weren't previously seen by the network)
+		Multipartite cliques don't improve theoretical asymptotic efficiency (for not accepting messages that weren't previously seen by the network).
 
 	
 	\section{Conclusion}	
