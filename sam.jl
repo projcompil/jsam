@@ -67,7 +67,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 	if !est_sparse
 		sparseMessages = zeros(Bool, n, m)
 	else
-		sparseMessages = spzeros(Uint8, n, m)
+		sparseMessages = spzeros(Bool, n, m)
 	end
 	#else	
 	#	sparseMessages = falses(m,n)
@@ -134,7 +134,7 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree 
 	if !est_sparse
 		network = zeros(Bool,n,n)
 	else
-		network = spzeros(Uint8,n,n)
+		network = spzeros(Bool,n,n)
 	end
 	#else
 	#	network = falses(n, n) 
@@ -151,6 +151,8 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree 
 					end
 				end
 			end
+		elseif est_sparse
+			network = sparseMessages * sparseMessages'
 		else
 			const ind_n = [1:n]
 			for i=1:m
@@ -262,8 +264,8 @@ end
 # indexes is not used in this function (Trouver une façon de s'en débarasser ?)
 # applies of one pass of the sum of sum rule
 function sum_of_sum!(l, c, network, input, gamma, indexes, degree = 0, activities= 1, winners = 1, csparse = 0)
-	prod = gamma * input + network * input
 	if csparse == c
+		prod = gamma * input + network * input
 		for i=1:c
 			if winners <= 1
 				maxi = maximum(prod[(i-1)*l+1:i*l]) 
@@ -277,6 +279,8 @@ function sum_of_sum!(l, c, network, input, gamma, indexes, degree = 0, activitie
 			end
 		end
 	else
+		cinput = int(input)
+		prod = gamma * cinput + network * cinput
 		positive_activations = nonzeros(prod)
 		maxi = (if length(positive_activations) < (csparse * winners) 0 else select(positive_activations, (csparse * winners), rev = true) end)
 		for i=1:c
@@ -342,8 +346,8 @@ function estimate_efficiency(l, c, m, alphabet_size, activities = 1, csparse = 0
 	else
 		info_alphabet = sum(log2((l-activities+1) : l)) - sum(log2(1:activities))				
 	end
-
-	2m * ((if csparse == 0 c else csparse end) * info_alphabet - log2(m) + 1/log(2))/(c*(c-1)*l^2),  2m * c * info_alphabet / (c*(c-1)*l^2), info_alphabet ##1 == log2(2) == 1, this is where the term comes from (2nd order)
+	const calpha = (if csparse == 0 c else csparse end)
+	2m * (calpha * info_alphabet - log2(m) + 1/log(2))/(c*(c-1)*l^2),  2m * calpha * info_alphabet / (c*(c-1)*l^2), info_alphabet ##1 == log2(2) == 1, this is where the term comes from (2nd order)
 end
 
 
@@ -411,7 +415,7 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 	println("Messages created and translated.")
 	dens = density(l, c, network)
 	println("Learning done.\nThe density of the network is : $(dens).")
-	eff, aeff, info_alphabet = estimate_efficiency(l, c, m, alphabet_size, activities)
+	eff, aeff, info_alphabet = estimate_efficiency(l, c, m, alphabet_size, activities, csparse)
 	println("Approximate efficiency : $eff")
 	const erasedNeuron = (if fsum == sum_of_max! 1 else 0 end)
 	# Computing the number of successful corrections in tests simulations and the total number of iterations (in parallel)
@@ -423,7 +427,19 @@ function test_network(l_init = 128, c = 8, m = 5000, gamma = 1, erasures = 4, it
 		end
 		input = copy(init)
 		# Erasing some clusters. sum_of_max is easier to write by saturating erased clusters.
-		indexes = randperm(c)[1:erasures]
+		if !est_sparse
+			indexes = randperm(c)[1:erasures]
+		else
+			preindexes =  zeros(Int64, csparse)
+			k = 1
+			for j=1:c
+				if any(input[((j-1)*l+1):j*l] .> 0)
+					preindexes[k] = j
+					k += 1
+				end
+			end
+			indexes = preindexes[randperm(csparse)[1:erasures]]
+		end
 		fcorrupt(l, c, erasures, input, indexes, erasedNeuron, p_des)
 		# Trying to recover them.
 		iter_rule!(iterations, init, l, c, network, input, gamma, indexes, fsum, degree, activities, winners, csparse)
