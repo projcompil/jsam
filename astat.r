@@ -27,6 +27,7 @@ spec = matrix(c(
 'ord', NA, 2, "character",
 'help' , 'h', 0, "logical",
 'clusters' , 'c', 2, "integer",
+'csparse' , NA, 2, "integer",
 'activities' , 'a', 2, "integer",
 'neurons' , 'l', 2, "integer",
 'messages' , 'm', 2, "integer",
@@ -113,6 +114,13 @@ if(is.null(opt$abs)) { opt$abs = "erasures" ; }
 if(is.null(opt$ord)) { opt$ord = "errorrate" ; }
 
 if(!is.null(opt$clusters)) { data = subset(data, c == opt$clusters) }
+if(!is.null(opt$csparse)) { 
+	if(opt$csparse == 0) {
+		data = subset(data, c == csparse)
+	} else {
+		data = subset(data, csparse == opt$csparse)
+	}
+}
 if(!is.null(opt$messages)) { data = subset(data, m == opt$messages) }
 if(!is.null(opt$neurons)) { data = subset(data, l == opt$neurons) }
 if(!is.null(opt$gamma)) { data = subset(data, gamma == opt$gamma) }
