@@ -89,18 +89,18 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 	#	sparseMessages = falses(m,n)
 	#end
 	if activities <= 1  # bad "if" but the goal is to keep cache efficiency
-		messages = rand(1:l,m,(if !est_sparse c else csparse end))
+		messages = rand(1:l,(if !est_sparse c else csparse end), m)
 		if !est_sparse
 			for i=1:m
 				for j=1:c
-					sparseMessages[(j-1)*l+messages[i,j], i] = 1
+					sparseMessages[(j-1)*l+messages[j,i], i] = 1
 				end
 			end
 		else
 			for i=1:m
 				k = 1
 				for j= skelet_rand_combination(c, csparse)
-					sparseMessages[(j-1)*l+messages[i,k], i] = 1
+					sparseMessages[(j-1)*l+messages[k,i], i] = 1
 					k += 1
 				end
 			end
@@ -167,7 +167,7 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree 
 				for j=1:c
 					for k=1:c
 						if j != k
-							network[(j-1)*l+messages[i,j],(k-1)*l+messages[i,k]] = 1
+							network[(j-1)*l+messages[j,i],(k-1)*l+messages[k,i]] = 1
 						end
 					end
 				end

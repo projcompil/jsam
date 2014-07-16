@@ -13,7 +13,7 @@
 				"ugamma" : { "values" : [1] },
 				"activities" : { "values" : [1,2] },
 				"m" : { 
-					"values" : [10000],
+					"values" : [100000],
 					"crange" : [11000, 1000, 28000]
 				},
 				"l" : { "values" : [64] },
