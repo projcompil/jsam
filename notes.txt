@@ -293,3 +293,25 @@ tester sum of max !!
  f <- function(m, c, ce, l, a) { al = 1/choose(l,a) ; (sum(sapply((ce+1):c, function (k) choose(c, k) * (1-al)^k * al^(c-k))))^(m-1) }   : à rentrer pour comparer efficacités
 
  faire courbes à la main (ggplot) pour ajouter densité/erreurs th en même temps etc.
+
+
+ partir alphabet poids constant
+ l'état du réseau est défini par l'état du vecteur binaires
+
+ enlever complexité
+
+ expliciter w = a (car a 1 dans le message) + as well
+
+ décrire itérativité
+ transition messages iiid
+
+ introduire cluster
+ exemple 
+ fixer deux messages
+
+ rappeler hypothèse indépendance : quiestion ouverte 
+ séparer les efficacités : décrire mémoire parfaite
+
+ retirer les connections au sein même cluster
+ rajouter perf ml dans courbes
+ commenter les courbes on observe, attente : détails
