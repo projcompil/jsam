@@ -73,10 +73,20 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 	#	sparseMessages = falses(m,n)
 	#end
 	if activities <= 1  # bad "if" but the goal is to keep different test files functioning
-		messages = rand(1:l,m,c)
-		for i=1:m
-			for j= (if !est_sparse 1:c else skelet_rand_combination(c, csparse) end)
-				sparseMessages[(j-1)*l+messages[i,j], i] = 1
+		messages = rand(1:l,m,(if !est_sparse c else csparse end))
+		if !est_sparse
+			for i=1:m
+				for j=1:c
+					sparseMessages[(j-1)*l+messages[i,j], i] = 1
+				end
+			end
+		else
+			for i=1:m
+				k = 1
+				for j= skelet_rand_combination(c, csparse)
+					sparseMessages[(j-1)*l+messages[i,k], i] = 1
+					k += 1
+				end
 			end
 		end
 		return (messages, sparseMessages, l, l)
@@ -131,7 +141,7 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree 
 	#end
 #	if p_cons == 1.0  # repetition for cache efficiency in the case one activate all the connections.
 	if degree <= 0
-		if activities <= 1
+		if activities <= 1 && !est_sparse
 			for i=1:m
 				for j=1:c
 					for k=1:c
@@ -326,14 +336,14 @@ function mix_of_rules!(l, c, network, input, gamma, indexes, degree = 0, activit
 	sum_of_max!(l, c, network, input, gamma, indexes, degree, activities, winners)
 end
 
-function estimate_efficiency(l, c, m, alphabet_size, activities = 1) 
+function estimate_efficiency(l, c, m, alphabet_size, activities = 1, csparse = 0) 
 	if alphabet_size > 1
 		info_alphabet = log2(alphabet_size)
 	else
 		info_alphabet = sum(log2((l-activities+1) : l)) - sum(log2(1:activities))				
 	end
 
-	2m * (c * info_alphabet - log2(m) + 1/log(2))/(c*(c-1)*l^2),  2m * c * info_alphabet / (c*(c-1)*l^2), info_alphabet ##1 == log2(2) == 1, this is where the term comes from (2nd order)
+	2m * ((if csparse == 0 c else csparse end) * info_alphabet - log2(m) + 1/log(2))/(c*(c-1)*l^2),  2m * c * info_alphabet / (c*(c-1)*l^2), info_alphabet ##1 == log2(2) == 1, this is where the term comes from (2nd order)
 end
 
 

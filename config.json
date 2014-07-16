@@ -7,23 +7,23 @@
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 4,
+			"pool_size" : 1,
 			"only_drop" : false,
 			"network_params" : {
 				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [2] },
+				"activities" : { "values" : [1] },
 				"m" : { 
-					"values" : [500],
+					"values" : [10000],
 					"crange" : [11000, 1000, 28000]
 				},
-				"l" : { "values" : [256] },
-				"c" : { "values" : [16] },
-				"csparse" : { "values" : [0,8]},
+				"l" : { "values" : [64] },
+				"c" : { "values" : [50] },
+				"csparse" : { "values" : [4]},
 				"erasures" : { 
-					"values" : [8],
+					"values" : [2],
 					"crange" : [1, 1, 7]
 				},
-				"iterations" : { "values" : [1] },
+				"iterations" : { "values" : [1,4] },
 				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
 				"p_cons" : { "values" : [0.0], "crange": [0.01, 0.01, 0.10]},
