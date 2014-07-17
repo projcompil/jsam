@@ -1,4 +1,4 @@
-\documentclass[english,11pt,twocolumn]{IEEEtran}
+\documentclass[english,10pt,twocolumn]{IEEEtran}
 \usepackage[utf8]{inputenc}  
 
 \usepackage[english]{babel} 
@@ -139,13 +139,22 @@
 		
 	\subsection{Learning messages}
 		
-	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in an undirected unweighted graph, or neural network, of $c \cdot l$ vertices or units. Messages are considered independent and identically distributed.
+	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in a neural network, of $c \cdot l$ units.
 	
 	Our goal is to store messages so as to be able to retrieve them from partial or erroneous versions of them.
 	
 	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
 	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $i$ and $j$ such as $1 \le j \le l$ and $1 \le i \le c$, the unit $j$ in the cluster $i$ is activated if and only if $y_i[j] = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message. The parameter $a$ describing the number of activated units per cluster will be called number of activities.
+	
+	$\tilde{W} = \max_{1\le i \le m} x_i x_i^\intercal$
+	
+	$W_{kl} = \bigg \{
+  \begin{tabular}{ccc}
+  $0$ & if $\exists i\in [1, c ], \, (i-1)c+1 \le k,l \le ic$ \\
+  $\tilde{W}_{kl}$ & otherwise 
+  \end{tabular}
+  $
 		
 	\subsection{Retrieving messages}	
 		
@@ -158,13 +167,13 @@
 %		\subsubsection{The "$w$-winners take all" rule}
 		
 
-		To fully exploit the local regularity of the code (constant weight of $a$), we make a small modification the classic retrieving rule	by keeping activated all units that achieve a score equal or greater than the score appearing in $w$-th position in the ordered array of scores (where $w$ is a positive integer parameter)
+		We make a small modification the classic retrieving rule to fully exploit the local regularity of the code (constant weight of $a$). We keep activated all units that achieve a score equal or greater than the $w$-th score. (where $w$ is a positive integer parameter)
 		
 		%$a$-rank
 		
-		Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th greater element in an array of $n$ elements is $O(n)$ in complexity.
+		%Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th greater element in an array of $n$ elements is $O(n)$ in complexity.
 		
-		Intuitively the choice of $w = a$ is optimal (it it is the most natural with $w = 1$).
+		Intuitively the choice of $w = a$ is optimal (it it is the most natural with $w = 1$ as well).
 		Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		\begin{algorithm}[!htb]
 		\caption{$w$-sum of sum \label{asumsum}}
@@ -221,7 +230,7 @@
 	
 	%probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
 	
-	Since units representing messages are independent (as messages are themselves independent), the probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum is $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$.
+	Since unit activations are independent (as messages are themselves independent), the probability for none of the vertices of one erased cluster, excepting the correct ones, to achieve the maximum is $\left(1 - d^	{a(c-c_e)}\right)^{l-a}$.
 	
 	Scores in clusters being also independent, the probability for none of the vertices in any erased cluster, excepting the correct ones, to achieve the maximum in their respective clusters is $\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)}$.
 	
@@ -260,7 +269,7 @@
 		
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/remplacement_densite_c8l256a4}
-		\caption{Theoretical and empirical densities}
+		\caption{Theoretical and empirical densities for a network of 8 clusters, 256 units per cluster and 4 activated units per cluster}
 			\label{densiteth}
 	\end{figure}
 	

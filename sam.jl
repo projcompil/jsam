@@ -99,7 +99,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		else
 			for i=1:m
 				k = 1
-				for j= skelet_rand_combination(c, csparse)
+				for j = skelet_rand_combination(c, csparse)
 					sparseMessages[(j-1)*l+messages[k,i], i] = 1
 					k += 1
 				end
