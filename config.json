@@ -13,12 +13,12 @@
 				"ugamma" : { "values" : [1] },
 				"activities" : { "values" : [1,2] },
 				"m" : { 
-					"values" : [100000],
+					"values" : [50000],
 					"crange" : [11000, 1000, 28000]
 				},
 				"l" : { "values" : [64] },
-				"c" : { "values" : [100] },
-				"csparse" : { "values" : [12]},
+				"c" : { "values" : [50] },
+				"csparse" : { "values" : [8]},
 				"erasures" : { 
 					"values" : [3],
 					"crange" : [1, 1, 7]

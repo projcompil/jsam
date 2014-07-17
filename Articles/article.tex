@@ -123,6 +123,9 @@
 	 
 	%\keywords{associative memory, error correcting code, cliques, multipartite cliques, neural networks}
 	
+	\begin{IEEEkeywords}
+	associative memory, error correcting code, cliques, multipartite cliques, neural networks
+	\end{IEEEkeywords}
 	\section{Introduction}
 	
 		
@@ -143,16 +146,20 @@
 	
 	Our goal is to store messages so as to be able to retrieve them from partial or erroneous versions of them.
 	
-	Each message $x = (x_i)_{1 \le i \le c}$ is mapped to $y = (y_i)_{1 \le i \le c}$ where $y_i$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
+	Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
 	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $i$ and $j$ such as $1 \le j \le l$ and $1 \le i \le c$, the unit $j$ in the cluster $i$ is activated if and only if $y_i[j] = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message. The parameter $a$ describing the number of activated units per cluster will be called number of activities.
 	
-	$\tilde{W} = \max_{1\le i \le m} x_i x_i^\intercal$
+	Units $k$ in cluster $j$ will be designated by index $l = (j-1)c+k$.
 	
-	$W_{kl} = \bigg \{
+	The state of the network corresponds to a message.	
+	
+	$\tilde{W} = \max_{1\le i \le m} x^i x^{i\intercal}$
+	
+	$W_{ll'} = \bigg \{
   \begin{tabular}{ccc}
-  $0$ & if $\exists i\in [1, c ], \, (i-1)c+1 \le k,l \le ic$ \\
-  $\tilde{W}_{kl}$ & otherwise 
+  $0$ & if $\exists j\in [1, c], \, (j-1)c+1 \le l,l' \le jc$ \\
+  $\tilde{W}_{ll'}$ & otherwise 
   \end{tabular}
   $
 		
@@ -175,6 +182,16 @@
 		
 		Intuitively the choice of $w = a$ is optimal (it it is the most natural with $w = 1$ as well).
 		Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
+		
+		$x$
+		
+		$\tilde{x}$
+		
+		$s^{t} = \gamma \tilde{x^{t}} + W \tilde{x^{t}}$
+		
+		
+		
+		
 		\begin{algorithm}[!htb]
 		\caption{$w$-sum of sum \label{asumsum}}
 		\begin{algorithmic}[1]

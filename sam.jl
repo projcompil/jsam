@@ -25,6 +25,14 @@ function rand_combination(n, m)
 	end
 	res
 end
+function sprand_combination(n, m)
+	s = floyd_combination(n, m)
+	res = spzeros(Bool, n, 1)
+	for i in s
+		res[i] = 1
+	end
+	res
+end
 
 function skelet2_rand_combination(n, m)
 	a = int(collect(floyd_combination(n, m)))
@@ -99,7 +107,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		else
 			for i=1:m
 				k = 1
-				for j = skelet_rand_combination(c, csparse)
+				for j = floyd_combination(c, csparse)
 					sparseMessages[(j-1)*l+messages[k,i], i] = 1
 					k += 1
 				end
@@ -132,12 +140,20 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 		#end
 		#graine = vcat(ones(Bool, activities), zeros(Bool, l - activities))
 		#const ind_l = [1:l]
-		for i=1:m
-			for j = (if !est_sparse 1:c else skelet2_rand_combination(c, csparse) end)
-				#sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)#shuffle(graine)
-				#sparseMessages[(j-1)*l + ind_l[rand_combination(l, activities)], i] = 1
-				for k in skelet2_rand_combination(l, activities)
-					sparseMessages[(j-1)*l + k, i] = 1
+		if !est_sparse
+			for i =1:m
+				for j =1:c
+					sparseMessages[(j-1)*l+1:j*l, i] = rand_combination(l, activities)
+				end
+			end
+		else
+			for i=1:m
+				for j in floyd_combination(c, csparse)
+					#sparseMessages[(j-1)*l+1:j*l, i] = sprand_combination(l, activities)
+					#sparseMessages[(j-1)*l + ind_l[rand_combination(l, activities)], i] = 1
+					for k in floyd_combination(l, activities)
+						sparseMessages[(j-1)*l + k, i] = 1
+					end
 				end
 			end
 		end
