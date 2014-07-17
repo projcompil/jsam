@@ -139,14 +139,26 @@
 	
 	
 	\section{Networks of neural cliques}
-		
-	\subsection{Learning messages}
-		
-	Let $\mathcal{M}$ be a set of messages of length $c$ over the alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and $m = | \mathcal{M} |$. Messages in $\mathcal{M}$ are stored in a neural network, of $c \cdot l$ units.
+	
+	An associative memory is able to retrieve a message through a partial version of it.
+
+	We first explain how we will store messages. Secondly we detail how messages are retrieved by a multipartite clustered network.
+	
+	
+	\subsection{Storing messages}
 	
 	Our goal is to store messages so as to be able to retrieve them from partial or erroneous versions of them.
 	
-	Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
+	We will consider a set $\mathcal{M}$ of messages of fixed length $c$ over a finite alphabet $\mathcal{A}$.
+	
+	Messages in $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each.
+	
+	Let $\mathcal{M}$ be a set of messages of length $c$ over a finite alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and $m = | \mathcal{M} |$. 
+	
+	binary constant weight codes of weight $a$.
+	
+	States of the network are characterized by which neurons are activated. A message corresponds to one, and only one, state of the network. 
+	%Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
 	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $i$ and $j$ such as $1 \le j \le l$ and $1 \le i \le c$, the unit $j$ in the cluster $i$ is activated if and only if $y_i[j] = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message. The parameter $a$ describing the number of activated units per cluster will be called number of activities.
 	
@@ -154,7 +166,7 @@
 	
 	The state of the network corresponds to a message.	
 	
-	$\tilde{W} = \max_{1\le i \le m} x^i x^{i\intercal}$
+	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$
 	
 	$W_{ll'} = \bigg \{
   \begin{tabular}{ccc}
@@ -162,10 +174,14 @@
   $\tilde{W}_{ll'}$ & otherwise 
   \end{tabular}
   $
+  
+  We obtain a binary symmetric matrix $W$ with null blocks on the diagonal.
+  
+  As taking a maximum is associative and commutative, storing can be done online and is independent of the order of messages.
 		
 	\subsection{Retrieving messages}	
 		
-		Retrieving messages occurs by message passing. We adapt the rule first developed in \cite{GriBer20117} to multipartite cliques.		
+		Messages are retrieved by iterative application of a correcting rule. We adapt the rule first developed in \cite{GriBer20117} to multipartite cliques.
 		
 %		\subsubsection{The "winner takes all" rule}
 %		
@@ -180,16 +196,15 @@
 		
 		%Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th greater element in an array of $n$ elements is $O(n)$ in complexity.
 		
-		Intuitively the choice of $w = a$ is optimal (it it is the most natural with $w = 1$ as well).
+		Intuitively the choice of $w = a$ is optimal (it it is the most natural one with $w = 1$ as well).
 		Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		
-		$x$
 		
-		$\tilde{x}$
+		We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$.
 		
-		$s^{t} = \gamma \tilde{x^{t}} + W \tilde{x^{t}}$
+		At each step $t$, we compute the scores $s^{t} = \gamma \tilde{x^{t}} + W \tilde{x^{t}}$
 		
-		$\mbox{select}(w, v)$ is equal to the $w$-th element of $v$ (counting repetitions).		
+		$\mbox{select}(w, v)$ is equal to the $w$-th greatest element of $v$ (counting repetitions).\footnote{$\mbox{select}(3, [3,2,1,2,0]) = 2$}
 		
 		$\tilde{x}^{t+1}_{(j-1)c+k} = \bigg \{
   			\begin{tabular}{ccc}
@@ -220,14 +235,20 @@
 		\EndProcedure
 		\end{algorithmic}
 		\end{algorithm}
-
+	
+	
+	We now study the performance of the new retrieving rule on different problems of retrieving messages : first partially erased messages, then erroneous messages, finally partially erased messages when the network has been damaged.
+	
 	\section{Retrieval performance}	
 	
+	Messages will be considered as independent and identically distributed according to the uniform distribution.
 
 	\subsection{Retrieving partially erased messages}		
 		
 	\subsubsection{Analytical result}
-		
+	
+	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(l, l')$ to be present in the network (i.e. $W_{ll'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations are done assuming connections between units are independent, which is false but is a convenient approximation that gives results very close from empirical results.
+	
 	%number of neurons per cluster $l$
 	
 	%number of clusters $c$
@@ -241,11 +262,13 @@
 	%density : $d$
 	
 	%edge : $(i, j)$
-	We generalise results on erasures obtained in \cite{GriBer20117} to multipartie cliques.
 	
-	Suppose we are trying to recover a message where $c_e$ clusters have been erased (i.e. all units in those clusters are set to $0$).
+	%We generalise results on erasures obtained in \cite{GriBer20117} to multipartie cliques.
+	Erasures of a symbol in a message corresponds to an erased cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
 	
-	As the probability for $i$ and $j$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(i,j)$ of not being added in the network for one message is $1 - \left(\frac{a}{l}\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
+	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
+	
+	As the probability for $l$ and $l'$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(l,l')$ of not being added in the network for one message is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
 	
 	\begin{align}
 		\label{formula_density}
@@ -265,7 +288,7 @@
 	P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} 
 	\end{align}	 
 	
-	In order to compare different networks using different alphabets, we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and recover messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
+	In order to compare different networks using different alphabets, we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and retrieve messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
 	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \mathop{=}_{m \rightarrow +\infty} m(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The information effectively stored in the network is $P_{retrieve} \times  \frac{2m \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2}$.
 	
