@@ -189,6 +189,15 @@
 		
 		$s^{t} = \gamma \tilde{x^{t}} + W \tilde{x^{t}}$
 		
+		$\mbox{select}(w, v)$ is equal to the $w$-th element of $v$ (counting repetitions).		
+		
+		$\tilde{x}^{t+1}_{(j-1)c+k} = \bigg \{
+  			\begin{tabular}{ccc}
+  			$1$ & if $s^t_{(j-1)c+k} \ge  \mbox{select}(w, (s^t_{(j-1)c+k'})_{1\le k' \le l})$ \\
+  			$0$ & otherwise 
+  		\end{tabular}
+  		$
+		
 		
 		
 		
