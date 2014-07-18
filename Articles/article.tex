@@ -140,9 +140,9 @@
 	
 	\section{Networks of neural cliques}
 	
-	An associative memory is able to retrieve a message through a partial version of it.
+	An associative memory is able to store messages and retrieve them through a partial versions of them.
 
-	We first explain how we will store messages. Secondly we detail how messages are retrieved by a multipartite clustered network.
+	We first describe how messages can be stored in a binary clustered network of multipartite cliques. Secondly we detail how messages can be retrieved after being stored in such a network.
 	
 	
 	\subsection{Storing messages}
@@ -151,22 +151,29 @@
 	
 	We will consider a set $\mathcal{M}$ of messages of fixed length $c$ over a finite alphabet $\mathcal{A}$.
 	
-	Messages in $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each.
+	Messages in $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each. Units can take two values $0$ (deactivated) and $1$ (activated). The network is therefore binary. A cluster will correspond to a symbol in a message and the pattern of unit activations in a cluster will determine which symbol in the alphabet the cluster represents. 
 	
-	Let $\mathcal{M}$ be a set of messages of length $c$ over a finite alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and $m = | \mathcal{M} |$. 
+	Previous works (\cite{GriBer20114, GriBer20122}) considered the storage of binary constant weight codewords of weight $1$. We study the case of arbitrary weight. It is convenient to take $\mathcal{A}$ as the set of all binary constant weight codewords of weight $a$, where $a$ is a positive integer which we will call number of activities.
 	
-	binary constant weight codes of weight $a$.
+	%Let $\mathcal{M}$ be a set of messages of length $c$ over a finite alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and 
+	We set $m = | \mathcal{M} |$. 
 	
-	States of the network are characterized by which neurons are activated. A message corresponds to one, and only one, state of the network. 
+	%binary constant weight codes of weight $a$.
+	
+	States of the network are characterized by which neurons are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\dot l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} We say the network is in state $x$ if for all $j\in [1, c]$, cluster $j$ in the network follows the activation pattern $x[(j-1)l+1\hdots jl]$.
+	
 	%Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
-	Storing a message $x$ in the network amounts to consider the network in state $y$, that is for all $i$ and $j$ such as $1 \le j \le l$ and $1 \le i \le c$, the unit $j$ in the cluster $i$ is activated if and only if $y_i[j] = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message. The parameter $a$ describing the number of activated units per cluster will be called number of activities.
+	Storing a message $y$ in the network amounts to consider the network in state $x$, that is for all $j$ and $k$ such as $1 \le k \le l$ and $1 \le j \le c$, the unit $k$ in the cluster $j$ is activated if and only if $x[(j-1)l+k] = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
 	
-	Units $k$ in cluster $j$ will be designated by index $l = (j-1)c+k$.
+	Unit $k$ in cluster $j$ thus corresponds to the index $l = (j-1)c+k$.
 	
-	The state of the network corresponds to a message.	
+	%The state of the network corresponds to a message.	
 	
-	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$
+	We can describe the network which is an undirected unweighted graph, by its adjacency matrix $W$. As for a message $x$, $x x^{\intercal}$ is the matrix describing the graph where all edges between active units exist, and only them, we can express $W$ in function of the following :
+	
+	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where even edges between units in the same cluster have been added.
+	$W$ can now be expressed as :
 	
 	$W_{ll'} = \bigg \{
   \begin{tabular}{ccc}
@@ -237,7 +244,7 @@
 		\end{algorithm}
 	
 	
-	We now study the performance of the new retrieving rule on different problems of retrieving messages : first partially erased messages, then erroneous messages, finally partially erased messages when the network has been damaged.
+	We now study the performance of the new retrieving rule on distinct problems of retrieving messages : first partially erased messages, then erroneous messages, finally partially erased messages when the network has been damaged.
 	
 	\section{Retrieval performance}	
 	
@@ -305,7 +312,7 @@
 		
 		
 		
-		Simulations agree with the analytical results for error rate, see Figure \ref{erasuresth}.
+		Simulations agree with the analytical results for error rate, see Figure \ref{erasuresth}. We observe a small shift.
 	
 
 	For one iteration (for erasures, not for errors), "winner takes all" is the same as "$a$-winners take all".
