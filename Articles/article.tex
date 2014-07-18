@@ -225,7 +225,7 @@
   		%$
   		\end{align*}
 		
-		We can for example fix a maximum number of steps to the algorithm or even stop at one point if $\tilde{x}_{t+1} = \tilde{x}_t$. The number of iterations can of course improve the retrieval rate.
+		We can for example fix a maximum number of steps to the algorithm or stop at one point if $\tilde{x}_{t+1} = \tilde{x}_t$. Increasing the number of iterations can of course improve the retrieval rate.
 		
 		
 		
@@ -262,7 +262,7 @@
 	
 	\subsubsection{Analytical result}
 	
-	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(l, l')$ to be present in the network (i.e. $W_{ll'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming connections between units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
+	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(l, l')$ to be present in the network (i.e. $W_{ll'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
 	
 	%number of neurons per cluster $l$
 	
@@ -280,8 +280,7 @@
 	
 	%We generalise results on erasures obtained in \cite{GriBer20117} to multipartie cliques.
 	
-	
-	
+
 	
 	
 	As the probability for $l$ and $l'$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(l,l')$ of not being added in the network for one message is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
@@ -293,7 +292,7 @@
 	, recalling that $m$ is the number of messages in $\mathcal{M}$.
 	
 	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
-	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones doing so in their cluster (as the others can't achieve a higher score thanks to not being already activated). For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units corresponding to the original message achieve this score. Since scores follow a binomial law, the probability for a unit $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
+	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones being so in their cluster (as the others can't achieve a higher score thanks to not being already activated). For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units in erased clusters corresponding to the original message achieve this score. Since scores follow a binomial law, the probability for a random unit to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
 	
 	%probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
 	
@@ -461,7 +460,7 @@
 	%Spéculations en Français 
 	%Peut-être un intérêt pour cluter based associative memories build from unreliable storage : si une arête porte moins d'info, on peut peut-être en supprimer plus (mais rajout ?!)
 	
-	As information on a message is shared across connections with multiple activated units per cluster, such networks are more resilient to damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
+	As information on a message is shared across edges with multiple activated units per cluster, such networks are more resilient to damages (for one message information is carried by $a^2 {c \choose 2}$ edges. $v_c$ will indicate a correct unit that should be activated, $v$ the other type of units.
 	
 	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges. We generalise results of \cite{LedGriRabGro20145} to multipartite cliques.
 	
