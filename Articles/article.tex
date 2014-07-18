@@ -142,7 +142,7 @@
 	
 	An associative memory is able to store messages and retrieve them through a partial versions of them.
 
-	We first describe how messages can be stored in a binary clustered network of multipartite cliques. Secondly we detail how messages can be retrieved after being stored in such a network.
+	We first describe how messages can be stored in a binary clustered network of multipartite cliques. Secondly we detail how messages can be retrieved after being stored in such a network, thereby showing how such a network can be used as an associative memory.
 	
 	
 	\subsection{Storing messages}
@@ -209,7 +209,7 @@
 		%Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		
 		
-		We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$.
+		We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$. The network is in state $\tilde{x}$ at the beginning of the retrieving. The message will be successfully retrieved if at the end of the algorithm, the network is in state $x$.
 		
 		At each step $t$, we compute the scores, that is to mean the number of active units each unit is connected to, plus a memory effect $\gamma $ accounting for units begin already active. The array of scores at step $t$ is :  $s_{t} = \gamma \tilde{x_{t}} + W \tilde{x_{t}}$
 		
@@ -258,9 +258,11 @@
 
 	\subsection{Retrieving partially erased messages}		
 		
+	One can see a partial version of a message $x$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
+	
 	\subsubsection{Analytical result}
 	
-	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(l, l')$ to be present in the network (i.e. $W_{ll'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations are done assuming connections between units are independent, which is false but is a convenient approximation that gives results very close from empirical results.
+	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(l, l')$ to be present in the network (i.e. $W_{ll'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming connections between units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
 	
 	%number of neurons per cluster $l$
 	
@@ -278,7 +280,7 @@
 	
 	%We generalise results on erasures obtained in \cite{GriBer20117} to multipartie cliques.
 	
-	Erasures of a symbol in a message corresponds to an erased cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
+	
 	
 	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
 	
