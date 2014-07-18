@@ -160,12 +160,12 @@
 	
 	%binary constant weight codes of weight $a$.
 	
-	States of the network are characterized by which units are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\dot l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up the $k$-th unit in the $j$-th cluster corresponds to the index $l = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, units $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+l] = 1$. 
+	States of the network are characterized by which units are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\cdot{} l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up the $k$-th unit in the $j$-th cluster corresponds to the index $i = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, units $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+k] = 1$. Taking into account this correspondence between messages $y$ in $\mathcal{M}$ and their clustered representation $x$, we will now also consider $x$ as messages.
 	
 	%Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
 	Storing a message $y$ in the network amounts to consider the network in state $x\,$%, that is for all $j$ and $k$ such as $1 \le k \le l$ and $1 \le j \le c$, the unit $k$ in the cluster $j$ is activated if and only if $x[(j-1)l+k] = 1$ 
-	; then adding all edges between activated units to the network excepting for units sharing the same cluster. Note that edges already present in the network remain unchanged. Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
+	; then adding all edges between activated units to the network excepting for units sharing the same cluster. Notice that edges already present in the network remain unchanged throughout the storing process. Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
 	
 	
 	
@@ -173,13 +173,13 @@
 	
 	We can describe the network which is an undirected unweighted graph, by its adjacency matrix $W$. For a message $x$, $x x^{\intercal}$ is the matrix describing the graph where all edges between active units exist, and only them. Therefore we can express $W$ in function of the following :
 	
-	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where all edges between units activated for each state $x$ in the same cluster have been added.
+	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where all edges between  activated units for each state $x$ in the same cluster have been added.
 	$W$ can now be expressed as :\vspace*{1mm}
 	
-	$W_{ll'} = \bigg \{
+	$W_{ii'} = \bigg \{
   \begin{tabular}{ccc}
-  $0$ & if $\exists j\in [1, c], \, (j-1)c+1 \le l,l' \le jc$ \\
-  $\tilde{W}_{ll'}$ & otherwise 
+  $0$ & if $\exists j\in [1, c], \, (j-1)l+1 \le i,i' \le jl$ \\
+  $\tilde{W}_{ii'}$ & otherwise 
   \end{tabular}
   $
   \vspace*{1mm}
