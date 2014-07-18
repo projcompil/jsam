@@ -173,8 +173,9 @@
 	
 	We can describe the network which is an undirected unweighted graph, by its adjacency matrix $W$. For a message $x$, $x x^{\intercal}$ is the matrix describing the graph where all edges between active units exist, and only them. Therefore we can express $W$ in function of the following :
 	
-	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where all edges between  activated units for each state $x$ in the same cluster have been added.
+	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal} = \bigvee_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where all edges between  activated units for each state $x$ in the same cluster have been added.
 	$W$ can now be expressed as :\vspace*{1mm}
+	
 	
 	$W_{ii'} = \bigg \{
   \begin{tabular}{ccc}
@@ -186,7 +187,7 @@
   
   We obtain a binary symmetric matrix $W$ with null blocks on the diagonal.
   
-  As taking a maximum is associative and commutative, storing can be done online and is independent of the order in which messages are stored.
+  As logical or ($\vee$) is associative and commutative, storing can be done online and is independent of the order in which messages are stored.
 		
 	\subsection{Retrieving messages}	
 		
@@ -209,7 +210,7 @@
 		%Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		
 		
-		We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$. The network is in state $\tilde{x}$ at the beginning of the retrieving. The message will be successfully retrieved if at the end of the algorithm, the network is in state $x$.
+		We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$. The network is in state $\tilde{x}$ at the beginning of the retrieving. The state of the network at the beginning of the step $t$ will be denoted by $\tilde{x}_t$. The message will be successfully retrieved if at the end of the algorithm, the network is in state $x$.
 		
 		At each step $t$, we compute the scores, that is to mean the number of active units each unit is connected to, plus a memory effect $\gamma $ accounting for units begin already active. The array of scores at step $t$ is :  $s_{t} = \gamma \tilde{x_{t}} + W \tilde{x_{t}}$
 		
@@ -262,7 +263,7 @@
 	
 	\subsubsection{Analytical result}
 	
-	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(l, l')$ to be present in the network (i.e. $W_{ll'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
+	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(i, i')$ to be present in the network (i.e. $W_{ii'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
 	
 	%number of neurons per cluster $l$
 	
@@ -283,7 +284,7 @@
 
 	
 	
-	As the probability for $l$ and $l'$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(l,l')$ of not being added in the network for one message is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
+	As the probability for $i$ (and $i'$) to be active in its cluster for one message $x$ is $\frac{a}{l}$ providing messages are uniformly distributed, it follows that the probability for the edge $(i,i')$ of not being added in the network for $x$ is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
 	
 	\begin{align}
 		\label{formula_density}
