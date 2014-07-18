@@ -160,7 +160,7 @@
 	
 	%binary constant weight codes of weight $a$.
 	
-	States of the network are characterized by which units are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\cdot{} l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up the $k$-th unit in the $j$-th cluster corresponds to the index $i = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, units $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+k] = 1$. Taking into account this correspondence between messages $y$ in $\mathcal{M}$ and their clustered representation $x$, we will now also consider $x$ as messages.
+	States of the network are characterized by which units are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\cdot{} l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up the $k$-th unit in the $j$-th cluster corresponds to the index $i = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, unit $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+k] = 1$. Taking into account this correspondence between messages $y$ in $\mathcal{M}$ and their clustered representation $x$, we will now also consider $x$ as messages.
 	
 	%Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
@@ -200,13 +200,13 @@
 %		\subsubsection{The "$w$-winners take all" rule}
 		
 
-		We make a small modification the classic retrieving rule to fully exploit the local regularity of the code (constant weight of $a$). We keep activated all units that achieve a score equal or greater than the $w$-th score. (where $w$ is a positive integer parameter)
+		We make a small modification the classic retrieving rule to fully exploit the local regularity of the code (constant weight of $a$). We keep activated all units that achieve a score equal or greater than the $w$-th score. (where $w$ is a positive integer parameter). $w = 1$ amounts to taking the maximum and so is exactly the same as the classic retrieving rule.
 		
 		%$a$-rank
 		
 		%Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th greater element in an array of $n$ elements is $O(n)$ in complexity.
 		
-		Intuitively the choice of $w = a$ is optimal (it it is the most natural one with $w = 1$ as well).
+		Intuitively the choice of $w = a$ is optimal, as each cluster should eventually contain exactly $a$ active units to at least represent a symbol in $\mathcal{A}$. %(it it is the most natural one with $w = 1$ as well).
 		%Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		
 		
@@ -308,7 +308,7 @@
 	
 	In order to compare distinct networks using distinct alphabets (due to variations of the weight parameter $a$), we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and retrieve messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
-	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \mathop{=}_{m \rightarrow +\infty} m(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The information effectively stored in the network is $P_{retrieve} \times  \frac{2m \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2}$.
+	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the entropy of the set of messages is $\log_2(\frac{({l \choose a}^c)^m}{m!}) \mathop{=}_{m \rightarrow +\infty} m(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The ratio of information effectively stored in the network is $P_{retrieve} \times  \frac{2m \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2}$.
 	
 	Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{l \choose a}^{c - c_e})^{m-1}$.
 	
@@ -316,19 +316,22 @@
 	$\eta_m = P_{retrieve}  \frac{2 m\left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-(\frac{1}{{l \choose a}})^{c - c_e})^{-(m-1)}$
 	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
-	The maximum information that can be stored in the network is therefore $\eta = \max_x \eta_x $, which we will define as the efficiency of the network.
+	The maximum ratio of information that can be stored in the network is therefore $\eta = \max_x \eta_x $, which we will define as the efficiency of the network.
 	
 	\subsubsection{Simulations}
+	
 		Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
 		
 		
 		
-		Simulations agree with the analytical results for error rate, see Figure \ref{erasuresth}. We observe a small shift.
+		Simulations agree with the analytical results for error rate, albeit we can observe a small shift, see Figure \ref{erasuresth}. For one iteration, as long as the parameter $w$ is between $1$ and $a$, there is no effect on retrieving. However for $4$ iterations, the choice of $w = a$ allows a shift of about $5000$ messages stored on top of those stored for $w = 1$. The variant rule can thus be considered a significant improvement over the classic one for multipartite clique networks (recall that $w = 1$ amounts to the classic retrieving rule).
+		
+		
 	
 
-	For one iteration (for erasures, not for errors), "winner takes all" is the same as "$a$-winners take all".
+	%For one iteration (for erasures, not for errors), "winner takes all" is the same as "$a$-winners take all".
 	
-	For multiple iterations $a$-winners take all is a significant improvement.
+	%For multiple iterations $a$-winners take all is a significant improvement.
 	%The variant of the rule significantly improves the retrieval rate over multiple iterations. (For one iteration, is is the same as taking only maximum scores.)
 	
 	%See Figure \ref{erasuresth}	
@@ -347,7 +350,7 @@
 			\label{erasuresth}
 		\end{figure}
 		
-		Figure \ref{comperth} shows improvements in capacities over unipartite cliques network. The more the problem is difficult, the more redundancies introduced by multipartite cliques are useful.
+		Thanks to the efficiency defined in the previous section, we can easily compare distinct choices of parameters $a$ (we now take $w = a$ since it is the most efficient choice in practice) over distinct number of erased clusters. Figure \ref{comperth} shows improvements in efficiencies over parameter $a =1$. The more difficult the problem is, the more redundancies introduced by multipartite cliques are useful.
 		
 		\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/5portant_erasures_c8l256}
