@@ -218,9 +218,9 @@
 		
 		\begin{align*}
 		%$
-		&\tilde{x}_{t+1}[(j-1)c+k] =\\ \bigg \{
+		&\tilde{x}_{t+1}[(j-1)l+k] =\\ \bigg \{
   			&\begin{tabular}{ccc}
-  			$1$ & if $s_t[(j-1)c+k] \ge  \mbox{select}(w, s_t[(j-1)l+1 \hdots jl)$ \\
+  			$1$ & if $s_t[(j-1)l+k] \ge  \mbox{select}(w, s_t[(j-1)l+1 \hdots jl)$ \\
   			$0$ & otherwise 
   		\end{tabular}
   		%$
@@ -255,7 +255,7 @@
 	
 	\section{Retrieval performance}	
 	
-	Messages will be considered as independent and identically distributed according to the uniform distribution. We compute theoretical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
+	Messages will be considered as independent and identically distributed according to the uniform distribution. We compute theoretical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of five networks and messages sets, and each point is drawn for a different network and messages set.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
 
 	\subsection{Retrieving partially erased messages}		
 		
@@ -324,7 +324,9 @@
 		
 		
 		
-		Simulations agree with the analytical results for error rate, albeit we can observe a small shift, see Figure \ref{erasuresth}. For one iteration, as long as the parameter $w$ is between $1$ and $a$, there is no effect on retrieving. However for $4$ iterations, the choice of $w = a$ allows a shift of about $5000$ messages stored on top of those stored for $w = 1$. The variant rule can thus be considered a significant improvement over the classic one for multipartite clique networks (recall that $w = 1$ amounts to the classic retrieving rule).
+		Simulations agree with the analytical results for error rate, albeit we can observe a small shift, see Figure \ref{erasuresth}. The theoretical error rate is a bit optimistic which is due to the connections not being independent.
+		
+		 For one iteration, as long as the parameter $w$ is between $1$ and $a$, there is no effect on retrieving. However for $4$ iterations, the choice of $w = a$ allows a shift of about $5000$ messages stored on top of those stored for $w = 1$. The variant rule can thus be considered a significant improvement over the classic one for multipartite clique networks (recall that $w = 1$ amounts to the classic retrieving rule).
 		
 		
 	
@@ -363,6 +365,8 @@
 %	\newpage
 %	$\,$
 %	\newpage
+	
+	Messages can suffer many types of alteration. Multipartite clique neural networks can also correct errors.	
 	
 	\subsection{Retrieving corrupted messages}
 	
