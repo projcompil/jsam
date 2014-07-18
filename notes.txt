@@ -315,3 +315,22 @@ tester sum of max !!
  retirer les connections au sein même cluster
  rajouter perf ml dans courbes
  commenter les courbes on observe, attente : détails
+
+##############"
+ en utilisant le même matériel !!!!
+ #################" brute force sur les cliques
+
+ sezcti brute force sur les cliques
+
+ section pour les problèmes !!! pour tout, recherche exhaustive (mais pas réponse exacte) rapide, sans tro de mémoire
+
+ mardi problem statements + densité
+
+ + dynamic
+
+
+ annexe pour résultat théorique
+
+ penser application
+
+

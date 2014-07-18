@@ -14,7 +14,7 @@
 \usepackage{float}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-
+\usepackage{tikz}
 \usepackage[autolanguage]{numprint}
 \usepackage[affil-it]{authblk}
 %\usepackage[squaren,Gray]{SIunits}
@@ -140,58 +140,123 @@
 	
 	\section{Networks of neural cliques}
 	
-	An associative memory is able to store messages and retrieve them through a partial versions of them.
+	An associative memory is able to store messages then retrieve them given a partial or corrupt probe.
 
-	We first describe how messages can be stored in a binary clustered network of multipartite cliques. Secondly we detail how messages can be retrieved after being stored in such a network, thereby showing how such a network can be used as an associative memory.
+	We first describe how messages can be stored in a recently introduced neural network based associative memory~\cite{}. Secondly, we detail how messages can be retrieved by these networks.
 	
 	
 	\subsection{Storing messages}
 	
-	Our goal is to store messages so as to be able to retrieve them from partial or erroneous versions of them.
+	Consider a set $\mathcal{M}$ of messages of fixed length $c$ over a finite alphabet $\mathcal{A}$.
 	
-	We will consider a set $\mathcal{M}$ of messages of fixed length $c$ over a finite alphabet $\mathcal{A}$.
+	Messages in $\mathcal{M}$ can be stored in a clustered neural network made of $c$ clusters containing $\ell$ units each. Units can take binary values : $0$ (deactivated) or $1$ (activated). A message is represented by a set of activated units in the network. %% There is a natural transport between messages and active units in the network. This transport consists in A cluster correspond to a symbol in a message and the pattern of unit activations in a cluster will determine which symbol in the alphabet the cluster represents. 
 	
-	Messages of $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each. Each unit can take two values $0$ (deactivated) and $1$ (activated). The network is therefore binary. A cluster will correspond to a symbol in a message and the pattern of unit activations in a cluster will determine which symbol in the alphabet the cluster represents. 
-	
-	A binary constant weight code of weight $a$ is a code where all codewords have the same weight $a$, i.e. the same number of $1$ in them. Previous works (\cite{GriBer20114, GriBer20122}) considered the storage of binary constant weight codewords of weight $1$. We study the case of arbitrary weight. It is convenient to take $\mathcal{A}$ as the set of all binary constant weight codewords of length $l$ and of weight $a$, where $a$ is a positive integer parameter which we will call number of activities and which satisfies $a\le l$. We now have ${l \choose a} = |\mathcal{A}|$. We also set $m = | \mathcal{M} |$.
+        One can choose the association between a message and its corresponding set of active units. In previous works~\cite{GriBer20114, GriBer20122}, each coordinate of a message $m$ is associated with a cluster. Inside a cluster, each unit is associated with a symbol in $\mathcal{A}$. As a consequence, to a message $m$ corresponds one active unit in each cluster of the network.
+
+        In this document, we are interested in assessing the performance of such systems when several units are associated with a given symbol for each cluster. To simplify this generalisation and allow for optimized retrieval strategies, we fix this number of activated units $a$ in each cluster.
+        
+        Note that there are $\binom{\ell}{a}$ possible choices for $a$ activations among $\ell$ units, giving the following correspondance:
+\[
+\binom{\ell}{a} = | \mathcal{A} |\;.
+\]
+Without loss of generality, we therefore consider that $\mathcal{A}$ is composed of the list of all binary vectors containing exactly $a$ ones that we index from 1 to $\binom{\ell}{a}$: $\mathcal{A} = \{\mathcal{A}_1,\dots,\mathcal{A}_{\binom{\ell}{a}}\}$.
+
+Previous works~\cite{GriBer20114,GriBer20122} consider the case $a=1$.
 	
 	%Let $\mathcal{M}$ be a set of messages of length $c$ over a finite alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and 
 	 
 	
 	%binary constant weight codes of weight $a$.
 	
-	States of the network are characterized by which units are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\cdot{} l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up the $k$-th unit in the $j$-th cluster corresponds to the index $i = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, unit $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+k] = 1$. Taking into account this correspondence between messages $y$ in $\mathcal{M}$ and their clustered representation $x$, we will now also consider $x$ as messages.
+	To provide convenient notations, we propose to linearise messages using the following function mapping $f$:
+\[
+f: \left\{\begin{array}{rcl}\mathcal{A}^c &\rightarrow& \{0,1\}^{c\cdot{} \ell}\\m&\mapsto& \mu \big| \forall j, \mu[(j-1)\ell+1\dots j\times\ell] = m_j\end{array}\right.\;,
+\]
+where $\mu[a..b]$ is the subarray of $\mu$ from coordinate $a$ to coordinate $b$.
+
+By abusing notations, and since function $f$ is injective, we shall make no distinction between $m$ and $f(m)=\mu$.
+%% A message $m$ of length $c$ can be seen as an array $x$ of length $c\cdot{} l$ where for each $j\in [c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up the $k$-th unit in the $j$-th cluster corresponds to the index $i = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, unit $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+k] = 1$. Taking into account this correspondence between messages $y$ in $\mathcal{M}$ and their clustered representation $x$, we will now also consider $x$ as messages.
 	
 	%Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
-	Storing a message $y$ in the network amounts to consider the network in state $x\,$%, that is for all $j$ and $k$ such as $1 \le k \le l$ and $1 \le j \le c$, the unit $k$ in the cluster $j$ is activated if and only if $x[(j-1)l+k] = 1$ 
-	; then adding all edges between activated units to the network excepting for units sharing the same cluster. Notice that edges already present in the network remain unchanged throughout the storing process. Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
+	To store a message $m$ in the network, we use the edges between units. More precisely, to store a message $\mu$ all edges between activated units are added to the network, with the exception of units in a same cluster. In other words, storing a message consists in printing a multipartite clique into the network. This process is depicted in Figure~\ref{fig:storage}. %% amounts to consider the network in state $x\,$%, that is for all $j$ and $k$ such as $1 \le k \le l$ and $1 \le j \le c$, the unit $k$ in the cluster $j$ is activated if and only if $x[(j-1)l+k] = 1$ 
+	%% ; then adding all edges between activated units to the network excepting for units sharing the same cluster. 
+        Notice that edges already present in the network remain unchanged throughout the storing process. %% Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
+
+\begin{figure}[!h]
+\centering
+\begin{tikzpicture}
+  \foreach \type/\fill/\xshift/\yshift in {circle/draw/-50pt/50pt,rectangle/draw/50pt/50pt,rectangle/fill/-50pt/-50pt,circle/fill/50pt/-50pt}{
+    \begin{scope}[xshift=\xshift,yshift=\yshift]
+    \tikzstyle{every node}=[\type,draw,\fill];
+    \foreach \i in {0,20pt,40pt,60pt}{
+      \foreach \j in {0,20pt,40pt,60pt}{
+        \node (node\type\fill\i\j) at (\i,\j) {};
+      }
+    }
+\end{scope}
+  }
+  %% \path
+  %% (nodecircledraw20pt40pt) edge (nodecirclefill040pt)
+  %% edge (noderectanglefill20pt20pt)
+  %% edge (noderectangledraw60pt60pt)
+  %% (nodecirclefill040pt) edge (noderectanglefill20pt20pt)
+  %% edge (noderectangledraw60pt60pt)
+  %% (noderectanglefill20pt20pt) edge (noderectangledraw60pt60pt)
+  %% ;
+  %% \path
+  %% (nodecircledraw60pt60pt) edge (nodecirclefill40pt20pt)
+  %% edge (noderectanglefill060pt)
+  %% edge (noderectangledraw20pt40pt)
+  %% (nodecirclefill40pt20pt) edge (noderectanglefill060pt)
+  %% edge (noderectangledraw20pt40pt)
+  %% (noderectanglefill060pt) edge (noderectangledraw20pt40pt)
+  %% ;
+  \path[ultra thick]
+  (nodecircledraw020pt) edge (nodecirclefill20pt20pt)
+  edge (noderectanglefill40pt60pt)
+  edge (noderectangledraw60pt60pt)
+  (nodecirclefill20pt20pt) edge (noderectanglefill40pt60pt)
+  edge (noderectangledraw60pt60pt)
+  (noderectanglefill40pt60pt) edge (noderectangledraw60pt60pt)
+  ;
+\end{tikzpicture}
+\caption{Illustration of the storage process of a message $\mu$. In this setting the number of clusters is $c=4$, each containing $\ell=16$ units. The parameter $a$ is 2.}
+\label{fig:storage}
+\end{figure}
 	
-	
+	Note that this representation is lossy, as the number of possible sets of messages is much larger than the number of possible networks.
 	
 	%The state of the network corresponds to a message.
 	
-	We can describe the network which is an undirected unweighted graph, by its adjacency matrix $W$. For a message $x$, $x x^{\intercal}$ is the matrix describing the graph where all edges between active units exist, and only them. Therefore we can express $W$ in function of the following :
+	Formally, we can describe the network using the adjacency matrix $W$ of the underlying graph. By construction this matrix is symmetric and binary. For a message $\mu$, note that $\mu \mu^{\intercal}$ is the cooccurence matrix associated with $\mu$. Before defining $W$, we first introduce the following matrix:
+\[
+	\overline{W} = \max_{\mu\in \mathcal{M}} \mu \mu^{\intercal} %% = \bigvee_{x\in \mathcal{M}} x x^{\intercal}
+        \;,
+\]
+where $\max$ is a coefficient-to-coefficient max function. $W$ is obtained from $\overline{W}$ by removing all edges connecting units in a same cluster. We obtain a binary symmetric matrix $W$ with null blocks on the diagonal. The reason why we remove intracluster connections will be discussed in the following section.
+
+%% $ which is the matrix where all edges between  activated units for each state $x$ in the same cluster have been added.
+%% 	$W$ can now be expressed as :\vspace*{1mm}
+%% \[
+
+%% \]
 	
-	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal} = \bigvee_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where all edges between  activated units for each state $x$ in the same cluster have been added.
-	$W$ can now be expressed as :\vspace*{1mm}
-	
-	
-	$W_{ii'} = \bigg \{
-  \begin{tabular}{ccc}
-  $0$ & if $\exists j\in [1, c], \, (j-1)l+1 \le i,i' \le jl$ \\
-  $\tilde{W}_{ii'}$ & otherwise 
-  \end{tabular}
-  $
-  \vspace*{1mm}
+%% 	$W_{ii'} = \bigg \{
+%%   \begin{tabular}{ccc}
+%%   $0$ & if $\exists j\in [1, c], \, (j-1)l+1 \le i,i' \le jl$ \\
+%%   $\tilde{W}_{ii'}$ & otherwise 
+%%   \end{tabular}
+%%   $
+%%   \vspace*{1mm}
   
-  We obtain a binary symmetric matrix $W$ with null blocks on the diagonal.
   
-  As logical or ($\vee$) is associative and commutative, storing can be done online and is independent of the order in which messages are stored.
+  
+  As $\max$ is associative and commutative, storing can be done online and is independent of the order in which messages are stored.
 		
 	\subsection{Retrieving messages}	
 		
-		Messages are retrieved by iterative application of a correcting rule. We adapt the rule first developed in \cite{GriBer20117} to multipartite cliques.
+        Once a set of messages has been stored in some matrix $W$, we are interested in retrieving a stored message given a partial or corrupt probe $\tilde{\mu}$. To perform this operation, we use an iterative algorithm derived from the one proposed in~\cite{GriBer20117}.
 		
 %		\subsubsection{The "winner takes all" rule}
 %		
@@ -199,34 +264,46 @@
 %	
 %		\subsubsection{The "$w$-winners take all" rule}
 		
+        The algorithm relies on two steps. First it computes \emph{scores} for each unit in the network and then select which units should be activated based on their scores. For a review on different strategies for both steps in the classical case where $a=1$, consider~\cite{Ala}. To adapt this algorithm in the case $a\ge 2$, we only modify the second step for choosing which units to be activated.
 
-		We make a small modification the classic retrieving rule to fully exploit the local regularity of the code (constant weight of $a$). We keep activated all units that achieve a score equal or greater than the $w$-th score. (where $w$ is a positive integer parameter). $w = 1$ amounts to taking the maximum and so is exactly the same as the classic retrieving rule.
+        There are several strategies for computing scores of the units, but our simulations suggest that their impact on performance is not significative. We therefore use what is called the SUM-OF-SUM rule in which scores are computed as follows:
+
+\[
+s = \gamma \tilde{\mu} + W \tilde{\mu}\;.
+\]
+
+In other words, the score of a unit is the number of activated units it is connected to, plus a memory effect with parameter $\gamma$. This memory effect can have significative impact on performance and its optimal value depends on the problem considered. This is the main reason why intracluster edges are forbidden.
+
+        Once scores are computed, we are interested in choosing which units to be activated. In order to account for the fact several units should be activated in each cluster, we propose to activate the $\alpha$ units achieving the maximum score in each cluster. Note that in case of equality of scores, we select all tied units resulting in possibly more than $\alpha$ units activated in each cluster. Intuitively, the best possible choice for $\alpha$ is $a$, but it implies to have some prior knowledge about the value of $a$. If one does not know the value of $a$, choosing $\alpha=1$ should lead to reasonable performance.
+
+		%% In order to account for the changes to the model, we make a small modification of the classic retrieving rule. Indeed, we keep activated all units that achieve a score equal or greater than the $w$-th score. (where $w$ is a positive integer parameter). $w = 1$ amounts to taking the maximum and so is exactly the same as the classic retrieving rule.
 		
 		%$a$-rank
 		
 		%Although it is a less biologically plausible rule, it has the same algorithmic complexity, since selecting the $w$-th greater element in an array of $n$ elements is $O(n)$ in complexity.
 		
-		Intuitively the choice of $w = a$ is optimal, as each cluster should eventually contain exactly $a$ active units to at least represent a symbol in $\mathcal{A}$. %(it it is the most natural one with $w = 1$ as well).
-		%Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
+		%% Intuitively the choice of $w = a$ is optimal, as each cluster should eventually contain exactly $a$ active units to at least represent a symbol in $\mathcal{A}$. %(it it is the most natural one with $w = 1$ as well).
+		%% %Algorithm \ref{asumsum} is a description of the algorithm\footnote{No optimizations are described here (early stopping etc.)} :
 		
 		
-		We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$. The network is in state $\tilde{x}$ at the beginning of the retrieving. The state of the network at the beginning of the step $t$ will be denoted by $\tilde{x}_t$. The message will be successfully retrieved if at the end of the algorithm, the network is in state $x$.
-		
-		At each step $t$, we compute the scores, that is to mean the number of active units each unit is connected to, plus a memory effect $\gamma $ accounting for units begin already active. The array of scores at step $t$ is :  $s_{t} = \gamma \tilde{x_{t}} + W \tilde{x_{t}}$
-		
-		To detail the final step of the retrieving rule, we introduce a function $\mbox{select}$ such as for an array $v$, $\mbox{select}(w, v)$ is equal to the $w$-th greatest element of $v$ (counting repetitions).\footnote{$\mbox{select}(3, [3,2,1,2,0]) = 2$}
+	Formally, we introduce a function $\mbox{select}$ such as for an array $\tilde{\mu}$, $\mbox{select}(\alpha, \tilde{\mu})$ is equal to the $\alpha$-th greatest element of $\mu$ (counting repetitions): as an example $\mbox{select}(3, [4,2,1,2,0,2]) = 2$. Then the selection of activated units is performed as follows:
 		
 		\begin{align*}
-		%$
-		&\tilde{x}_{t+1}[(j-1)l+k] =\\ \bigg \{
-  			&\begin{tabular}{ccc}
-  			$1$ & if $s_t[(j-1)l+k] \ge  \mbox{select}(w, s_t[(j-1)l+1 \hdots jl)$ \\
+		&\tilde{\mu}'[(j-1)l+k] =\\ \bigg \{
+  			&\begin{tabular}{cl}
+  			$1$ & if $s[(j-1)l+k] \ge  \mbox{select}(\alpha, s[(j-1)\ell+1 \hdots j\ell])$ \\
   			$0$ & otherwise 
-  		\end{tabular}
-  		%$
+  		         \end{tabular}\;.
   		\end{align*}
+                Thus we use an Heavyside function with a parameter depending on each cluster. $\tilde{\mu}'$ is the output of the algorithm after one iteration. The process can be repeated providing $\tilde{\mu}'$ as the new input to the network. Several stopping criterion can be used~\cite{Ala}. In the remaining of this work, we will consider the number of iterations to be fixed. Simulations show that increasing the number of iterations can result in significatively better performance.
+
+The network is considered to succeed if the final output of the algorithm matches the original message of which $\tilde{\mu}$ is a partial or corrupted version of.
 		
-		We can for example fix a maximum number of steps to the algorithm or stop at one point if $\tilde{x}_{t+1} = \tilde{x}_t$. Increasing the number of iterations can of course improve the retrieval rate.
+		%% We can for example fix a maximum number of steps to the algorithm or stop at one point if $\tilde{x}_{t+1} = \tilde{x}_t$. Increasing the number of iterations can of course improve the retrieval rate.
+		
+		%% We consider an altered version $\tilde{x}$ of a message $x$ which we are trying to retrieve. We set $\tilde{x}^0 = \tilde{x}$. The network is in state $\tilde{x}$ at the beginning of the retrieving. The state of the network at the beginning of the step $t$ will be denoted by $\tilde{x}_t$. The message will be successfully retrieved if at the end of the algorithm, the network is in state $x$.
+		
+		%% At each step $t$, we compute the scores, that is to mean the number of active units each unit is connected to, plus a memory effect $\gamma $ accounting for units begin already active. The array of scores at step $t$ is :  $s_{t} = \gamma \tilde{x_{t}} + W \tilde{x_{t}}$
 		
 		
 		
