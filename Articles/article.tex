@@ -151,9 +151,9 @@
 	
 	We will consider a set $\mathcal{M}$ of messages of fixed length $c$ over a finite alphabet $\mathcal{A}$.
 	
-	Messages in $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each. Units can take two values $0$ (deactivated) and $1$ (activated). The network is therefore binary. A cluster will correspond to a symbol in a message and the pattern of unit activations in a cluster will determine which symbol in the alphabet the cluster represents. 
+	Messages of $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each. Each unit can take two values $0$ (deactivated) and $1$ (activated). The network is therefore binary. A cluster will correspond to a symbol in a message and the pattern of unit activations in a cluster will determine which symbol in the alphabet the cluster represents. 
 	
-	A binary constant weight code of weight $a$ is a code where all codewords have the same weight $a$, i.e. the same number of $1$ in them. Previous works (\cite{GriBer20114, GriBer20122}) considered the storage of binary constant weight codewords of weight $1$. We study the case of arbitrary weight. It is convenient to take $\mathcal{A}$ as the set of all binary constant weight codewords of length $l$ and of weight $a$, where $a$ is a positive integer parameter which we will call number of activities and which satisfies $a\le l$. We now have ${l \choose a} = |\mathcal{A}|$. We set $m = | \mathcal{M} |$.
+	A binary constant weight code of weight $a$ is a code where all codewords have the same weight $a$, i.e. the same number of $1$ in them. Previous works (\cite{GriBer20114, GriBer20122}) considered the storage of binary constant weight codewords of weight $1$. We study the case of arbitrary weight. It is convenient to take $\mathcal{A}$ as the set of all binary constant weight codewords of length $l$ and of weight $a$, where $a$ is a positive integer parameter which we will call number of activities and which satisfies $a\le l$. We now have ${l \choose a} = |\mathcal{A}|$. We also set $m = | \mathcal{M} |$.
 	
 	%Let $\mathcal{M}$ be a set of messages of length $c$ over a finite alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and 
 	 
@@ -282,7 +282,7 @@
 	
 	
 	
-	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
+	
 	
 	As the probability for $l$ and $l'$ to be active in their respective clusters for one message is $\frac{a}{l}$ providing messages are identically distributed, it follows that the probability for the edge $(l,l')$ of not being added in the network for one message is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
 	
@@ -290,8 +290,10 @@
 		\label{formula_density}
 		d = 1 - \left( 1 - \left(\frac{a}{l}\right)^2 \right)^m 
 	\end{align}		
+	, recalling that $m$ is the number of messages in $\mathcal{M}$.
 	
-	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones doing so in their cluster. For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units corresponding to the original message achieve this score. Besides the probability for a unit $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
+	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
+	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones doing so in their cluster (as the others can't achieve a higher score thanks to not being already activated). For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units corresponding to the original message achieve this score. Since scores follow a binomial law, the probability for a unit $v$ to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
 	
 	%probability for a vertex $v$	not to achieve the maximum : $1 - d^	{a(c-c_e)}$
 	
@@ -304,7 +306,7 @@
 	P_{err} = 1 -	\left(1 - d^	{a(c-c_e)}\right)^{c_e(l-a)} 
 	\end{align}	 
 	
-	In order to compare different networks using different alphabets, we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and retrieve messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
+	In order to compare distinct networks using distinct alphabets (due to variations of the weight parameter $a$), we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and retrieve messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
 	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) l^2}{2}$ bits. Since messages are not stored in an ordered fashion, the information stored is the set of messages, thereby it amounts to $\log_2(\frac{({l \choose a}^c)^m}{m!}) \mathop{=}_{m \rightarrow +\infty} m(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The information effectively stored in the network is $P_{retrieve} \times  \frac{2m \left(c \log_2{l \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2}$.
 	
