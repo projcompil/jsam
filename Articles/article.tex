@@ -153,27 +153,28 @@
 	
 	Messages in $\mathcal{M}$ are stored in a clustered neural network, of $c$ clusters of $l$ units each. Units can take two values $0$ (deactivated) and $1$ (activated). The network is therefore binary. A cluster will correspond to a symbol in a message and the pattern of unit activations in a cluster will determine which symbol in the alphabet the cluster represents. 
 	
-	Previous works (\cite{GriBer20114, GriBer20122}) considered the storage of binary constant weight codewords of weight $1$. We study the case of arbitrary weight. It is convenient to take $\mathcal{A}$ as the set of all binary constant weight codewords of weight $a$, where $a$ is a positive integer which we will call number of activities.
+	Previous works (\cite{GriBer20114, GriBer20122}) considered the storage of binary constant weight codewords of weight $1$. We study the case of arbitrary weight. It is convenient to take $\mathcal{A}$ as the set of all binary constant weight codewords of weight $a$, where $a$ is a positive integer parameter which we will call number of activities. We set $m = | \mathcal{M} |$.
 	
 	%Let $\mathcal{M}$ be a set of messages of length $c$ over a finite alphabet $\mathcal{A} = \{1, 2, \hdots, {l \choose a}\}$ (where $a$ is a positive integer) and 
-	We set $m = | \mathcal{M} |$. 
+	 
 	
 	%binary constant weight codes of weight $a$.
 	
-	States of the network are characterized by which neurons are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\dot l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} We say the network is in state $x$ if for all $j\in [1, c]$, cluster $j$ in the network follows the activation pattern $x[(j-1)l+1\hdots jl]$.
+	States of the network are characterized by which units are activated. A message corresponds to one, and only one, state of the network. A message $y$ of length $c$ can be seen as an array $x$ of length $c\dot l$ where for each $j\in [1,c]$, the $j$-th symbol of $y$ denoted $y_j$ is represented by $x[(j-1)l+1\hdots jl]$.\footnote{This is a clustered representation. $x$ is separated in $c$ clusters of $l$ units.} To sum up thje $k$-th unit in the $j$-th cluster corresponds to the index $l = (j-1)l+k$. We say the network is in state $x$ if for all $j\in [1, c]$ and $k\in [1,l]$, units $k$ in cluster $j$ of the network is active if, and only if, $x[(j-1)l+l] = 1$.
 	
 	%Each message $x = (x_j)_{1 \le j \le c}$ is mapped to $y = (y_j)_{1 \le j \le c}$ where $y_j$ is the binary representation of the $x_i$-th $a$-combination of $l$ elements (the mapping doesn't matter as long as it is fixed).\footnote{This is a local code of constant-weight $a$.}
 	
-	Storing a message $y$ in the network amounts to consider the network in state $x$, that is for all $j$ and $k$ such as $1 \le k \le l$ and $1 \le j \le c$, the unit $k$ in the cluster $j$ is activated if and only if $x[(j-1)l+k] = 1$ ; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
+	Storing a message $y$ in the network amounts to consider the network in state $x\,$%, that is for all $j$ and $k$ such as $1 \le k \le l$ and $1 \le j \le c$, the unit $k$ in the cluster $j$ is activated if and only if $x[(j-1)l+k] = 1$ 
+	; then adding all connections between activated units excepting for units sharing the same cluster. Thus we obtain a multipartite clique between activated units representing a message.% The parameter $a$ describing the number of activated units per cluster will be called number of activities.
 	
-	Unit $k$ in cluster $j$ thus corresponds to the index $l = (j-1)c+k$.
+	
 	
 	%The state of the network corresponds to a message.	
 	
 	We can describe the network which is an undirected unweighted graph, by its adjacency matrix $W$. As for a message $x$, $x x^{\intercal}$ is the matrix describing the graph where all edges between active units exist, and only them, we can express $W$ in function of the following :
 	
 	$\tilde{W} = \max_{x\in \mathcal{M}} x x^{\intercal}$ which is the matrix where even edges between units in the same cluster have been added.
-	$W$ can now be expressed as :
+	$W$ can now be expressed as :\vspace*{1mm}
 	
 	$W_{ll'} = \bigg \{
   \begin{tabular}{ccc}
@@ -181,10 +182,11 @@
   $\tilde{W}_{ll'}$ & otherwise 
   \end{tabular}
   $
+  \vspace*{1mm}
   
   We obtain a binary symmetric matrix $W$ with null blocks on the diagonal.
   
-  As taking a maximum is associative and commutative, storing can be done online and is independent of the order of messages.
+  As taking a maximum is associative and commutative, storing can be done online and is independent of the order in which messages are stored.
 		
 	\subsection{Retrieving messages}	
 		
