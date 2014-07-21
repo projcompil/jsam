@@ -13,8 +13,8 @@
 				"ugamma" : { "values" : [1] },
 				"activities" : { "values" : [2] },
 				"m" : { 
-					"cvalues" : [500],
-					"range" : [1000, 1000, 35000]
+					"cvalues" : [250,500,750],
+					"range" : [21000, 1000, 34000]
 				},
 				"l" : { "values" : [512] },
 				"c" : { "values" : [4] },
@@ -23,8 +23,8 @@
 					"values" : [1],
 					"crange" : [1, 1, 7]
 				},
-				"iterations" : { "values" : [1, 4] },
-				"winners" : { "values" : [0,1] },
+				"iterations" : { "values" : [1] },
+				"winners" : { "values" : [0] },
 				"degree" : { "values" : [0] },
 				"p_cons" : { "values" : [0.0], "crange": [0.01, 0.01, 0.10]},
 				"p_des" : { "values" : [0.0] }
