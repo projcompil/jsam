@@ -17,6 +17,36 @@ function floyd_combination(n, m)
 	s
 end
 
+function create_comb(n, m, i, j, tab)
+	for k=n-m+1:n
+		t = rand(1:k)
+		if tab[j+t, i] == 0
+			tab[j+t, i] = 1
+		else
+			tab[j+k, i] = 1
+		end
+	end
+end
+
+function cree(n, m)
+	tab = zeros(Int, n)
+	for k=n-m+1:n
+		t = rand(1:k)
+		if tab[t] == 0 
+			tab[t] = 1
+		else
+			tab[k] = 1
+		end
+	end
+	tab
+end
+
+function create_line(n, m, i, lt, tab)
+	for j=0:n:lt
+		create_comb(n, m, i, j, tab)
+	end
+end
+
 function rand_combination(n, m)
 	s = floyd_combination(n, m)
 	res = zeros(Bool, n)
@@ -155,6 +185,7 @@ function create_messages(l, c, m, activities = 1, csparse = 0)#; useBitArray = f
 						sparseMessages[(j-1)*l + k, i] = 1
 					end
 				end
+			#	create_line(l, activities, i, n
 			end
 		end
 		###############" Attention les messages n'ont plus aucun rapport avec les sparseMessages !!!!!!!

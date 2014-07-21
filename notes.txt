@@ -320,9 +320,9 @@ tester sum of max !!
  en utilisant le même matériel !!!!
  #################" brute force sur les cliques
 
- sezcti brute force sur les cliques
+ section brute force sur les cliques
 
- section pour les problèmes !!! pour tout, recherche exhaustive (mais pas réponse exacte) rapide, sans tro de mémoire
+ section pour les problèmes !!! pour tout, recherche exhaustive (mais pas réponse exacte) rapide, sans trop de mémoire
 
  mardi problem statements + densité
 
@@ -333,4 +333,11 @@ tester sum of max !!
 
  penser application
 
+
+fig 3
+
+./astat.r -f results/clique_results.csv --color maxiterations --fcolor --minpoolsize 10 --abs m --shape winners -c 4 -l 512 -e 2 --lines --thm -S 5000 --xlab "Number of stored messages (M)" --ylab "Error rate" --ncolor Iterations --nshape "Winners (w)" -w fig3c4l512e2a2.pdf -a 2
+
+fig 4
+./astat.r -f results/clique_results.csv --color maxiterations --fcolor --minpoolsize 10 --abs m --shape winners -c 4 -l 512 -e 2 --lines --ther --xlab "Number of stored messages (M)" --ylab "Error rate" --ncolor Iterations --nshape "Winners (w)" -a 2 -z corrupt_clusters! -e 1 -w fig4c4l512a2e1corr.pdf -S 5000
 

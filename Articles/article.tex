@@ -155,7 +155,7 @@
 
         In this document, we are interested in assessing the performance of such systems when several units are associated with a given symbol for each cluster. To simplify this generalisation and allow for optimized retrieval strategies, we fix this number of activated units $a$ in each cluster.
         
-        Note that there are $\binom{\ell}{a}$ possible choices for $a$ activations among $\ell$ units, giving the following correspondance:
+        Note that there are $\binom{\ell}{a}$ possible choices for $a$ activations among $\ell$ units, giving the following correspondence:
 \[
 \binom{\ell}{a} = | \mathcal{A} |\;.
 \]
@@ -255,7 +255,7 @@ By abusing notations, and since function $f$ is injective, we shall make no dist
 	
 	%The state of the network corresponds to a message.
 	
-	Formally, we can describe the network using the adjacency matrix $W$ of the underlying graph. By construction this matrix is symmetric and binary. For a message $\mu$, note that $\mu \mu^{\intercal}$ is the cooccurence matrix associated with $\mu$. Before defining $W$, we first introduce the following matrix:
+	Formally, we can describe the network using the adjacency matrix $W$ of the underlying graph. By construction this matrix is symmetric and binary. For a message $\mu$, note that $\mu \mu^{\intercal}$ is the co-occurrence matrix associated with $\mu$. Before defining $W$, we first introduce the following matrix:
 \[
 	\overline{W} = \max_{\mu\in \mathcal{M}} \mu \mu^{\intercal} %% = \bigvee_{x\in \mathcal{M}} x x^{\intercal}
         \;,
@@ -353,20 +353,22 @@ The network is considered to succeed if the final output of the algorithm matche
 %		\end{algorithmic}
 %		\end{algorithm}
 	
+	We now describe some static properties of the networks as the density of edges.
 	
-	We now study the performance of the new retrieving rule on distinct problems of retrieval : first partially erased messages, then erroneous messages.%, finally partially erased messages when the network has been damaged.
+	\section{Static properties of multipartite clique networks}	
 	
-	\section{Retrieval performance}	
+	We study the properties of the network after storing messages in it. We are interested in how much edges have been added to the network and if the process introduced confusion between messages.	
 	
-	Messages will be considered as independent and identically distributed according to the uniform distribution. We compute theoretical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of five networks and messages sets, and each point is drawn for a different network and messages set.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
-
-	\subsection{Retrieving partially erased messages}		
+	Messages stored in the network will be considered independent and identically distributed according to the uniform distribution. This randomization allows us to compute the theoretical density of the network. %under the approximation that edges are independent. 
+	Density is a crucial parameter of the network that can be used to predict retrieval rates for different problems. Moreover we compute asymptotic efficiency thanks to the formula for density.
+	
+	\subsection{Density}
 		
-	One can see a partial version of a message $x$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
+	The density $d$ of the network is the proportion of edges present in the network : $d = \frac{\# \{(i, i') \} \, | W_{ii'} = 1 \}}{c(c-1)\ell^2}$.
 	
-	\subsubsection{Analytical result}
+	\subsubsection{Theoretical density}
 	
-	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(i, i')$ to be present in the network (i.e. $W_{ii'} = 1$). We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
+	We first compute the theoretical density of the network, that is to mean the probability for a random edge $(i, i')$ to be present in the network (i.e. $W_{ii'} = 1$). 
 	
 	%number of neurons per cluster $l$
 	
@@ -393,7 +395,63 @@ The network is considered to succeed if the final output of the algorithm matche
 		\label{formula_density}
 		d = 1 - \left( 1 - \left(\frac{a}{\ell}\right)^2 \right)^M 
 	\end{align}		
-	, recalling that $M$ is the number of messages in $\mathcal{M}$.
+	, recalling that $M$ is the number of messages in $\mathcal{M}$.	
+	
+	\subsubsection{Simulations}
+	
+	Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
+	\begin{figure}[!htb]
+		\includegraphics[width=8.5cm]{Courbes/remplacement_densite_c8l256a4}
+		\caption{Theoretical and empirical densities for a network of 8 clusters, 256 units per cluster and 4 activated units per cluster}
+			\label{densiteth}
+	\end{figure}	
+	
+	\subsection{Accepting random messages}
+		
+	\section{Maximum theoretical efficiency}
+		It was shown in \cite{Palm1980} that maximal asymptotic capacity of Willshaw networks is $\log 2$. We adapt this result to multipartite clique clustered networks.
+		
+		The entropy of the messages set can be approximated as $H(\mathcal{M}) \approx M c \log_2 {\ell \choose a}$. From $d = 1 - \left (1- \left(a/\ell\right)^2 \right)^M$, we can deduce $M \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{\ell})^2)} \sim - \frac{\ell^2 \log_2(1-d) \log 2}{a^2}$.
+		We set $\log_2 {\ell \choose a} = k c$ (otherwise density approaches $0$ or $1$, and efficiency $0$). It follows that $\eta \sim \frac{M c \log_2 {\ell \choose a}}{\ell^2 {c \choose 2}} \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}$. 
+		
+		$\eta \sim - 2 k  a^{-2}\log 2 \times \log_2 (1-d)$.
+		
+		We can bound the probability $P_{\exists e}$ for a message being "wrongly present" in the network, that is to mean adding it will not add any edge to the network albeit it is not in $\mathcal{M}$. By union-bound $P_{\exists e} \le {\ell \choose a}^c d^{a^2 {c \choose 2}} = 2^{c \log_ 2 {l \choose a} + a^2 {c \choose 2 }\log_2(d)} \approx 2^{c^2(k + \frac{a^2}{2} \log_2 (d))}$.
+		
+		Fixing $k^* = -\frac{a^2}{2} \log_2 (d)$ gives us $P_{\exists e}$ and $\eta \sim \log_2 d \log_2 (1-d) \log 2$ and therefore \[\eta_{max} = \log 2\]
+	
+		Multipartite cliques don't improve theoretical asymptotic efficiency (for not accepting messages that weren't previously seen by the network).
+
+
+	We now describe the distinct problems of messages retrieval that we study the performance of.	
+	
+	\section{Problems statements}		
+	
+	\subsection{Erasures}
+	
+	\subsection{Random replacements}
+	
+	\subsection{Resilience}
+	
+	
+	
+	We now study the performance of the new retrieving rule on those distinct problems of retrieval : first partially erased messages, then erroneous messages.%, finally partially erased messages when the network has been damaged.	
+	
+	\section{Retrieval performance}	
+	
+	Thanks to the theoretical formula for density, we compute analytical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of five networks and messages sets, and each point is drawn for a different network and messages set.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
+	
+	
+	
+		
+	
+	\subsection{Retrieving partially erased messages}		
+		
+	One can see a partial version of a message $x$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
+	
+	\subsubsection{Analytical result}
+	
+	We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
 	
 	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
 	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones being so in their cluster (as the others can't achieve a higher score thanks to not being already activated). For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units in erased clusters corresponding to the original message achieve this score. Since scores follow a binomial law, the probability for a random unit to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
@@ -422,9 +480,6 @@ The network is considered to succeed if the final output of the algorithm matche
 	The maximum ratio of information that can be stored in the network is therefore $\eta = \max_x \eta_x $, which we will define as the efficiency of the network.
 	
 	\subsubsection{Simulations}
-	
-		Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
-		
 		
 		
 		Simulations agree with the analytical results for error rate, albeit we can observe a small shift, see Figure \ref{erasuresth}. The theoretical error rate is a bit optimistic which is due to the connections not being independent.
@@ -442,18 +497,20 @@ The network is considered to succeed if the final output of the algorithm matche
 	%See Figure \ref{erasuresth}	
 	
 		
-	\begin{figure}[!htb]
-		\includegraphics[width=8.5cm]{Courbes/remplacement_densite_c8l256a4}
-		\caption{Theoretical and empirical densities for a network of 8 clusters, 256 units per cluster and 4 activated units per cluster}
-			\label{densiteth}
-	\end{figure}
 	
 	
-	\begin{figure}[!htb]
-		\includegraphics[width=8.5cm]{Courbes/remplacement_figure2g1} %{comparaison_regles_pool5_a2c4l512e2}
+	
+%	\begin{figure}[!htb]
+%		\includegraphics[width=8.5cm]{Courbes/remplacement_figure2g1} %{comparaison_regles_pool5_a2c4l512e2}
+%		\caption{Evolution of error rate for increasing number of stored messages, 2 activities per cluster, 4 clusters, 512 units per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result (for one iteration) in continuous black}
+%			\label{erasuresth}
+%		\end{figure}
+		
+		\begin{figure}[!htb]
+		\includegraphics[width=8.5cm]{Courbes/fig3c4l512e2a2} %{comparaison_regles_pool5_a2c4l512e2}
 		\caption{Evolution of error rate for increasing number of stored messages, 2 activities per cluster, 4 clusters, 512 units per cluster, two erasures, each point is the mean of 5 networks with 1000 sampled messages, analytical result (for one iteration) in continuous black}
 			\label{erasuresth}
-		\end{figure}
+		\end{figure}		
 		
 		Thanks to the efficiency defined in the previous section, we can easily compare distinct choices of parameters $a$ (we now take $w = a$ since it is the most efficient choice in practice) over distinct number of erased clusters. Figure \ref{comperth} shows improvements in efficiencies over parameter $a =1$. The more difficult the problem is, the more redundancies introduced by multipartite cliques are useful.
 		
@@ -561,7 +618,7 @@ The network is considered to succeed if the final output of the algorithm matche
 		\label{corruptth}
 	\end{figure}
 		
-		$\eta_m = P_{retrieve}  \frac{2 M\left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{\ell \choose a}} \right )^k \left (\frac{1}{{ell \choose a}} \right )^{c-k} \right ] ^{-(M-1)}$
+		$\eta_m = P_{retrieve}  \frac{2 M\left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{\ell \choose a}} \right )^k \left (\frac{1}{{\ell \choose a}} \right )^{c-k} \right ] ^{-(M-1)}$
 		
 		
 
@@ -609,7 +666,7 @@ The network is considered to succeed if the final output of the algorithm matche
 	\subsection{Simulations}
 	
 	With random noise on edges, hardness of the problem must take into account the capacity of the binary symmetric channel (the closer $\psi$ is of $0.5$, the harder the problem is). Our new is efficiency is written as :  	
-	$\eta_{m, \psi} = P_{retrieve} m  \frac{2 \left(c \log_2{\ell \choose a } - \log_2(m) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{\ell \choose a}^{c - c_e})^{-(m-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
+	$\eta_{m, \psi} = P_{retrieve}  \frac{2 M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{\ell \choose a}^{c - c_e})^{-(M-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
 	
 	$\eta_\psi = max_x \, \eta_{x, \psi}$
 	\begin{figure}[!htb]
@@ -635,20 +692,7 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	
 	Figure \ref{comppsi} seems to indicate a linear relationship (after a transition for multiple activities) between $\eta_\psi -\eta_0$ and $\psi$.
-	\section{Maximum theoretical efficiency}
-		It was shown in \cite{Palm1980} that maximal asymptotic capacity of Willshaw networks is $\log 2$. We adapt this result to multipartite clique clustered networks.
-		
-		The entropy of the messages set can be approximated as $H(\mathcal{M}) \approx M c \log_2 {\ell \choose a}$. From $d = 1 - \left (1- \left(a/\ell\right)^2 \right)^M$, we can deduce $M \sim \frac{\log_2(1-d)}{\log_2(1-(\frac{a}{\ell})^2)} \sim - \frac{\ell^2 \log_2(1-d) \log 2}{a^2}$.
-		We set $\log_2 {\ell \choose a} = k c$ (otherwise density approaches $0$ or $1$, and efficiency $0$). It follows that $\eta \sim \frac{M c \log_2 {\ell \choose a}}{\ell^2 {c \choose 2}} \sim \frac{k c^2 \log_2(1-d)\log 2}{a^2 {c \choose 2}}$. 
-		
-		$\eta \sim - 2 k  a^{-2}\log 2 \times \log_2 (1-d)$.
-		
-		We can bound the probability $P_{\exists e}$ for a message being "wrongly present" in the network, that is to mean adding it will not add any edge to the network albeit it is not in $\mathcal{M}$. By union-bound $P_{\exists e} \le {\ell \choose a}^c d^{a^2 {c \choose 2}} = 2^{c \log_ 2 {l \choose a} + a^2 {c \choose 2 }\log_2(d)} \approx 2^{c^2(k + \frac{a^2}{2} \log_2 (d))}$.
-		
-		Fixing $k^* = -\frac{a^2}{2} \log_2 (d)$ gives us $P_{\exists e}$ and $\eta \sim \log_2 d \log_2 (1-d) \log 2$ and therefore \[\eta_{max} = \log 2\]
 	
-		Multipartite cliques don't improve theoretical asymptotic efficiency (for not accepting messages that weren't previously seen by the network).
-
 	
 	\section{Conclusion}	
 	

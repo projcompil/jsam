@@ -381,7 +381,7 @@ if (!is.null(opt$ther)) {
 						newd$Theory <- factor("Analytical error\n (corruptions)")
 						#qpl <- qpl + geom_point(data=tempd, color = "red")
 						#qpl <- qpl + geom_line(aes(y = newd$errorrate,  linetype = newd), data = newd, color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
-						qpl <- qpl + geom_line(aes(y = newd$errorrate,  color = "Analytical\n result\n (corruptions,\n 1 iter)"))
+						qpl <- qpl + geom_line(aes(y = newd$errorrate,  color = "Analytical\n result\n (1 iter)"))
 					}
 				}
 			}
@@ -423,7 +423,7 @@ if (!is.null(opt$thm)) {
 			for (erasures in unique(data$erasures)) {
 				for (activities in unique(data$activities)) {
 					print(activities)
-					qpl <- qpl + stat_function(fun = function(x) po(x, l, ci, erasures, activities), aes(color = "Analytical\n result\n (erasures,\n 1 iter)"))
+					qpl <- qpl + stat_function(fun = function(x) po(x, l, ci, erasures, activities), aes(color = "Analytical\n result\n (1 iter)"))
 					#qpl
 					#message("Press Return To Continue")
 					#invisible(readLines("stdin", n=1))
