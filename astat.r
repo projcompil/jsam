@@ -398,7 +398,8 @@ if (!is.null(opt$thpsi)) {
 					for(activities in unique(data$activities)) {
 						newd = data
 						newd$errorrate = sapply(data$m, function (x) { ((1 - ptotalpsi(x, ci, erasures, l, activities, psi))) })
-						qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+						#qpl <- qpl + geom_line(aes(y = newd$errorrate), color = "black")#, geom="line")#+ geom_line(aes(x = data$m, y=1-sapply(data$m, function(x) ptotal(x, 4, 1, 512)))) #
+						qpl <- qpl + geom_line(aes(y = newd$errorrate,  color = "Analytical\n result\n (1 iter)"))
 					}
 				}
 			}
