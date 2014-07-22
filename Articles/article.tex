@@ -389,7 +389,7 @@ The network is considered to succeed if the final output of the algorithm matche
 
 	
 	
-	As the probability for $i$ (and $i'$) to be active in its cluster for one message $\mu$ is $a/\ell$ providing messages are uniformly distributed, it follows that the probability for the edge $(i,i')$ of not being added in the network for $\mu$ is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
+	The probability for $i$ (and $i'$) to be active in its cluster for one message $\mu$ is $a/\ell$ providing messages are uniformly distributed. It follows that the probability for the edge $(i,i')$ of not being added in the network after $\mu$ is being stored is $1 - \left(a/l\right)^2$. Since messages are independent, the density $d$, which is the probability for an edge to be in the network, can be expressed as :
 	
 	\begin{align}
 		\label{formula_density}
@@ -427,19 +427,43 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	\section{Problems statements}		
 	
+	We are interested in distinct problems of messages retrieval. We detail what those problems are. Since those problems vary in hardness, we propose distinct measures for efficiencies. Efficiency measures the ratio of information effectively retrieved over the information used for storage.	
+	
 	\subsection{Erasures}
+	
+	A message $m$ can be recovered from a partial probe $\tilde{m}$ where some symbols, say $c_e$, with indexes $\{j_1, \dots , j_{c_e} \}$ have been replaced by the blank symbol $\intercal$, with $\intercal \not\in\mathcal{A}$ (recall $\mathcal{A}$ is the alphabet we are working on).  We have $\tilde{m} \in \left( \mathcal{A} \cup \{ \intercal \}\right)^c$.
+	
+	We can extend the mapping $f$ to $\left( \mathcal{A} \cup \{ \intercal \}\right)^c$, by associating to the symbol $\intercal$ a cluster where none of the units are activated. If we consider the binary representation $\mu$ of $m$, erased symbols corresponds to erased clusters. An erased cluster is a cluster where none of the units are activated. Formally the partial probe $\tilde{\mu}$ is such that for all $j\in [c]$ and $k \in [\ell ]$, \[ 
+		\tilde{\mu}[(j-1)\ell+k] = \bigg \{ \begin{array}{cl} 0 & \mbox{if } j\in \{j_1, \dots , j_{c_e} \}\\
+													\mu[(j-1)\ell+k] & \mbox{otherwise}	
+	\end{array}\]
+	
+	
+	An erasure is tantamount to lack of information, but associative memories can also retrieve messages from corrupted probes.
 	
 	\subsection{Random replacements}
 	
+	We propose one model of message corruption. As all symbols in $\mathcal{A}$ all contains exactly $a$ ones, symbols which do not belong to $\mathcal{A}$ can be easily detected. We therefore restrict ourselves to random replacements by symbols in $\mathcal{A}$.
+	
+	A message $m$ can be recovered from a corrupt probe $\tilde{m}$ where some symbols, say $c_e$, with indexes $\{j_1, \dots , j_{c_e} \}$ have been replaced by random elements of $\mathcal{A}$. We have $\tilde{m} \in \mathcal{A}^c$.
+	
+	Concerning the binary representation, we now have a corrupt probe $\tilde{\mu} = f(\tilde{m})$.
+	
+	
+		
 	\subsection{Resilience}
 	
+	The problem of resilience takes into account the possibility for the network of sustaining damages. Despite those, the network can still work as an associative memory, albeit with decreased performance.
 	
+			
+	
+		
 	
 	We now study the performance of the new retrieving rule on those distinct problems of retrieval : first partially erased messages, then erroneous messages.%, finally partially erased messages when the network has been damaged.	
 	
 	\section{Retrieval performance}	
 	
-	Thanks to the theoretical formula for density, we compute analytical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of five networks and messages sets, and each point is drawn for a different network and messages set.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
+	Thanks to the theoretical formula for density (\ref{formula_density}), we compute analytical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of several networks and messages sets, and each point is drawn for different networks and messages sets.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
 	
 	
 	
@@ -447,11 +471,11 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	\subsection{Retrieving partially erased messages}		
 		
-	One can see a partial version of a message $x$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
+	One can see a partial version of a message $\mu$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
 	
 	\subsubsection{Analytical result}
 	
-	We then express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
+	We express the theoretical error rate after one iteration of the retrieving rule in function of the density. All this computations (on error rates) are done assuming existences of edges between random units are independent, which is false but is a convenient approximation that gives results matching very closely results from simulations.
 	
 	Suppose we are trying to retrieve a message where $c_e$ clusters have been erased. %(i.e. all units in those clusters are set to $0$).
 	Thanks to the memory effect $\gamma$, activated units in a non-erased cluster stay activated and are the only ones being so in their cluster (as the others can't achieve a higher score thanks to not being already activated). For units in erased clusters, the maximum attainable score is $a(c - c_e)$. Units in erased clusters corresponding to the original message achieve this score. Since scores follow a binomial law, the probability for a random unit to achieve the maximum score in such a cluster, that is to mean $a(c-c_e)$ is $d^{a(c-c_e)}$.
@@ -547,7 +571,7 @@ The network is considered to succeed if the final output of the algorithm matche
 
 	Messages can be corrupted, our models for errors is : given $c_e$ the number of erroneous clusters, we draw at random $c_e$ clusters and in each of these draw at random, uniformly, a new letter in the alphabet that will replace the old one (it could be the same).
 	
-	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute the laws of probabilities for scores achieved by different type of units in different clusters. We can divide units in 5 groups with 3 characteristics. Subscript $g$ will indicate a unit being part of the message (it should be activated), subscript $b$ the contrary (the unit should not be activated). Subscript $a$ means the unit is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
+	Knowing the density of the network, which follows formula (\ref{formula_density}), we can compute distributions for scores achieved by different type of units in different clusters. We can divide units in 5 groups with 3 characteristics. Subscript $g$ will indicate a unit being part of the message (it should be activated), subscript $b$ the contrary (the unit should not be activated). Subscript $a$ means the unit is already activated. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster.
 	Correct units in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
 	Being connected to a given activated unit in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover corrects units see their scores shift, as do all activated units respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
 	For example an \textbf{a}ctivated \textbf{g}ood unit in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated unit in an erroneous cluster is $d$. Thereby its law is :
@@ -697,6 +721,20 @@ The network is considered to succeed if the final output of the algorithm matche
 	\section{Conclusion}	
 	
 	
+	
+	\section*{Annex}
+	
+	\subsection*{Proof for asymtptotic efficiency}
+	
+	\subsection*{Adapting other rules}
+	
+	SUM-OF-MAX can be adapted to multipartie clique networks and still delivers improvements
+	
+	\begin{figure}[!htb]
+		\includegraphics[width=8.5cm]{Courbes/comp_rulesmax}%thpsi_c8l256e4}
+		\caption{Comparison for different retrieval rules, 8 clusters, 256 units per cluster, 4 erasures, each point is the mean of 5 networks with 1000 sampled messages}
+		\label{fmaxth}
+	\end{figure}
 	
 	%Marche mieux pour de petits c --> le faire sur le sparse ?
 	
