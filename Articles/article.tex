@@ -215,36 +215,36 @@ By abusing notations, and since function $f$ is injective, we shall make no dist
   \path[thick]
   %%%%
   (nodecircledraw40pt60pt) edge (nodecirclefill20pt20pt)
-  edge (noderectanglefill40pt60pt)
-  edge (noderectanglefill20pt20pt)
-  edge (noderectangledraw40pt20pt)
+  edge (noderectanglefill20pt60pt)
+  edge (noderectanglefill60pt20pt)
+  edge (noderectangledraw60pt20pt)
   edge (nodecirclefill60pt60pt)
   %edge (noderectanglefill40pt40pt)
-  edge (noderectangledraw60pt60pt)
+  edge (noderectangledraw20pt60pt)
   %%%%%%%%%%%
   (nodecircledraw020pt) edge (nodecirclefill20pt20pt)
-  edge (noderectanglefill40pt60pt)
-  edge (noderectanglefill20pt20pt)
-  edge (noderectangledraw40pt20pt)
+  edge (noderectanglefill20pt60pt)
+  edge (noderectanglefill60pt20pt)
+  edge (noderectangledraw60pt20pt)
   edge (nodecirclefill60pt60pt)
   %edge (noderectanglefill40pt40pt)
-  edge (noderectangledraw60pt60pt)
+  edge (noderectangledraw20pt60pt)
   %%%%%%%%%%%%%%
-  (nodecirclefill20pt20pt) edge (noderectanglefill40pt60pt)
-  edge (noderectangledraw60pt60pt)
-  edge (noderectanglefill20pt20pt)
-  edge (noderectangledraw40pt20pt)
+  (nodecirclefill20pt20pt) edge (noderectanglefill20pt60pt)
+  edge (noderectangledraw20pt60pt)
+  edge (noderectanglefill60pt20pt)
+  edge (noderectangledraw60pt20pt)
   %%%%%
-  (nodecirclefill60pt60pt) edge (noderectanglefill40pt60pt)
-  edge (noderectangledraw60pt60pt)
-  edge (noderectanglefill20pt20pt)
-  edge (noderectangledraw40pt20pt)
+  (nodecirclefill60pt60pt) edge (noderectanglefill20pt60pt)
+  edge (noderectangledraw60pt20pt)
+  edge (noderectanglefill60pt20pt)
+  edge (noderectangledraw20pt60pt)
   %%%%%
-  (noderectanglefill40pt60pt) edge (noderectangledraw60pt60pt)
-  edge (noderectangledraw40pt20pt)
+  (noderectanglefill20pt60pt) edge (noderectangledraw20pt60pt)
+  edge (noderectangledraw60pt20pt)
   %%%%%%%%%%%
-  (noderectanglefill20pt20pt) edge (noderectangledraw60pt60pt)
-  edge (noderectangledraw40pt20pt)
+  (noderectanglefill60pt20pt) edge (noderectangledraw20pt60pt)
+  edge (noderectangledraw60pt20pt)
   ;
 \end{tikzpicture}
 \caption{Illustration of the storage process of a message $\mu$. In this setting the number of clusters is $c=4$, each containing $\ell=16$ units. The parameter $a$ is 2.}
@@ -400,6 +400,10 @@ The network is considered to succeed if the final output of the algorithm matche
 	\subsubsection{Simulations}
 	
 	Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
+	The higher $a$ is, the quicker density approaches $1$.
+	
+	Multipartite cliques saturate quicker.
+	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/c5l256densities}%remplacement_densite_c8l256a4}
 		\caption{Theoretical and empirical densities for networks of 5 clusters, 256 units per cluster }
