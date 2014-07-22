@@ -442,7 +442,10 @@ if (!is.null(opt$thd)) {
 	for (l in unique(data$l)) {
 		for (c in unique(data$c)) {
 			for (activities in unique(data$activities)) {
-				qpl <- qpl + stat_function(fun = function(x) dens(x, l, activities), color = "black")
+				#qpl <- qpl + stat_function(fun = function(x) dens(x, l, activities), color = "black")
+				newd = data
+				#newd$activities[] <- "o"
+				qpl <- qpl + stat_function(fun = function(x) dens(x, l, activities), data = newd, aes(color = paste("Analytical\n density", sprintf("\n%d", activities))))
 			}
 		}
 	}
