@@ -3,25 +3,25 @@
 		{
 			"function_params" : {
 				"fsum" : [0],
-				"fcorrupt" : [0]
+				"fcorrupt" : [1]
 			},
 			"trials" : 1,
 			"tests" : 1000,
-			"pool_size" : 1,
+			"pool_size" : 10,
 			"only_drop" : false,
 			"network_params" : {
-				"ugamma" : { "values" : [1] },
-				"activities" : { "values" : [1,2,3] },
+				"ugamma" : { "values" : [-1] },
+				"activities" : { "values" : [1,2] },
 				"m" : { 
 					"values" : [500,1000],
-					"crange" : [7500, 5000, 50000]
+					"range" : [1500, 500, 10000]
 				},
 				"l" : { "values" : [256] },
-				"c" : { "values" : [5] },
+				"c" : { "values" : [8] },
 				"csparse" : { "values" : [0]},
 				"erasures" : { 
-					"values" : [1],
-					"crange" : [1, 1, 7]
+					"cvalues" : [1],
+					"range" : [1, 1, 6]
 				},
 				"iterations" : { "values" : [1] },
 				"winners" : { "values" : [0] },

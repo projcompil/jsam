@@ -256,10 +256,10 @@ function create_network(l, c, m, messages, sparseMessages, p_cons = 0.0, degree 
 
 	if p_cons > 0.0
 		for j=1:n
-			for i=1:n
+			for i=(j+1):n
 				if rand(Float64) <= p_cons
 					# Bon opérateur pour faire cette opération sur les booléens et les entiers à la fois ? (Au cas où on changerait le type du réseau.)
-					network[i, j] = (if network[i, j] == 1 || only_drop
+					network[i, j] = network[j, i] = (if network[i, j] == 1 || only_drop
 										0
 									else
 										1
@@ -566,7 +566,11 @@ const real_gamma = (if (gamma == -1) activities elseif (gamma == -2) activities 
 	ipeta = peta / info_alphabet
 	ipaeta = paeta / info_alphabet
 	# Deux mesures importantes
-	rceta = eta * exp(exp2((log2(m-1)- (c-erasures) * info_alphabet)))
+	rceta = eta * (if (fcorrupt == corrupt_clusters!) sum(map([(erasures+1):c]) do k
+						x = 1/binomial(l, activities)
+						binomial(c, k) * (1-x)^k * x^(c - k)
+					end
+		)^(-(m-1)) else  exp(exp2((log2(m-1)- (c-erasures) * info_alphabet))) end)
 	psieta = rceta / (1 + xlog2(p_cons) + xlog2(1-p_cons))
 	return [ res[1] res[2] res[3] l c m real_gamma erasures iterations tests res[4] "$fsum" "$fcorrupt" p_cons p_des degree activities alphabet_size (if winners > 0 winners else activities end) pool_size efficacy (efficacy/cap) proportion eta aeta peta paeta ipeta ipaeta ieta iaeta info_alphabet only_drop rceta psieta csparse ]
 end

@@ -179,6 +179,7 @@ if(!is.null(opt$onlydrop)) { data = subset(data, onlydrop == "true" | pcons == 0
 #im <- with(x, interp(x$c, x$efficiency, x$errorrate))
 #with(im,, image(x$c, x$efficiency, x$errorrate))
 
+#data = subset(data, gamma == 1 & maxiterations == 4 | gamma == 100 & maxiterations == 1)
 
 print("Début plot :")
 print(opt$neurons)
@@ -232,7 +233,7 @@ if(!is.null(opt$size)) {
 		sdata = data[,opt$size]
 	}
 	qpl <- qpl + geom_point(aes(size = sdata)) + labs(size = opt$size) } # + scale_size(name=opt$size)  }
-if(!is.null(opt$shape)) { qpl <- qpl + geom_point(aes(shape = factor(data[,opt$shape])), size = 3) + labs(shape = opt$shape) }# + scale_shape(name=opt$shape)  }
+if(!is.null(opt$shape)) { qpl <- qpl + geom_point(aes(shape = factor(data[,opt$shape])), size = 3) + labs(shape = parse(text = opt$shape)) }# + scale_shape(name=opt$shape)  }
 #if(!is.null(opt$color)) { qpl <- qpl + geom_point(colour = data[opt$color]) }
 
 if(!is.null(opt$nsize)) {
@@ -241,7 +242,7 @@ if(!is.null(opt$nsize)) {
 
 
 if(!is.null(opt$nshape)) {
-	qpl <- qpl + labs(shape = opt$nshape)
+	qpl <- qpl + labs(shape=parse(text = opt$nshape))#shape = opt$nshape)
 }
 
 # Ajouter factor group si besoin est.
@@ -272,10 +273,10 @@ if(!is.null(opt$ordstep)) {
    qpl <- qpl + scale_y_continuous(breaks = seq(0.0, 1.0, by = 0.1))#, max(data[,opt$ord]), by = opt$ordstep))#,#pretty_breaks(n = length(data[,opt$abs]))) #min(data[,opt$ord])
 }
 if(!is.null(opt$xlab)) {
-	qpl <- qpl + xlab(opt$xlab)#expression(psi))#opt$xlab)
+	qpl <- qpl + xlab(opt$xlab)#parse(text = opt$xlab))#expression(psi))#opt$xlab)
 }
 if(!is.null(opt$ylab)) {
-	qpl <- qpl + ylab(opt$ylab)#expression(eta))#opt$ylab)
+	qpl <- qpl + ylab(opt$ylab)#parse(text = opt$ylab))#expression(eta))#opt$ylab)
 }
 
 

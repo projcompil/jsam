@@ -341,9 +341,27 @@ fig 3
 fig 4
 ./astat.r -f results/clique_results.csv --color maxiterations --fcolor --minpoolsize 10 --abs m --shape winners -c 4 -l 512 -e 2 --lines --ther --xlab "Number of stored messages (M)" --ylab "Error rate" --ncolor Iterations --nshape "Winners (w)" -a 2 -z corrupt_clusters! -e 1 -w fig4c4l512a2e1corr.pdf -S 5000
 
+fig 6
+
+./astat.r -f results/clique_results.csv -p 0.02 --minpoolsize 10 --abs m --color maxiterations --shape gamma --fcolor --nshape "bold(gamma)" --ncolor Iterations --lines --thpsi --xlab "Number of stored messages (M)" --ylab "Error rate" -S 2500 -w fig2psic8l256e4psi2percent.pdf
+
 
 figures densités :
 d = read.csv("results/clique_results.csv", comment.char = "#")
 d = subset(d, c == 5 & l == 256 & activities <= 3 & pcons == 0)
 ggplot(d, aes(m, density)) + geom_point(aes(colour = factor(activities))) + geom_path(aes(colour="Theoretical\na = 1\n"), stat="function", fun=function(x) dens(x, 256, 1)) + geom_path(aes(colour="Theoretical\na = 2\n"), stat="function", fun=function(x) dens(x, 256, 2)) + geom_path(aes(colour="Theoretical\na = 3"), stat="function", fun=function(x) dens(x, 256, 3)) + xlab("Number of stored messages (M)") + ylab("Density (d)") + scale_color_discrete("Activities (a)")
 ggsave("c5l256densities.pdf")
+
+
+remplacer w par \alpha
+r
+
+figures densités :
+d = read.csv("results/clique_results.csv", comment.char = "#")
+d = subset(d, c == 5 & l == 256 & activities <= 3 & pcons == 0)
+ggplot(d, aes(m, density)) + geom_point(aes(colour = factor(activities))) + geom_path(aes(colour="Theoretical\na = 1\n"), stat="function", fun=function(x) dens(x, 256, 1)) + geom_path(aes(colour="Theoretical\na = 2\n"), stat="function", fun=function(x) dens(x, 256, 2)) + geom_path(aes(colour="Theoretical\na = 3"), stat="function", fun=function(x) dens(x, 256, 3)) + xlab("Number of stored messages (M)") + ylab("Density (d)") + scale_color_discrete("Activities (a)")
+ggsave("c5l256densities.pdf")
+
+
+remplacer w par \alpha
+refaire psi avec erreurs symétriques
