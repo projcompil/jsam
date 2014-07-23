@@ -414,18 +414,23 @@ The network is considered to succeed if the final output of the algorithm matche
 
 	\subsection{Rate of the network}	
 	
-	The rate $R$ of the network measures how much information is stored in the network compared to what it takes to store it. Note it doesn't take into account how effectively messages are retrieved.	
+	The rate $R$ of the network measures how much information is stored in the network compared to what it takes to store the network itself. Note it doesn't take into account how effectively messages are retrieved (if we store too much messages in the network, the proportion of retrieved messages approaches $0$ but the rate is high)
 	
 	
 		The matrix $W$ used to store the network is binary, symmetric, with null blocks of size $\ell^2$ on the diagonal. It can therefore be stored in memory as $\frac{c(c-1) \ell^2}{2}$ bits. 
 		
 		Since messages are not stored in an ordered fashion, the entropy $H(\mathcal{M})$ of the set of messages is $\log_2(\frac{({\ell \choose a}^c)^M}{M!}) \mathop{=}_{M \rightarrow +\infty} M(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2}) + O(\log_2(M)) $ (thanks to  Stirling's formula).% The ratio of information effectively stored in the network is $P_{retrieve} \times  \frac{2M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2}$.
 		
-		$R$ can be written $\frac{2H(\mathcal{M})}{c(c-1) \ell^2}$.
+		$R$ can be written as $\frac{2H(\mathcal{M})}{c(c-1) \ell^2}$.
 		
-		A very good approximation is thereby $R = \frac{2M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2}$.
+		A very good approximation is thereby \begin{align}
+		R \approx \frac{2M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2}
+		\label{rateth}
+		\end{align}
 		
-		The efficiency of the network measures how much information can be retrieved compared to how much could be at the maximum. The efficiency is called $\eta$. $\eta = P_{retrieve} R  h^{-1}$. 
+		
+		
+		The efficiency of the network measures how much information can be retrieved compared to how much could be at the maximum. The efficiency is called $\eta$. $\eta = P_{retrieve} R  h$. 
 		
 	\subsection{Accepting random messages}	
 	
@@ -441,7 +446,7 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	\section{Problems statements}		
 	
-	We are interested in distinct problems of messages retrieval. We detail what those problems are. Since those problems vary in hardness, we propose distinct measures for efficiencies. We first compute the rate of the network. Efficiency measures the ratio of information effectively retrieved over the hardness of the problem. It can be expressed in function of the rate $R$, the retrieval rate $P_{retrieve}$ and some measure of hardness of the problem $h$.
+	We are interested in distinct problems of messages retrieval. We detail what those problems are. Since those problems vary in hardness, we propose distinct measures for efficiencies. Efficiency measures the ratio of information effectively retrieved over the hardness of the problem. It can be expressed in function of the rate $R$, the retrieval rate $P_{retrieve}$ and some measure of hardness of the problem $h$.
 	
 	To account for hardness of problems, we consider an "optimal" associative memory. We are interested in retrieving messages with a few iterations at most. However an "optimal" memory could store $\mathcal{M}$ with $H(\mathcal{M})$ bits and recover messages by maximum likelihood (with ambiguities causing errors in our study, to simplify the problem). We detail the performance of such a memory for each problem, which gives use a measure for the hardness of each problem.
 	
@@ -451,7 +456,8 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	A message $m$ can be recovered from a partial probe $\tilde{m}$ where some symbols, say $c_e$, of indexes $\{j_1, \dots , j_{c_e} \}$, have been replaced by the blank symbol $\intercal$, with $\intercal \not\in\mathcal{A}$ (recall $\mathcal{A}$ is the alphabet we are working on).  We have $\tilde{m} \in \left( \mathcal{A} \cup \{ \intercal \}\right)^c$.
 	
-	We can extend the mapping $f$ to $\left( \mathcal{A} \cup \{ \intercal \}\right)^c$, by associating to the symbol $\intercal$ a cluster where none of the units are activated. If we consider the binary representation $\mu$ of $m$, erased symbols corresponds to erased clusters. An erased cluster is a cluster where all units are set to $0$. Formally the partial probe $\tilde{\mu}$ is such that for all $j\in [c]$ and $k \in [\ell ]$, \[ 
+	We can extend the mapping $f$ to $\left( \mathcal{A} \cup \{ \intercal \}\right)^c$, by associating to the symbol $\intercal$ an "erased cluster" where none of the units are activated. If we consider the binary representation $\mu$ of $m$, erased symbols corresponds to erased clusters. %An erased cluster is a cluster where all units are set to $0$. 
+	Formally the partial probe $\tilde{\mu}$ is such that for all $j\in [c]$ and $k \in [\ell ]$, \[ 
 		\tilde{\mu}[(j-1)\ell+k] = \bigg \{ \begin{array}{cl} 0 & \mbox{if } j\in \{j_1, \dots , j_{c_e} \}\\
 													\mu[(j-1)\ell+k] & \mbox{otherwise}	
 	\end{array}\]
@@ -461,6 +467,17 @@ The network is considered to succeed if the final output of the algorithm matche
 
 	\subsubsection{Hardness of the problem}
 	
+	We compute the probability for a message $m$ and a partial probe $\tilde{m}$ to engender confusion.
+	
+	Let $j\not\in \{j_1, \dots , j_{c_e} \}$ be the index of a non-erased symbol in $\tilde{m}$. The probability for another message $m'$ in $\mathcal{M}$ to satisfy $m'_j = \tilde{m}_j$ is $1/|\mathcal{A}| = \binom{l}{a}^{-1}$. As symbols of a message are independent (since messages are uniformly distributed), the probability that for all $j\not\in \{j_1, \dots , j_{c_e} \}$, $m'_{j} = \tilde{m}_j$ is ${\ell \choose a}^{-(c - c_e)}$. Since messages are independent the probability for all other messages in $\mathcal{M}$ not to be equal to $\tilde{m}$ on non-erased symbols is $\left(1-{\ell \choose a}^{-(c - c_e)}\right)^{M-1}$. We define $h_{erasures}$ the hardness of the problem as the inverse of that last probability : 
+	
+	\begin{align}
+		h_{erasures} = \left(1-{\ell \choose a}^{-(c - c_e)}\right)^{-(M-1)}
+		\label{herrth}
+	\end{align}
+	
+	Notice increasing the size of the alphabet makes the problem easier as confusion
+
 	An erasure is tantamount to lack of information, but associative memories can also retrieve messages from corrupt probes.
 	
 	\subsection{Random replacements}
@@ -481,7 +498,7 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	\subsubsection{Model}
 	
-	The problem of resilience takes into account the possibility for the network of sustaining damages. Despite those, the network can still work as an associative memory, albeit with decreased performance.
+	The problem of resilience takes into account the possibility for the network of sustaining damages. Despite those, the network can still work as an associative memory, albeit with decreased performance. The network $W$ first sustains random binary noises of magnitude $\psi$. The new matrix is called $\tilde{W}$ and satisfies for all $i$ and $i'$ in $[c \cdot \ell ]$, %$W_{ii'} = \big \begin{array}{ccc} W & o\end{array}$
 	
 			
 	\subsubsection{Hardness of the problem}
