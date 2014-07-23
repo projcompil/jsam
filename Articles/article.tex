@@ -357,7 +357,8 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	\section{Static properties of multipartite clique networks}	
 	
-	We study the properties of the network once some messages have been stored in it. We are interested in how much edges have been added to the network and if the process introduced confusion between messages. We also compute the rate of the network in the sense of information theory (ratio between information stored in the network and the information used to store the network)
+	We study the properties of the network once some messages have been stored in it. We are interested in how much edges have been added to the network %and if the process introduced confusion between messages. 
+	We also compute the rate of the network in the sense of information theory (ratio between information stored in the network and the information used to store the network)
 	
 	In this document, messages stored in the network will be considered independent and identically distributed according to the uniform distribution. This randomization allows us to compute the theoretical density of the network. %under the approximation that edges are independent. 
 	Density is a crucial parameter of the network that can be used to predict retrieval rates for different problems. Moreover we compute asymptotic efficiency thanks to the formula for density.
@@ -400,9 +401,7 @@ The network is considered to succeed if the final output of the algorithm matche
 	\subsubsection{Simulations}
 	
 	Theoretical and empirical densities match very closely, see Figure \ref{densiteth}. %gap of theoretical density with density in simulations : under $1$ percent, 
-	The higher $a$ is, the quicker density approaches $1$.
-	
-	Multipartite cliques saturate quicker, which was expected since they take much more edges.
+	The higher $a$ is, the quicker density approaches $1$ : multipartite cliques saturate quicker, which was expected since they take much more edges ($a^2 \binom{c}{2}$).
 	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/c5l256densities}%remplacement_densite_c8l256a4}
@@ -414,7 +413,7 @@ The network is considered to succeed if the final output of the algorithm matche
 
 	\subsection{Rate of the network}	
 	
-	The rate $R$ of the network measures how much information is stored in the network compared to what it takes to store the network itself. Note it doesn't take into account how effective messages retrieving is (if we store too much messages in the network, the proportion of retrieved messages approaches $0$ but the rate is high)
+	The rate $R$ of the network measures how much information is stored in the network compared to what it takes to store the network itself. Note it doesn't take into account how effective retrieving messages is (if we store too much messages in the network, the proportion of retrieved messages approaches $0$ but the rate is high)
 	
 	
 		The matrix $W$ used to store the network is binary, symmetric, with null blocks of size $\ell^2$ on the diagonal. It can therefore be stored in memory as $\frac{c(c-1) \ell^2}{2}$ bits. 
@@ -432,7 +431,7 @@ The network is considered to succeed if the final output of the algorithm matche
 		
 		The efficiency of the network measures how much information can be retrieved compared to how much could be at the maximum. The efficiency is called $\eta$. $\eta = P_{retrieve} R  h$. 
 		
-	\subsection{Accepting random messages}	
+	%\subsection{Accepting random messages}	
 	
 	\subsection{Maximum theoretical efficiency}
 		It was shown in \cite{Palm1980} that maximal asymptotic capacity of Willshaw networks is $\log 2$. We adapt this result to multipartite clique clustered networks.
@@ -446,13 +445,18 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	\section{Problems statements}		
 	
-	We are interested in distinct problems of messages retrieval. We detail what those problems are. Since those problems vary in hardness, we propose distinct measures for efficiencies. Efficiency measures the ratio of information effectively retrieved times the hardness of the problem. It can be expressed as the product of the rate of the network $R$ (how much information is stored), the retrieval rate $P_{retrieve}$ (how much information is effectively retrieved) and some measure of hardness of the problem $h$ (how hard the problem really is).
+	\label{pstat}	
+	
+	We are interested in distinct problems of messages retrieval. We detail what those problems are. Since those problems vary in hardness, we propose distinct measures for efficiencies. Efficiency measures the ratio of information effectively retrieved times the hardness of the problem. It can be expressed as the product of the rate of the network $R$ (how much information is stored, c.f. (\ref{rateth})), the retrieval rate $P_{retrieve}$ (how much is effectively retrieved) and some measure of hardness of the problem $h$ (how hard the problem is).
 	\begin{align}
-		\eta = P_{retrieve} R \cdot h
+		\eta_M = P_{retrieve} R\, h
 		\label{defeff}
 	\end{align}
-	
-	To account for hardness of problems, we consider an "optimal" associative memory. In this document, we are interested in retrieving messages with a few iterations at most. However an "optimal" memory could store $\mathcal{M}$ with $H(\mathcal{M})$ bits and recover messages by maximum likelihood (with ambiguities causing errors in our study, to simplify the problem). For example, such a memory would scan over all messages to find all messages corresponding to a partial probe. We detail the performance of such a memory for each problem, which gives use a measure for the hardness of each problem.
+	However what we are really interested in is the maximum as we want to exploit the network at its best. The maximum efficiency attainable with a given retrieving rule, which we will call efficiency, is thereby \begin{align}
+		\eta = \max_{M \ge 1} \eta_M
+		\label{defmaxef}
+	\end{align}
+	To account for hardness of problems, we consider an "optimal" associative memory. In this document, we are interested in retrieving messages with a few iterations at most. However an "optimal" memory would store $\mathcal{M}$ with $H(\mathcal{M})$ bits and recover messages by maximum likelihood (with ambiguities causing errors in our study, to simplify the problem). For example, such a memory would scan over all messages to find all messages corresponding to a partial probe. We detail the performance of such a memory for each problem, which gives use a measure for the hardness of each problem.
 	
 	\subsection{Erasures}
 	
@@ -471,7 +475,7 @@ The network is considered to succeed if the final output of the algorithm matche
 
 	\subsubsection{Hardness of the problem}
 	
-	We compute the probability for a message $m$ and a partial probe $\tilde{m}$ to engender confusion.
+	We compute the probability for a message $m$ and a partial probe $\tilde{m}$ to cause confusion.
 	
 	Let $j\not\in \{j_1, \dots , j_{c_e} \}$ be the index of a non-erased symbol in $\tilde{m}$. The probability for another message $m'$ in $\mathcal{M}$ to satisfy $m'_j = \tilde{m}_j$ is $1/|\mathcal{A}| = \binom{l}{a}^{-1}$. As symbols of a message are independent (since messages are uniformly distributed), the probability that for all $j\not\in \{j_1, \dots , j_{c_e} \}$, $m'_{j} = \tilde{m}_j$ is ${\ell \choose a}^{-(c - c_e)}$. Since messages are independent the probability for all other messages in $\mathcal{M}$ not to be equal to $\tilde{m}$ on non-erased symbols is $\left(1-{\ell \choose a}^{-(c - c_e)}\right)^{M-1}$. We define $h_{erasures}$ the hardness of the problem as the inverse of that last probability : 
 	
@@ -515,6 +519,7 @@ The network is considered to succeed if the final output of the algorithm matche
 	W_{ii'} & \mbox{with probability } 1 - \psi\end{array}$
 	
 	%simulations faites avec erreurs non symétriques !!
+	% mais apparemment cela joue très peu (de toute façon l'erreur théorique concordait avec le résultat des simulations (je suis en train de les refaire)
 			
 	\subsubsection{Hardness of the problem}
 	
@@ -523,21 +528,18 @@ The network is considered to succeed if the final output of the algorithm matche
 	\begin{align}
 		h_{resilience} = h_{erasures} \times \left( 1 - H(\psi) \right)^{-1}
 	\end{align}	
-	, where $H(\psi) = -(\psi \log_2 (\psi) + (1-\psi) \log_2 (1-\psi)$
+	, where $H(\psi) = -(\psi \log_2 (\psi) - (1-\psi) \log_2 (1-\psi)$.
 	
 	\vspace*{1mm}We now study the performance of the new retrieving rule on those distinct problems of retrieval : first partially erased messages, then erroneous messages.%, finally partially erased messages when the network has been damaged.	
 		
 	\section{Retrieval performance}	
 	
-	Thanks to the theoretical formula for density (\ref{formula_density}), we compute analytical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of several networks and messages sets, and each point is drawn for different networks and messages sets.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$.
+	Thanks to the theoretical formula for density (\ref{formula_density}), we compute analytical error rates after one iteration of the retrieving rule. We compare those results to empirical error rates obtained through simulations\footnote{Simulations are done by taking means on pool of several networks and messages sets, and each point is drawn for different networks and messages sets.}. We also compare efficiencies of distinct networks for distinct values of the parameter $a$ (weight of the constant weight code) in the sense of information theory and show improvements over the case where $a = 1$. Those efficiencies are computed using the empirical retrieval rate and formulas of section \ref{pstat}.
 	
-	
-	
-		
 	
 	\subsection{Retrieving partially erased messages}		
 		
-	One can see a partial version of a message $\mu$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
+	%One can see a partial version of a message $\mu$ as the result of erasures of symbols of $x$. Some symbols of $x$ are replaced by the blank character $\intercal$.	Erasures of a symbol in a message corresponds to an "erased" cluster in the network. An erased cluster is a cluster of units which are all inactive, that is to mean set to $0$.
 	
 	\subsubsection{Analytical result}
 	
@@ -554,27 +556,28 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	Whence error rate in retrieving messages is : 
 	\begin{align}	
-		P_{err} = 1 - \left(1 - d^	{a(c-c_e)}\right)^{c_e(\ell-a)} 
+		P_{err} = 1 - P_{retrieve} = 1 - \left(1 - d^	{a(c-c_e)}\right)^{c_e(\ell-a)} 
 	\end{align}	 
 	
-	In order to compare distinct networks using distinct alphabets (due to variations of the parameter $a$), we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and retrieve messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
+	%In order to compare distinct networks using distinct alphabets (due to variations of the parameter $a$), we define the efficiency of the network relatively to the hardness of the problem (how much it is efficient compared to a perfect associative memory). A perfect associative memory would use exactly the same number of bits than the original messages and retrieve messages by maximum likelihood (ambiguities causing errors). Efficiency is the amount of information retrieved divided by the hardness of the problem.
 	
-	The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) \ell^2}{2}$ bits. Since messages are not stored in an ordered fashion, the entropy of the set of messages is $\log_2(\frac{({\ell \choose a}^c)^M}{M!}) \mathop{=}_{M \rightarrow +\infty} M(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The ratio of information effectively stored in the network is $P_{retrieve} \times  \frac{2M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2}$.
+	%The network is a binary symmetric matrix with null diagonal and can therefore be stored in memory as $\frac{c(c-1) \ell^2}{2}$ bits. Since messages are not stored in an ordered fashion, the entropy of the set of messages is $\log_2(\frac{({\ell \choose a}^c)^M}{M!}) \mathop{=}_{M \rightarrow +\infty} M(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} + o(1)) $ (thanks to  Stirling's formula). The ratio of information effectively stored in the network is $P_{retrieve} \times  \frac{2M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2}$.
 	
-	Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{\ell \choose a}^{c - c_e})^{M-1}$.
+	%Ambiguities would occur in a perfect associative memory if at least two messages were identical over non-erased letters. The probability it doesn't happen is $ (1-{\ell \choose a}^{c - c_e})^{M-1}$.
 	
 	
-	$\eta_M = P_{retrieve}  \frac{2 M\left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2} \times (1-(\frac{1}{{\ell \choose a}})^{c - c_e})^{-(M-1)}$
+	%In terms of efficiency, 
+	%$\eta_M = P_{retrieve}  \frac{2 M\left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2} \times (1-(\frac{1}{{\ell \choose a}})^{c - c_e})^{-(M-1)}$
 	%\frac{c}{(c-c_e) \log_2{l \choose a }}
 	
-	The maximum ratio of information that can be stored in the network is therefore $\eta = \max_x \eta_x $, which we will define as the efficiency of the network.
+	%The maximum ratio of information that can be stored in the network is therefore $\eta = \max_x \eta_x $, which we will define as the efficiency of the network.
 	
 	\subsubsection{Simulations}
 		
 		
-		Simulations agree with the analytical results for error rate, albeit we can observe a small shift, see Figure \ref{erasuresth}. The theoretical error rate is a bit optimistic which is due to the connections not being independent.
+		Simulations agree with the analytical results for error rate, albeit we can observe a small shift, see Figure \ref{erasuresth}. The theoretical error rate is slightly optimistic which is due to the connections not being independent.
 		
-		 For one iteration, as long as the parameter $w$ is between $1$ and $a$, there is no effect on retrieving (in this setting selecting amounts to take the maximum as all units of the original message achieve the same score). However for $4$ iterations, the choice of $\alpha = a$ allows a shift of about $5000$ messages stored on top of those stored for $\alpha = 1$. The variant rule can thus be considered a significant improvement over the classic one for multipartite clique networks (recall that $\alpha = 1$ amounts to the classic retrieving rule).
+		 For one iteration, as long as the parameter $\alpha$ is between $1$ and $a$, there is no effect on retrieving (in this setting selecting amounts to take the maximum as all units of the original message achieve the same score). However for $4$ iterations, the choice of $\alpha = a$ allows a shift of almost $5000$ messages stored in addition to those stored for $\alpha = 1$. The variant rule can thus be considered as a significant improvement over the classic one for multipartite clique networks (recall that $\alpha = 1$ amounts to the classic retrieving rule).
 		
 		
 	
@@ -616,7 +619,9 @@ The network is considered to succeed if the final output of the algorithm matche
 %	$\,$
 %	\newpage
 	
-	Messages can suffer many types of alteration. Multipartite clique neural networks can also correct errors.	
+%	Messages can suffer many types of alteration. Multipartite clique neural networks can also correct errors.	
+	
+	We now examine the case of retrieving messages from corrupt probes.
 	
 	\subsection{Retrieving corrupted messages}
 	
@@ -641,8 +646,11 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	We can divide units in 5 groups with 3 characteristics. Subscript $g$ will indicate a unit being part of the message (it should be activated for the message to be retrieved), subscript $b$ the contrary (the unit should not be activated). Subscript $a$ means the unit is already activated, subscript $d$ that it is deactivated at the beginning. Subscript $c$ corresponds to a correct cluster, $e$ to an erroneous cluster. For example $s_{agc}$ designates the score achieved by an already \emph{a}ctivated unit (a) which should stay activated (g) in an uncorrupted cluster (c). Note that there is some redundancy.
 	
-	%Correctly activated units in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$. 
-	Being connected to a given activated unit in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover corrects units see their scores shift, as do all activated units respectively thanks to being part of the original message and the memory effect $\gamma$. We can express those probability laws as : 
+	%Correctly activated units in uncorrupted clusters achieve at least a score of $a(c-c_e - 1) + \gamma$.
+	We consider $a$ to be small in regard to $\ell$ which allows us to ignore the possibility for a random replacement cluster to share common activated units with the original.
+	
+	Corrects units see their scores shift, as do all activated units respectively thanks to being part of the original message and the memory effect $\gamma$.
+	Being connected to a given activated unit in a corrupted cluster occurs with probability $d$, since errors are identically distributed. Moreover  We can express those probability laws as : 
 	For example an \textbf{a}ctivated \textbf{g}ood unit in a \textbf{c}orrect cluster starts with a base score of $ a(c - c_e - 1) + \gamma$. The probability it has to be connected to a random activated unit in an erroneous cluster is $d$. Thereby the law for its score $s_{agc}$ is :
 	
 	%$P(n_{agc} = (c - c_e - 1) + \gamma + x) = {c_e \choose x} d^x (1-d)^{ce-x}$
@@ -697,13 +705,15 @@ The network is considered to succeed if the final output of the algorithm matche
 %	 &\times \left [ \sum_{y = 0}^a \left( \frac{{l-y \choose a} - \sum_{z = y+1}^{a} {l-z \choose a }}{{l \choose a}}\right)\sum_{n = 1}^{a(c-1) +\gamma} \left[ \sum_{k = 1}^a { a \choose k } P(n_{ge} = n)^k P(n_{ge} > n)^{a-k} \right ] P(n_{bc} < n)^{l-a - y} P(n_{abc} < n)^{a - y} \right ]^{c_e}
 %	\end{align*}	
 	
-	$P_{err} = 1 - P_{retrieve}$	
+	We can of course compute the error rate : $P_{err} = 1 - P_{retrieve}$	
 
 	
 	
 	\subsubsection{Simulations}
-	See Figure \ref{corruptth} compares the two choices $\alpha = 1$ and $\alpha = a$.
-	"$a$-winners take all" better than "winner takes all" with errors instead of erasures, even for one iteration.
+	Figure \ref{corruptth} compares the two choices $\alpha = 1$ and $\alpha = a$. The choice of $\alpha = a$ is a considerable improvement over $\alpha = 1$ for retrieving messages from corrupt probe.
+	%"$a$-winners take all" better than "winner takes all" with errors instead of erasures, even for one iteration.
+	
+	The analytical error rate is close to the empirical one, albeit slightly optimistic.
 	
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/fig4c4l512a2e1corr}%remplacement_figure3g1}
@@ -711,10 +721,10 @@ The network is considered to succeed if the final output of the algorithm matche
 		\label{corruptth}
 	\end{figure}
 		
-		$\eta_m = P_{retrieve}  \frac{2 M\left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{\ell \choose a}} \right )^k \left (\frac{1}{{\ell \choose a}} \right )^{c-k} \right ] ^{-(M-1)}$
+		%$\eta_m = P_{retrieve}  \frac{2 M\left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)\ell^2} \times \left [\sum_{k = c_e+1}^{c} \left (1-\frac{1}{{\ell \choose a}} \right )^k \left (\frac{1}{{\ell \choose a}} \right )^{c-k} \right ] ^{-(M-1)}$
 		
 		
-
+	We now study the influence of the parameter $a$ on retrieving messages from partial probes after the network has sustained damages.
 	
 	\subsection{Resilience}
 	\subsubsection{Analytical result}
@@ -726,12 +736,13 @@ The network is considered to succeed if the final output of the algorithm matche
 	Our deviation model is the same as \cite{LedGriRabGro20145}\footnote{Compared to this article, we do not draw at random a letter in case of ambiguity, which hurts performance a bit.}, that is random binary noise on edges. We generalise results of \cite{LedGriRabGro20145} to multipartite cliques.
 	
 	%gamma = infini meilleur sur une itération
-	We assume $\gamma = \infty$ for one iteration as it prevents activated neurons to be deactivated.
-	With probability $1 - \psi$, one correct vertex is still connected to a given activated unit in an intact cluster. Thus $P(n_{v_c} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
+	We take $\gamma = \infty$ (or big enough) for one iteration as it prevents activated neurons to be deactivated. Another good choice is $\gamma = a$ in practice.
+	 
+	With probability $1 - \psi$, a correct vertex is still connected to a given activated unit in an intact cluster. Thus $P(s_{g} = x ) = {a (c_k-1) \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e -1) - x }$	
 	
 	%$P(n_{v_c} = x) = {a c_k \choose x} (1-\psi)^{x} \psi ^ { a (c - c_e) - x }$
 	
-	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$. So for other units $P(n_v = x) = {a (c - c_e) \choose x} P_+^x (1-P_+)^{a (c - c_e) -x }$.
+	The probability for an edge to be present in the network after damages is : $P_+ = \psi (1 - d) + (1 - \psi) d$. So for other units $P(s_b = x) = {a (c - c_e) \choose x} P_+^x (1-P_+)^{a (c - c_e) -x }$.
 	
 	% À corriger avec sommes multiparties
 %	$P(\mbox{no other vertex activated in this cluster})= \sum_{n_0 = 1}^{a (c - c_e)} P(n_{v_c} \ge n_0)^a \left [ \sum_{x = 0}^{n_0 - 1} P(n_v = x) \right]^{l-a}$
@@ -740,10 +751,10 @@ The network is considered to succeed if the final output of the algorithm matche
 	
 	%Sans tenir compte du choix au hasard si plus sont activés. Pour une itération $\gamma = \infty$. Pour plusieurs $\gamma = 1$.
 	
-	The probability for all correct units to achieve a score equal or greater than $x$, with at least one achieving a score of $x$ is $P_c (x) =\sum_{k = 1}^{a} { a \choose k }   P(n_{v_c} = x)^k P(n_{v_c} > x)^{a-k} $
+	The probability for all correct units to achieve a score equal or greater than $x$, with at least one achieving a score of $x$ is $P_g (x) =\sum_{k = 1}^{a} { a \choose k }   P(s_g = x)^k P(s_g > x)^{a-k} $
 
 	%If $\gamma$ is big enough,
-	It follows that $P(\mbox{no other vertex activated in one cluster})= \sum_{x = 1}^{a (c - c_e)} P_c(x) P(n_v < x)^{\ell-a}$.%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
+	It follows that $P(\mbox{no other vertex activated in one cluster})= \sum_{x = 1}^{a (c - c_e)} P_g(x) P(s_b < x)^{\ell-a}$.%[ \sum_{x = 0}^{n - 1} P(n_v = x) \right]^{l-a }$
 	
 	%P(\mbox{no other vertex activated in any cluster})
 %	\begin{align*}
@@ -752,16 +763,16 @@ The network is considered to succeed if the final output of the algorithm matche
 %	\end{align*}
 
 	\begin{align}
-	P_{retrieve}=  \left( \sum_{x = 1}^{a ( c- c_e)} P_c(x) P(n_v < x)^{\ell-a} \right )^{c_e}
+	P_{retrieve}=  \left( \sum_{x = 1}^{a ( c- c_e)} P_g(x) P(s_b < x)^{\ell-a} \right )^{c_e}
 	\label{psi_formula_th}
 	\end{align}
 
 	\subsubsection{Simulations}
 	
-	With random noise on edges, hardness of the problem must take into account the capacity of the binary symmetric channel (the closer $\psi$ is of $0.5$, the harder the problem is). Our new is efficiency is written as :  	
-	$\eta_{m, \psi} = P_{retrieve}  \frac{2 M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{\ell \choose a}^{c - c_e})^{-(M-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
-	
-	$\eta_\psi = max_x \, \eta_{x, \psi}$
+%	With random noise on edges, hardness of the problem must take into account the capacity of the binary symmetric channel (the closer $\psi$ is of $0.5$, the harder the problem is). Our new is efficiency is written as :  	
+%	$\eta_{m, \psi} = P_{retrieve}  \frac{2 M \left(c \log_2{\ell \choose a } - \log_2(M) + \frac{1}{\log 2} \right)}{c(c-1)l^2} \times (1-{\ell \choose a}^{c - c_e})^{-(M-1)} \times \frac{1}{1 + \psi \log_2(\psi) +(1-\psi) \log_2(1-\psi)} $
+%	
+%	$\eta_\psi = max_x \, \eta_{x, \psi}$
 	\begin{figure}[!htb]
 		\includegraphics[width=8.5cm]{Courbes/fig2psic8l256e4psi2percent}%thpsi_c8l256e4}
 		\caption{$\psi = 0.02$, 2 activities per cluster, 8 clusters, 256 units per cluster, 4 erasures, each point is the mean of 10 networks with 1000 sampled messages, analytical result in continuous black}
